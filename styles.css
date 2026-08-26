@@ -1,0 +1,365 @@
+/* ==========================================================================
+   Brain Focus Books™ - Custom Design System & Interactive Styling
+   Theme: Dark Cognitive Fitness (#0A1128, #121212, #00E5FF, #FF5722)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
+
+:root {
+  --bg-midnight: #0A1128;
+  --bg-charcoal: #121212;
+  --bg-card: #141E38;
+  --bg-card-hover: #1B294E;
+  --cyan-electric: #00E5FF;
+  --cyan-glow: rgba(0, 229, 255, 0.35);
+  --coral-primary: #FF5722;
+  --coral-hover: #FF7043;
+  --coral-glow: rgba(255, 87, 34, 0.4);
+  --text-white: #FFFFFF;
+  --text-slate: #94A3B8;
+  --text-muted: #64748B;
+  
+  /* Series Accent Palette */
+  --series-4x4: #1E40AF;
+  --series-5x5: #047857;
+  --series-6x6: #0E7490;
+  --series-medium: #D97706;
+  --series-hard: #B91C1C;
+  --series-senior: #6D28D9;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-midnight);
+  color: var(--text-white);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.font-mono-calc {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #070B1A;
+}
+::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 5px;
+  border: 2px solid #070B1A;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cyan-electric);
+}
+
+/* Background Cognitive Grid Pattern */
+.bg-cognitive-grid {
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.12) 0%, transparent 60%),
+    radial-gradient(circle at 100% 50%, rgba(255, 87, 34, 0.08) 0%, transparent 50%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+}
+
+/* Glowing Neon Elements */
+.glow-cyan-box {
+  box-shadow: 0 0 25px -5px var(--cyan-glow);
+  border: 1px solid rgba(0, 229, 255, 0.4);
+}
+
+.glow-cyan-box:hover {
+  box-shadow: 0 0 35px 0px rgba(0, 229, 255, 0.6);
+  border-color: var(--cyan-electric);
+}
+
+.glow-coral-btn {
+  background-color: var(--coral-primary);
+  box-shadow: 0 4px 20px -2px var(--coral-glow);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glow-coral-btn:hover {
+  background-color: var(--coral-hover);
+  box-shadow: 0 6px 28px 0px rgba(255, 87, 34, 0.6);
+  transform: translateY(-2px);
+}
+
+.glow-cyan-text {
+  text-shadow: 0 0 16px rgba(0, 229, 255, 0.6);
+}
+
+.text-gradient-cyan {
+  background: linear-gradient(135deg, #FFFFFF 30%, #00E5FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-coral {
+  background: linear-gradient(135deg, #FF8A65 0%, #FF5722 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 3D Realistic Book Component */
+.book-wrapper {
+  perspective: 1200px;
+}
+
+.book-card-3d {
+  position: relative;
+  width: 200px;
+  height: 285px;
+  transform-style: preserve-3d;
+  transform: rotateY(-18deg) rotateX(8deg) translateZ(0);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.book-wrapper:hover .book-card-3d {
+  transform: rotateY(-4deg) rotateX(2deg) scale(1.04) translateZ(12px);
+}
+
+.book-cover {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px 8px 8px 3px;
+  overflow: hidden;
+  box-shadow: 
+    -12px 14px 28px rgba(0, 0, 0, 0.7),
+    -3px 0 6px rgba(0, 0, 0, 0.4),
+    inset 4px 0 8px rgba(255, 255, 255, 0.15),
+    inset -3px 0 5px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(135deg, #10162B 0%, #0A0E1E 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 14px;
+}
+
+.book-spine-shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 14px;
+  background: linear-gradient(
+    90deg, 
+    rgba(255, 255, 255, 0.35) 0%, 
+    rgba(255, 255, 255, 0.05) 30%, 
+    rgba(0, 0, 0, 0.4) 70%, 
+    rgba(255, 255, 255, 0.15) 100%
+  );
+  z-index: 10;
+  pointer-events: none;
+}
+
+.book-pages-side {
+  position: absolute;
+  top: 4px;
+  right: -9px;
+  width: 9px;
+  height: calc(100% - 8px);
+  background: repeating-linear-gradient(
+    to right,
+    #E2E8F0,
+    #CBD5E1 1px,
+    #94A3B8 2px
+  );
+  transform: rotateY(90deg) translateZ(-4px);
+  border-radius: 0 2px 2px 0;
+  box-shadow: 2px 4px 6px rgba(0,0,0,0.5);
+}
+
+/* Large Hero 3D Book */
+.hero-book-card-3d {
+  position: relative;
+  width: 270px;
+  height: 380px;
+  transform-style: preserve-3d;
+  transform: rotateY(-20deg) rotateX(8deg);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: heroBookFloat 6s ease-in-out infinite alternate;
+}
+
+@keyframes heroBookFloat {
+  0% {
+    transform: rotateY(-20deg) rotateX(8deg) translateY(0px);
+  }
+  100% {
+    transform: rotateY(-14deg) rotateX(4deg) translateY(-14px);
+  }
+}
+
+/* Calcudoku Grid Styling */
+.calcudoku-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  background-color: #070C1B;
+  border: 3px solid var(--cyan-electric);
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
+  border-radius: 8px;
+  overflow: hidden;
+  user-select: none;
+}
+
+.calcudoku-cell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #FFFFFF;
+  background-color: #0D162F;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.calcudoku-cell:hover {
+  background-color: #17244B;
+}
+
+.calcudoku-cell.selected {
+  background-color: #1D3268;
+  outline: 2px solid var(--cyan-electric);
+  outline-offset: -2px;
+  z-index: 5;
+}
+
+.calcudoku-cell.error {
+  background-color: rgba(239, 68, 68, 0.25);
+  color: #FCA5A5;
+  animation: shake 0.3s ease-in-out;
+}
+
+.calcudoku-cell.correct {
+  background-color: rgba(16, 185, 129, 0.25);
+  color: #6EE7B7;
+}
+
+.calcudoku-cell.same-num {
+  background-color: #19274F;
+}
+
+/* Cage Clue Label */
+.cage-label {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--cyan-electric);
+  line-height: 1;
+  pointer-events: none;
+  z-index: 2;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
+/* Specific Cage Boundary Borders */
+.border-top-thick { border-top: 3px solid #00E5FF !important; }
+.border-bottom-thick { border-bottom: 3px solid #00E5FF !important; }
+.border-left-thick { border-left: 3px solid #00E5FF !important; }
+.border-right-thick { border-right: 3px solid #00E5FF !important; }
+
+.border-top-thin { border-top: 1px dashed rgba(255, 255, 255, 0.15); }
+.border-bottom-thin { border-bottom: 1px dashed rgba(255, 255, 255, 0.15); }
+.border-left-thin { border-left: 1px dashed rgba(255, 255, 255, 0.15); }
+.border-right-thin { border-right: 1px dashed rgba(255, 255, 255, 0.15); }
+
+/* Animation Keyframes */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 15px rgba(0, 229, 255, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(0, 229, 255, 0.7); }
+  100% { box-shadow: 0 0 15px rgba(0, 229, 255, 0.3); }
+}
+
+.pulse-glow {
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
+/* Pill Badges */
+.pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pill-cyan {
+  background: rgba(0, 229, 255, 0.12);
+  color: var(--cyan-electric);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+}
+
+.pill-coral {
+  background: rgba(255, 87, 34, 0.15);
+  color: #FF8A65;
+  border: 1px solid rgba(255, 87, 34, 0.4);
+}
+
+/* Modal Backdrop & Animation */
+.modal-backdrop {
+  background: rgba(6, 11, 25, 0.85);
+  backdrop-filter: blur(8px);
+}
+
+.modal-enter {
+  animation: modalEnter 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Confetti particles */
+.confetti-particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  pointer-events: none;
+  animation: confettiFall 2.5s ease-out forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0.2);
+    opacity: 0;
+  }
+}

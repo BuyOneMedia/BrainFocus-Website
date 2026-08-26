@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brain Focus Books™ | The Standard in Logic Puzzles & Calcudoku</title>
+  <meta name="description" content="Master your mind with verified Calcudoku and math logic puzzle books. High-contrast large print grids, step-by-step difficulty progressions, and expert cognitive workouts.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            midnight: '#0A1128',
+            charcoal: '#121212',
+            electricCyan: '#00E5FF',
+            warmCoral: '#FF5722',
+            coralHover: '#FF7043',
+            cardBg: '#141E38',
+            elevatedBg: '#1A2748'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Montserrat', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+</head>
+<body class="bg-midnight text-white antialiased selection:bg-cyan-500 selection:text-black">
+
+  <!-- ========================================================================
+       TOP NOTIFICATION BAR (Cognitive Guarantee)
+       ======================================================================== -->
+  <div class="bg-gradient-to-r from-blue-950 via-[#101E42] to-blue-950 border-b border-cyan-500/20 py-2 px-4 text-center text-xs font-semibold tracking-wide text-slate-300">
+    <span class="inline-flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-[#00E5FF] animate-ping"></span>
+      <span class="text-[#00E5FF] font-bold">100% Guaranteed Math Verification:</span>
+      Every single grid is computer-tested for a unique, single-deduction logical solution. Zero guessing.
+    </span>
+  </div>
+
+  <!-- ========================================================================
+       HEADER NAVIGATION
+       ======================================================================== -->
+  <header class="sticky top-0 z-40 bg-midnight/90 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex flex-col justify-center group py-2">
+        <img src="logo.png" alt="BRAIN FOCUS™ - The Standard in Logic Puzzles" class="h-7 sm:h-9 w-auto object-contain drop-shadow-[0_0_12px_rgba(0,229,255,0.3)] transition-transform group-hover:scale-105">
+        <span class="text-[9px] font-mono tracking-widest text-slate-400 uppercase mt-0.5">
+          The Standard in Logic Puzzles
+        </span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+        <a href="#catalog" class="hover:text-[#00E5FF] transition-colors">Catalog</a>
+        <a href="#bundles" class="hover:text-[#00E5FF] transition-colors">Digital Bundles</a>
+        <a href="#demo" class="hover:text-[#00E5FF] transition-colors">Interactive Demo</a>
+        <a href="#rules" class="hover:text-[#00E5FF] transition-colors">How to Play</a>
+        <a href="bonus.html" class="text-cyan-400 hover:text-cyan-300 transition-colors font-semibold flex items-center gap-1.5">
+          <span>Book Reader Bonus</span>
+          <span class="text-[10px] bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 px-1.5 py-0.5 rounded font-mono">1-CLICK</span>
+        </a>
+      </nav>
+
+      <!-- Top Right CTA -->
+      <div class="hidden sm:flex items-center gap-4">
+        <a href="https://www.amazon.com/s?k=Brain+Focus+Calcudoku+Books" target="_blank" rel="noopener"
+           class="px-5 py-2.5 rounded-full font-bold text-sm text-white glow-coral-btn flex items-center gap-2">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M15.93 17.09c-2.83 2.08-6.95 3.2-10.57 3.2-4.97 0-9.45-1.92-12.86-5.11-.27-.25-.03-.6.29-.41 3.69 2.14 8.21 3.42 12.86 3.42 3.21 0 6.74-.75 9.87-2.31.47-.23.82.26.41.61zm2.34-1.28c-.36-.46-2.38-.22-3.3-.11-.28.03-.32-.2-.07-.38 1.63-1.15 4.3-.82 4.61-.43.32.41-.08 3.09-1.63 4.35-.25.2-.44.09-.3-.18.47-.88.94-2.79.69-3.25zM21.1 19.34c-1.57 2.03-3.66 3.65-6.09 4.66-2.43 1-5.06 1.51-7.71 1.5-3.08 0-6.07-.67-8.81-1.96-.34-.16-.27-.64.1-.56 2.62.56 5.35.85 8.1.85 2.5 0 4.97-.48 7.26-1.42 2.29-.93 4.25-2.45 5.73-4.35.34-.43.83.18.42.56zM13.68 5.7c-.15.86-.68 1.94-1.39 2.64-.71.7-1.78 1.34-2.67 1.25-.13-.01-.19-.16-.09-.25 1.05-.98 2.06-2.28 2.13-3.79.06-1.24-.62-2.18-1.55-2.18-.75 0-1.41.59-1.8 1.48-.42.97-.48 2.37-.48 3.51 0 .28-.24.47-.51.41-1.48-.31-2.91-.98-4.04-1.99-.25-.23-.07-.63.26-.52 1.03.35 2.14.53 3.26.53.07 0 .14 0 .21-.01-.03-.7-.01-1.47.09-2.22.25-1.91 1.41-3.35 3.12-3.35 1.13 0 2.04.66 2.45 1.69.4.99.3 2.08-.09 3.01z"/></svg>
+          Shop on Amazon
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-300 hover:text-white" aria-label="Open Navigation Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-nav-drawer" class="hidden md:hidden bg-[#0A1128] border-b border-slate-800 px-4 pt-2 pb-6 space-y-3">
+      <a href="#catalog" class="block py-2 text-slate-300 hover:text-cyan-400 font-medium">Catalog</a>
+      <a href="#bundles" class="block py-2 text-slate-300 hover:text-cyan-400 font-medium">Digital Bundles</a>
+      <a href="#demo" class="block py-2 text-slate-300 hover:text-cyan-400 font-medium">Interactive Demo</a>
+      <a href="#rules" class="block py-2 text-slate-300 hover:text-cyan-400 font-medium">How to Play</a>
+      <a href="bonus.html" class="block py-2 text-cyan-400 font-semibold">
+        🎁 Book Reader Bonus (Instant 1-Click PDF)
+      </a>
+      <a href="https://www.amazon.com/s?k=Brain+Focus+Calcudoku+Books" target="_blank" rel="noopener"
+         class="w-full py-3 rounded-xl font-bold text-center text-white glow-coral-btn block mt-2">
+        Shop on Amazon
+      </a>
+    </div>
+  </header>
+
+
+  <!-- ========================================================================
+       HERO SECTION (Cognitive Split with 3D Book & Live Vector Calcudoku)
+       ======================================================================== -->
+  <section class="relative pt-12 pb-20 lg:pt-20 lg:pb-28 bg-cognitive-grid overflow-hidden">
+    <!-- Ambient glowing spheres -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-cyan-500/10 blur-[130px] rounded-full pointer-events-none"></div>
+    <div class="absolute -bottom-10 right-10 w-[400px] h-[300px] bg-orange-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <!-- Top Pills -->
+      <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-6">
+        <span class="pill-badge pill-cyan">
+          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+          Pure Logic & Arithmetic Cages
+        </span>
+        <span class="pill-badge pill-coral">
+          ★ Amazon High-Rated Series
+        </span>
+        <span class="pill-badge bg-slate-800/80 text-slate-300 border border-slate-700">
+          Senior Large Print Available
+        </span>
+      </div>
+
+      <!-- Main Split Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        
+        <!-- Left Column: Copywriting & Dual CTAs -->
+        <div class="lg:col-span-7 text-center lg:text-left">
+          <h1 class="font-heading font-black text-4xl sm:text-5xl lg:text-6xl tracking-tight text-white leading-[1.15] mb-6">
+            Verified Math & Logic Puzzles <span class="text-gradient-cyan">Engineered for Daily</span> <span class="text-gradient-coral">Cognitive Fitness</span>
+          </h1>
+          
+          <p class="text-lg sm:text-xl text-slate-300 leading-relaxed font-normal mb-8 max-w-2xl mx-auto lg:mx-0">
+            High-contrast grids, step-by-step progressions, and expert-level Calcudoku challenges designed for daily cognitive fitness and neuroplasticity.
+          </p>
+
+          <!-- Key Checklist -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10 text-sm text-slate-200">
+            <div class="flex items-center gap-2 justify-center lg:justify-start">
+              <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs">✓</span>
+              <span>100% Unique Solutions (No Trial & Error)</span>
+            </div>
+            <div class="flex items-center gap-2 justify-center lg:justify-start">
+              <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs">✓</span>
+              <span>Zero Eye Strain High-Contrast Inks</span>
+            </div>
+            <div class="flex items-center gap-2 justify-center lg:justify-start">
+              <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs">✓</span>
+              <span>Stepped 4x4 to 9x9 Mastery Ramps</span>
+            </div>
+            <div class="flex items-center gap-2 justify-center lg:justify-start">
+              <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs">✓</span>
+              <span>Full Step-by-Step Answer Keys</span>
+            </div>
+          </div>
+
+          <!-- Dual Call to Action Buttons -->
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+            <a href="#catalog" 
+               class="w-full sm:w-auto px-8 py-4 rounded-2xl font-extrabold text-base text-white text-center glow-coral-btn flex items-center justify-center gap-3">
+              <span>Explore The Book Catalog</span>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+            </a>
+            
+            <button onclick="openSampleModal()" 
+                    class="w-full sm:w-auto px-7 py-4 rounded-2xl font-bold text-base text-slate-200 hover:text-white bg-slate-900/90 hover:bg-slate-800 border border-cyan-500/30 hover:border-cyan-400 transition-all flex items-center justify-center gap-2.5">
+              <span>Download 10 Free Printable Grids</span>
+              <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 text-xs font-mono font-bold">PDF</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: 3D Book Showcase & Quick Cage Preview -->
+        <div class="lg:col-span-5 flex flex-col items-center justify-center relative">
+          
+          <div class="relative w-full max-w-sm flex items-center justify-center py-6">
+            <!-- Background Glow Circle -->
+            <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 via-blue-600/10 to-orange-500/20 rounded-full blur-2xl"></div>
+
+            <!-- 3D Large Hero Book -->
+            <div class="book-wrapper">
+              <div class="hero-book-card-3d">
+                <div class="book-spine-shine"></div>
+                <div class="book-pages-side"></div>
+                
+                <!-- Front Cover Art -->
+                <div class="book-cover bg-gradient-to-b from-[#09132E] via-[#060D20] to-[#040814] border-2 border-cyan-400/40">
+                  
+                  <!-- Cover Top Branding -->
+                  <div class="border-b border-cyan-500/30 pb-2">
+                    <div class="flex items-center justify-between mb-1">
+                      <img src="logo.png" alt="BRAIN FOCUS™" class="h-5 w-auto object-contain">
+                      <span class="px-2 py-0.5 rounded bg-orange-600 text-white font-bold text-[9px] uppercase">VOL. 1</span>
+                    </div>
+                    <h2 class="font-heading font-black text-xl text-white tracking-tight leading-tight mt-1">
+                      CALCUDOKU
+                    </h2>
+                    <p class="text-[10px] font-bold text-cyan-400 tracking-wider uppercase">PURE EASY 4x4 & 5x5</p>
+                  </div>
+
+                  <!-- Center Visual: Vector Cage Grid Graphic -->
+                  <div class="my-auto py-3 flex flex-col items-center">
+                    <div class="w-36 h-36 bg-[#081024] rounded-xl border-2 border-cyan-400 grid grid-cols-3 grid-rows-3 p-2 shadow-2xl relative">
+                      <!-- Simulated Cages -->
+                      <div class="border-b-2 border-r-2 border-cyan-400 p-1 flex flex-col justify-between">
+                        <span class="text-[8px] font-mono text-cyan-400 font-bold">6*</span>
+                        <span class="text-sm font-bold text-white text-center">3</span>
+                      </div>
+                      <div class="border-b-2 border-r-2 border-cyan-400 p-1 flex flex-col justify-between">
+                        <span class="text-[8px] font-mono text-cyan-400 font-bold">1-</span>
+                        <span class="text-sm font-bold text-white text-center">2</span>
+                      </div>
+                      <div class="border-b-2 border-cyan-400 p-1 flex flex-col justify-between bg-cyan-950/40">
+                        <span class="text-[8px] font-mono text-orange-400 font-bold">4</span>
+                        <span class="text-sm font-bold text-orange-300 text-center">1</span>
+                      </div>
+
+                      <div class="border-b-2 border-r-2 border-cyan-400 p-1 flex flex-col justify-between">
+                        <span class="text-[8px] font-mono text-slate-500"></span>
+                        <span class="text-sm font-bold text-white text-center">2</span>
+                      </div>
+                      <div class="border-b-2 border-r-2 border-cyan-400 p-1 flex flex-col justify-between bg-blue-950/40">
+                        <span class="text-[8px] font-mono text-cyan-400 font-bold">3/</span>
+                        <span class="text-sm font-bold text-white text-center">1</span>
+                      </div>
+                      <div class="border-b-2 border-cyan-400 p-1 flex flex-col justify-between">
+                        <span class="text-[8px] font-mono text-slate-500"></span>
+                        <span class="text-sm font-bold text-white text-center">3</span>
+                      </div>
+
+                      <div class="border-r-2 border-cyan-400 p-1 flex flex-col justify-between">
+                        <span class="text-[8px] font-mono text-orange-400 font-bold">2/</span>
+                        <span class="text-sm font-bold text-white text-center">1</span>
+                      </div>
+                      <div class="border-r-2 border-cyan-400 p-1 flex flex-col justify-between">
+                        <span class="text-[8px] font-mono text-slate-500"></span>
+                        <span class="text-sm font-bold text-white text-center">3</span>
+                      </div>
+                      <div class="p-1 flex flex-col justify-between">
+                        <span class="text-[8px] font-mono text-cyan-400 font-bold">2</span>
+                        <span class="text-sm font-bold text-white text-center">2</span>
+                      </div>
+                    </div>
+                    
+                    <span class="text-xs font-mono font-bold text-slate-300 mt-2">200 High-Contrast Grids</span>
+                  </div>
+
+                  <!-- Cover Bottom Proof Points -->
+                  <div class="pt-2 border-t border-cyan-500/30 flex items-center justify-between text-[10px] text-slate-300">
+                    <span class="font-bold text-white">Large 8.5" × 11"</span>
+                    <span class="font-bold text-orange-400">100% VERIFIED</span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Quick Demo Anchor Link -->
+          <a href="#demo" class="mt-4 text-xs font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1.5 transition-colors">
+            <span>👇 Play Live 4x4 Mini-Puzzle Widget Below</span>
+          </a>
+
+        </div>
+
+      </div>
+    </div>
+  <!-- ========================================================================
+       "MEASURED, NOT GUESSED" SPECS BANNER
+       ======================================================================== -->
+  <section class="bg-gradient-to-r from-[#070D1F] via-[#0E1B3E] to-[#070D1F] border-y border-cyan-500/30 py-8 px-4 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto">
+      
+      <div class="text-center mb-6">
+        <span class="text-[10px] font-mono tracking-widest text-cyan-400 font-bold uppercase">Engineering Standard</span>
+        <h3 class="font-heading font-extrabold text-lg sm:text-xl text-white mt-0.5">
+          The <span class="text-[#00E5FF]">"Measured, Not Guessed"</span> Publishing Quality Blueprint
+        </h3>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+        
+        <!-- Metric 1: 18mm Grid Cells -->
+        <div class="bg-[#0B1530]/80 border border-cyan-500/30 rounded-2xl p-4 sm:p-5 text-center hover:border-cyan-400 transition-colors shadow-lg">
+          <div class="text-2xl sm:text-3xl font-heading font-black text-[#00E5FF] mb-1">18 mm</div>
+          <div class="text-xs sm:text-sm font-bold text-white mb-1">Spacious Grid Cells</div>
+          <p class="text-[11px] text-slate-400 leading-tight">Ample room for pencil notation and comfortable writing without cramped fingers.</p>
+        </div>
+
+        <!-- Metric 2: 20pt Clue Type -->
+        <div class="bg-[#0B1530]/80 border border-cyan-500/30 rounded-2xl p-4 sm:p-5 text-center hover:border-cyan-400 transition-colors shadow-lg">
+          <div class="text-2xl sm:text-3xl font-heading font-black text-[#00E5FF] mb-1">20 pt</div>
+          <div class="text-xs sm:text-sm font-bold text-white mb-1">Crisp Clue Type</div>
+          <p class="text-[11px] text-slate-400 leading-tight">High-contrast geometric typography designed for zero eye-strain solving sessions.</p>
+        </div>
+
+        <!-- Metric 3: Machine-Verified Solutions -->
+        <div class="bg-[#0B1530]/80 border border-cyan-500/30 rounded-2xl p-4 sm:p-5 text-center hover:border-cyan-400 transition-colors shadow-lg">
+          <div class="text-2xl sm:text-3xl font-heading font-black text-[#FF5722] mb-1">100%</div>
+          <div class="text-xs sm:text-sm font-bold text-white mb-1">Machine-Verified</div>
+          <p class="text-[11px] text-slate-400 leading-tight">Computer solver tested for exactly 1 unique deductive solution. 0% trial & error.</p>
+        </div>
+
+        <!-- Metric 4: 60# Heavy Paper -->
+        <div class="bg-[#0B1530]/80 border border-cyan-500/30 rounded-2xl p-4 sm:p-5 text-center hover:border-cyan-400 transition-colors shadow-lg">
+          <div class="text-2xl sm:text-3xl font-heading font-black text-[#00E5FF] mb-1">60# Pro</div>
+          <div class="text-xs sm:text-sm font-bold text-white mb-1">Heavy Opaque Paper</div>
+          <p class="text-[11px] text-slate-400 leading-tight">High-opacity bright white pages preventing ink bleed-through and pencil tearing.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================================
+       INTERACTIVE MINI-PUZZLE DEMO SECTION (Playable Calcudoku in HTML/JS)
+       ======================================================================== -->
+  <section id="demo" class="py-20 bg-[#070C1B] border-y border-slate-800 relative">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 text-xs font-mono font-bold mb-3 uppercase tracking-wider">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          Try The Mechanics Right Here
+        </div>
+        <h2 class="font-heading font-black text-3xl sm:text-4xl text-white tracking-tight">
+          Interactive <span class="text-gradient-cyan">4x4 Calcudoku</span> Demo
+        </h2>
+        <p class="text-slate-400 text-base mt-3">
+          Fill the 4x4 grid so every row and column contains numbers <strong class="text-white">1, 2, 3, and 4</strong> without duplicates. Each outlined "cage" must equal its target mathematical value using +, −, ×, or ÷.
+        </p>
+      </div>
+
+      <!-- Puzzle Container Box -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start bg-[#0D152D] border border-cyan-500/30 rounded-3xl p-6 sm:p-10 shadow-2xl relative">
+        <div id="confetti-container" class="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl"></div>
+
+        <!-- Left: Interactive Grid & Controls -->
+        <div class="lg:col-span-6 flex flex-col items-center">
+          
+          <!-- Difficulty Selector Tabs -->
+          <div class="flex items-center gap-2 p-1.5 bg-slate-900/90 rounded-2xl border border-slate-800 mb-6">
+            <button id="btn-diff-beginner" onclick="selectPuzzleDifficulty('beginner')" 
+                    class="puzzle-diff-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-[#00E5FF] text-black">
+              Beginner 4x4
+            </button>
+            <button id="btn-diff-intermediate" onclick="selectPuzzleDifficulty('intermediate')" 
+                    class="puzzle-diff-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:text-white">
+              Cognitive 4x4
+            </button>
+            <button id="btn-diff-master" onclick="selectPuzzleDifficulty('master')" 
+                    class="puzzle-diff-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:text-white">
+              Master 4x4
+            </button>
+          </div>
+
+          <!-- 4x4 HTML Grid Canvas -->
+          <div class="w-full max-w-[320px] sm:max-w-[360px]">
+            <div id="calcudoku-grid" class="calcudoku-grid mb-6">
+              <!-- Dynamically populated via script.js -->
+            </div>
+
+            <!-- On-Screen Number Pad (for mobile and touch devices) -->
+            <div class="grid grid-cols-5 gap-2 mb-4">
+              <button onclick="enterNumber(1)" class="py-3 rounded-xl bg-slate-800 hover:bg-cyan-500/20 text-white hover:text-cyan-300 font-heading font-extrabold text-xl border border-slate-700 transition-colors">1</button>
+              <button onclick="enterNumber(2)" class="py-3 rounded-xl bg-slate-800 hover:bg-cyan-500/20 text-white hover:text-cyan-300 font-heading font-extrabold text-xl border border-slate-700 transition-colors">2</button>
+              <button onclick="enterNumber(3)" class="py-3 rounded-xl bg-slate-800 hover:bg-cyan-500/20 text-white hover:text-cyan-300 font-heading font-extrabold text-xl border border-slate-700 transition-colors">3</button>
+              <button onclick="enterNumber(4)" class="py-3 rounded-xl bg-slate-800 hover:bg-cyan-500/20 text-white hover:text-cyan-300 font-heading font-extrabold text-xl border border-slate-700 transition-colors">4</button>
+              <button onclick="clearCurrentCell()" class="py-3 rounded-xl bg-slate-800/80 hover:bg-red-950/60 text-slate-400 hover:text-red-400 font-bold text-xs border border-slate-700 transition-colors" title="Clear cell">⌫</button>
+            </div>
+
+            <!-- Puzzle Game Controls -->
+            <div class="flex items-center gap-3">
+              <button onclick="checkCalcudokuSolution(true)" class="flex-1 py-3 px-4 rounded-xl font-bold text-sm text-white glow-coral-btn flex items-center justify-center gap-2">
+                <span>Check Solution</span>
+                <span class="text-xs">✓</span>
+              </button>
+              <button onclick="giveHint()" class="py-3 px-4 rounded-xl font-semibold text-xs text-yellow-300 hover:text-white bg-yellow-950/40 hover:bg-yellow-900/60 border border-yellow-600/40 transition-colors" title="Reveal one hint">
+                💡 Hint
+              </button>
+              <button onclick="resetPuzzle()" class="py-3 px-4 rounded-xl font-semibold text-xs text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors" title="Reset current puzzle">
+                🔄 Reset
+              </button>
+            </div>
+
+            <!-- Dynamic Feedback / Status Banner -->
+            <div id="calcudoku-status" class="mt-4 p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-center text-xs text-slate-300 min-h-[44px] flex items-center justify-center">
+              Click a cell and enter numbers (1-4) using your keyboard or buttons.
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right: Cage Math Explainer & Rules Breakdown -->
+        <div class="lg:col-span-6 flex flex-col justify-between h-full pt-4 lg:pt-0 lg:pl-6 lg:border-l border-slate-800">
+          <div>
+            <h3 class="font-heading font-bold text-2xl text-white mb-2">How Target Cages Work</h3>
+            <p class="text-sm text-slate-400 mb-6 leading-relaxed">
+              Calcudoku combines the single-digit placement of Sudoku with elementary mathematical operations. Numbers in an outlined cage must combine to produce the top-left clue.
+            </p>
+
+            <!-- Interactive Cage Operators Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+              
+              <div class="p-3.5 rounded-xl bg-slate-900/90 border border-cyan-500/20 flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 font-mono font-bold text-sm flex items-center justify-center shrink-0">
+                  +
+                </div>
+                <div>
+                  <h4 class="text-xs font-bold text-white">Addition Cages (e.g. 7+)</h4>
+                  <p class="text-[11px] text-slate-400 mt-0.5">Sum of all cells in this cage must equal 7 (e.g. 4 + 3 or 1 + 2 + 4).</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-900/90 border border-cyan-500/20 flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 font-mono font-bold text-sm flex items-center justify-center shrink-0">
+                  ×
+                </div>
+                <div>
+                  <h4 class="text-xs font-bold text-white">Multiplication (e.g. 12×)</h4>
+                  <p class="text-[11px] text-slate-400 mt-0.5">Product of all cage cells equals 12 (e.g. 3 × 4 or 2 × 2 × 3).</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-900/90 border border-cyan-500/20 flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 font-mono font-bold text-sm flex items-center justify-center shrink-0">
+                  −
+                </div>
+                <div>
+                  <h4 class="text-xs font-bold text-white">Subtraction (e.g. 2−)</h4>
+                  <p class="text-[11px] text-slate-400 mt-0.5">Difference between 2 cells equals 2 in any order (e.g. 4 − 2 = 2 or 3 − 1 = 2).</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-900/90 border border-cyan-500/20 flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 font-mono font-bold text-sm flex items-center justify-center shrink-0">
+                  ÷
+                </div>
+                <div>
+                  <h4 class="text-xs font-bold text-white">Division (e.g. 2÷)</h4>
+                  <p class="text-[11px] text-slate-400 mt-0.5">Larger cell divided by smaller cell equals 2 (e.g. 4 ÷ 2 = 2 or 2 ÷ 1 = 2).</p>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Pro Tip Box -->
+            <div class="p-4 rounded-xl bg-blue-950/40 border border-blue-500/30 text-xs text-slate-300 flex items-start gap-3">
+              <span class="text-lg">💡</span>
+              <p>
+                <strong class="text-[#00E5FF]">Pro Tip:</strong> Numbers can repeat within the same cage if they are in different rows and columns (e.g. in an L-shaped cage), but never within the same row or column!
+              </p>
+            </div>
+          </div>
+
+          <!-- Bottom CTA inside demo -->
+          <div class="mt-6 pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="text-xs text-slate-400">
+              Enjoyed this quick challenge? Explore full volumes in our catalog:
+            </div>
+            <a href="#catalog" class="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-slate-800 hover:bg-slate-700 border border-slate-600 transition-colors whitespace-nowrap">
+              Browse All Books ↓
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================================
+       SERIES CATALOG GRID (Filterable by Difficulty & Sub-Series Tiers)
+       ======================================================================== -->
+  <section id="catalog" class="py-20 bg-midnight relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header & Filter Tabs -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold mb-3 uppercase">
+            Complete Publishing Lineup
+          </div>
+          <h2 class="font-heading font-black text-3xl sm:text-4xl text-white tracking-tight">
+            Explore The <span class="text-gradient-cyan">Brain Focus™</span> Catalog
+          </h2>
+          <p class="text-slate-400 text-sm mt-2 max-w-xl">
+            Choose by grid dimension, difficulty curve, or high-contrast large print comfort. Every volume includes verified solutions and logic ramp ups.
+          </p>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex flex-wrap gap-2 p-1.5 bg-slate-900/90 rounded-2xl border border-slate-800">
+          <button onclick="filterCatalog('all', this)" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-[#00E5FF] text-black shadow-lg transition-all">
+            All Volumes
+          </button>
+          <button onclick="filterCatalog('easy', this)" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/80 text-slate-300 hover:text-white transition-all">
+            Easy Series (4x4, 5x5, 6x6)
+          </button>
+          <button onclick="filterCatalog('progression', this)" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/80 text-slate-300 hover:text-white transition-all">
+            Progression & Medium
+          </button>
+          <button onclick="filterCatalog('hard', this)" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/80 text-slate-300 hover:text-white transition-all">
+            Hard & Expert
+          </button>
+          <button onclick="filterCatalog('senior', this)" class="catalog-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-800/80 text-slate-300 hover:text-white transition-all">
+            Senior Large Print
+          </button>
+        </div>
+      </div>
+
+      <!-- Sub-Series Color Guide Legend -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-10 text-xs">
+        <div class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/60 border border-blue-800/40">
+          <span class="w-3 h-3 rounded-full bg-[#1E40AF]"></span>
+          <span class="text-slate-300 font-medium">4x4 Pure Easy</span>
+        </div>
+        <div class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/60 border border-emerald-800/40">
+          <span class="w-3 h-3 rounded-full bg-[#047857]"></span>
+          <span class="text-slate-300 font-medium">5x5 Pure Easy</span>
+        </div>
+        <div class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/60 border border-cyan-800/40">
+          <span class="w-3 h-3 rounded-full bg-[#0E7490]"></span>
+          <span class="text-slate-300 font-medium">6x6 Pure Easy</span>
+        </div>
+        <div class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/60 border border-amber-800/40">
+          <span class="w-3 h-3 rounded-full bg-[#D97706]"></span>
+          <span class="text-slate-300 font-medium">Pure Medium</span>
+        </div>
+        <div class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/60 border border-red-800/40">
+          <span class="w-3 h-3 rounded-full bg-[#B91C1C]"></span>
+          <span class="text-slate-300 font-medium">Hard & Expert</span>
+        </div>
+        <div class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/60 border border-purple-800/40">
+          <span class="w-3 h-3 rounded-full bg-[#6D28D9]"></span>
+          <span class="text-slate-300 font-medium">Senior Comfort</span>
+        </div>
+      </div>
+
+      <!-- Dynamic Book Cards Grid -->
+      <div id="book-catalog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <!-- Rendered via JavaScript -->
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================================
+       DIRECT SALES / DIGITAL MULTI-VOLUME BUNDLES SECTION
+       ======================================================================== -->
+  <section id="bundles" class="py-20 bg-[#091026] border-t border-cyan-500/20 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Title -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 text-xs font-mono font-bold mb-3 uppercase">
+          ⚡ Tablet & Home Printing Editions
+        </div>
+        <h2 class="font-heading font-black text-3xl sm:text-4xl text-white tracking-tight">
+          Digital PDF <span class="text-gradient-cyan">Multi-Volume Bundles</span>
+        </h2>
+        <p class="text-slate-300 text-sm sm:text-base mt-3">
+          Prefer solving on your iPad/Apple Pencil, Android tablet, or printing unlimited sheets at home? Get high-resolution vector PDF bundles delivered instantly with verified answer keys.
+        </p>
+      </div>
+
+      <!-- Digital Bundle Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Bundle 1: Starter Mega Pack -->
+        <div class="bg-[#111C3A] border-2 border-blue-600/40 hover:border-blue-500 rounded-3xl p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 shadow-2xl relative">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-900/80 text-blue-300 border border-blue-500/40 uppercase">Starter Pack</span>
+              <span class="text-xs font-mono text-slate-400 font-bold">Vols 1–3</span>
+            </div>
+            <h3 class="font-heading font-black text-2xl text-white mb-2">4x4 & 5x5 Easy Digital Trilogy</h3>
+            <p class="text-xs text-slate-400 mb-6">600 Calibrated easy-tier grids for smooth daily warmup and stress reduction.</p>
+
+            <div class="flex items-baseline gap-2 mb-6 pb-6 border-b border-slate-800">
+              <span class="text-3xl font-black text-white">$9.99</span>
+              <span class="text-xs text-slate-400 line-through">$29.97 value</span>
+              <span class="text-xs font-bold text-emerald-400 ml-auto">Save 67%</span>
+            </div>
+
+            <ul class="space-y-2.5 text-xs text-slate-300 mb-8">
+              <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> 3 Full PDF Volumes (600 Total Grids)</li>
+              <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> GoodNotes & Notability Hyperlinked</li>
+              <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> High-Contrast 8.5" × 11" Printable Vector</li>
+              <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Instant Download Link Upon Checkout</li>
+            </ul>
+          </div>
+
+          <button onclick="openBundleCheckout('starter')" class="w-full py-3.5 px-4 rounded-xl font-bold text-sm text-white glow-coral-btn flex items-center justify-center gap-2">
+            <span>📥 Instant Download ($9.99)</span>
+          </button>
+        </div>
+
+        <!-- Bundle 2: Grandmaster Full Progression Suite (Featured) -->
+        <div class="bg-gradient-to-b from-[#162550] to-[#0E1A3C] border-2 border-cyan-400 rounded-3xl p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 shadow-2xl relative scale-105 z-10">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-black font-extrabold text-[11px] uppercase tracking-wider shadow-lg">
+            🔥 Best Value • Complete Collection
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-4 mt-2">
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-cyan-950 text-cyan-300 border border-cyan-500/50 uppercase">Mega Suite</span>
+              <span class="text-xs font-mono text-cyan-400 font-bold">Vols 1–6</span>
+            </div>
+            <h3 class="font-heading font-black text-2xl text-white mb-2">Grandmaster Progression Suite</h3>
+            <p class="text-xs text-slate-300 mb-6">1,200+ Grids spanning 4x4, 5x5, 6x6, 8x8, and 9x9 extreme grandmaster levels.</p>
+
+            <div class="flex items-baseline gap-2 mb-6 pb-6 border-b border-cyan-500/30">
+              <span class="text-3xl font-black text-[#00E5FF]">$17.99</span>
+              <span class="text-xs text-slate-400 line-through">$59.94 value</span>
+              <span class="text-xs font-bold text-orange-400 ml-auto">Save 70%</span>
+            </div>
+
+            <ul class="space-y-2.5 text-xs text-slate-200 mb-8">
+              <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> 6 Complete PDF Volumes (1,200+ Grids)</li>
+              <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Full Arithmetic Cage Strategy Masterclass PDF</li>
+              <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Step-by-Step Solver Matrix & Walkthroughs</li>
+              <li class="flex items-center gap-2"><span class="text-cyan-400">✓</span> Lifetime Free Updates & Extra Bonus Grids</li>
+            </ul>
+          </div>
+
+          <button onclick="openBundleCheckout('grandmaster')" class="w-full py-4 px-4 rounded-xl font-extrabold text-sm text-white glow-coral-btn flex items-center justify-center gap-2 shadow-xl">
+            <span>📥 Instant Download ($17.99)</span>
+          </button>
+        </div>
+
+        <!-- Bundle 3: Senior Comfort Jumbo Collection -->
+        <div class="bg-[#111C3A] border-2 border-purple-600/40 hover:border-purple-500 rounded-3xl p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 shadow-2xl relative">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-purple-950 text-purple-300 border border-purple-500/40 uppercase">Extra Large Print</span>
+              <span class="text-xs font-mono text-slate-400 font-bold">Vols 1–3</span>
+            </div>
+            <h3 class="font-heading font-black text-2xl text-white mb-2">Senior Comfort Jumbo Pack</h3>
+            <p class="text-xs text-slate-400 mb-6">450 Giant 24pt grids engineered specifically for maximum visibility and eye comfort.</p>
+
+            <div class="flex items-baseline gap-2 mb-6 pb-6 border-b border-slate-800">
+              <span class="text-3xl font-black text-white">$12.99</span>
+              <span class="text-xs text-slate-400 line-through">$35.97 value</span>
+              <span class="text-xs font-bold text-purple-400 ml-auto">Save 64%</span>
+            </div>
+
+            <ul class="space-y-2.5 text-xs text-slate-300 mb-8">
+              <li class="flex items-center gap-2"><span class="text-purple-400">✓</span> 3 Jumbo PDF Volumes (450 Grids)</li>
+              <li class="flex items-center gap-2"><span class="text-purple-400">✓</span> One Giant Grid Per Page (24pt Font)</li>
+              <li class="flex items-center gap-2"><span class="text-purple-400">✓</span> High-Contrast Pure Black Vector Inks</li>
+              <li class="flex items-center gap-2"><span class="text-purple-400">✓</span> Easy-Turn Margins & Answer Keys</li>
+            </ul>
+          </div>
+
+          <button onclick="openBundleCheckout('senior')" class="w-full py-3.5 px-4 rounded-xl font-bold text-sm text-white glow-coral-btn flex items-center justify-center gap-2">
+            <span>📥 Instant Download ($12.99)</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================================
+       BRAND VALUE PROPOSITION CARDS (3-Column Layout)
+       ======================================================================== -->
+  <section id="rules" class="py-20 bg-[#0A0F24] border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="pill-badge pill-cyan mb-3">The Brain Focus™ Difference</span>
+        <h2 class="font-heading font-black text-3xl sm:text-4xl text-white tracking-tight">
+          Engineered for Deep Cognitive Clarity
+        </h2>
+        <p class="text-slate-400 text-sm mt-3">
+          We rebuilt the logic puzzle book standard from scratch to eliminate eye fatigue, formatting errors, and unfair guessing requirements.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Value Prop Card 1 -->
+        <div class="p-8 rounded-3xl bg-[#111A34] border border-cyan-500/30 flex flex-col justify-between hover:border-cyan-400 transition-all duration-300 hover:-translate-y-1">
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-2xl mb-6">
+              👓
+            </div>
+            <h3 class="font-heading font-bold text-xl text-white mb-3">
+              High Contrast & Large Print
+            </h3>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              Zero eye-strain grid rendering. Thick black cage outlines, sharp mathematical operators, and wide margins specifically engineered for comfortable, strain-free solving sessions.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-800 text-xs font-mono text-cyan-400 font-semibold">
+            ✓ 18pt–24pt Clear Typography
+          </div>
+        </div>
+
+        <!-- Value Prop Card 2 -->
+        <div class="p-8 rounded-3xl bg-[#111A34] border border-cyan-500/30 flex flex-col justify-between hover:border-cyan-400 transition-all duration-300 hover:-translate-y-1">
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/30 text-orange-400 flex items-center justify-center text-2xl mb-6">
+              🎯
+            </div>
+            <h3 class="font-heading font-bold text-xl text-white mb-3">
+              Verified Math Solutions
+            </h3>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              100% accurate, single-solution logic grids. Every single puzzle is rigorously verified by proprietary solver algorithms to ensure pure deductive reasoning without ambiguous dead-ends.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-800 text-xs font-mono text-orange-400 font-semibold">
+            ✓ 0% Ambiguity • 100% Deductive
+          </div>
+        </div>
+
+        <!-- Value Prop Card 3 -->
+        <div class="p-8 rounded-3xl bg-[#111A34] border border-cyan-500/30 flex flex-col justify-between hover:border-cyan-400 transition-all duration-300 hover:-translate-y-1">
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/30 text-purple-400 flex items-center justify-center text-2xl mb-6">
+              📈
+            </div>
+            <h3 class="font-heading font-bold text-xl text-white mb-3">
+              Structured Progression
+            </h3>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              Gradual difficulty ramps from beginner warmup to grandmaster. Each volume guides you through calibrated cognitive hurdles so you develop mathematical intuition naturally.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-slate-800 text-xs font-mono text-purple-400 font-semibold">
+            ✓ Stepped Difficulty Calibration
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================================
+       COGNITIVE HEALTH & BRAIN FITNESS SECTION
+       ======================================================================== -->
+  <section id="benefits" class="py-20 bg-midnight relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="bg-gradient-to-br from-[#0F1B3E] via-[#091129] to-[#120B24] border border-cyan-500/30 rounded-3xl p-8 sm:p-12 lg:p-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          
+          <div class="lg:col-span-7">
+            <span class="pill-badge pill-cyan mb-4">Neuroplasticity & Mental Stamina</span>
+            <h2 class="font-heading font-black text-3xl sm:text-4xl text-white tracking-tight mb-4">
+              Why Daily Calcudoku is The Ultimate Workout for Your Brain
+            </h2>
+            <p class="text-slate-300 text-base leading-relaxed mb-6">
+              Unlike passive puzzles or repetitive word games, Calcudoku exercises both halves of your brain simultaneously: combining spatial deduction in the parietal lobe with working memory and arithmetic calculation in the prefrontal cortex.
+            </p>
+
+            <div class="space-y-4 text-sm text-slate-200">
+              <div class="flex items-start gap-3">
+                <span class="text-cyan-400 font-bold text-lg">01.</span>
+                <div>
+                  <strong class="text-white">Active Working Memory Expansion:</strong>
+                  <span> Holding cage factor combinations in mind builds mental retention and rapid number manipulation skills.</span>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-cyan-400 font-bold text-lg">02.</span>
+                <div>
+                  <strong class="text-white">Dopamine Reward Flow State:</strong>
+                  <span> Each cracked cage delivers an immediate micro-victory, promoting calm focus and stress reduction.</span>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-cyan-400 font-bold text-lg">03.</span>
+                <div>
+                  <strong class="text-white">Lifelong Cognitive Resilience:</strong>
+                  <span> Regular mathematical cross-training helps preserve mental acuity, executive function, and verbal processing speed.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 flex flex-col items-center justify-center text-center p-8 bg-[#070B1A]/80 rounded-2xl border border-cyan-500/20">
+            <div class="text-5xl font-heading font-black text-gradient-cyan mb-2">15 Min</div>
+            <div class="text-sm font-bold text-white mb-2">Daily Recommended Routine</div>
+            <p class="text-xs text-slate-400 mb-6">
+              Just two to three grids with your morning coffee provides sustained cognitive alertness throughout the day.
+            </p>
+            <button onclick="openSampleModal()" class="w-full py-3 px-6 rounded-xl font-bold text-sm text-white glow-coral-btn">
+              Get Your Free 20-Page Sampler
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================================
+       LEAD MAGNET & EMAIL CAPTURE SECTION
+       ======================================================================== -->
+  <section id="sampler" class="py-20 bg-[#070B1A] border-t border-slate-800 relative">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="bg-gradient-to-b from-[#131E40] to-[#0A1128] border-2 border-cyan-400/40 rounded-3xl p-8 sm:p-12 shadow-2xl text-center relative overflow-hidden">
+        
+        <!-- Glowing accent -->
+        <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-48 bg-cyan-500/20 blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10">
+          <span class="pill-badge pill-coral mb-4">100% Free • Amazon KDP Compliant</span>
+          <h2 class="font-heading font-black text-3xl sm:text-4xl text-white tracking-tight mb-3">
+            Get Your Free 20-Page Printable Sampler Pack
+          </h2>
+          <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto mb-8">
+            Experience the Brain Focus™ quality standard at home. Includes 4x4, 5x5, 6x6, and 8x8 sample grids, our cage math strategy manual, and full verified answer keys.
+          </p>
+
+          <!-- Step 1: Direct 1-Click Instant Download Button (Zero Email Required) -->
+          <div class="mb-10 p-6 rounded-2xl bg-[#091024] border border-cyan-400/40 max-w-xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="text-left">
+              <div class="text-xs font-bold uppercase tracking-wider text-emerald-400">Step 1: Direct Access</div>
+              <h4 class="font-bold text-white text-base">Instant PDF Download</h4>
+              <p class="text-[11px] text-slate-400">No email or registration required.</p>
+            </div>
+            <a href="data:text/plain;charset=utf-8,Brain%20Focus%20Books%20-%20Free%2020-Page%20Printable%20Sampler%20Pack%0A%0AThank%20you%20for%20visiting%20BrainFocusBooks.com!%0AExplore%20our%20full%20volumes%20and%20digital%20bundles%20at%20https://brainfocusbooks.com"
+               download="BrainFocus_20_Page_Sampler_Pack.pdf"
+               onclick="triggerConfetti();"
+               class="w-full sm:w-auto px-6 py-3.5 rounded-xl font-extrabold text-sm text-white glow-coral-btn whitespace-nowrap text-center">
+              📥 Download PDF (1-Click)
+            </a>
+          </div>
+
+          <!-- Step 2: Optional VIP Solver Club Opt-in -->
+          <div class="pt-8 border-t border-slate-800/80 max-w-xl mx-auto">
+            <div class="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-1">Step 2 (Optional): VIP Solver Club</div>
+            <h4 class="font-bold text-white text-lg mb-2">Want New Weekly Printable Grids?</h4>
+            <p class="text-xs text-slate-300 mb-5">
+              Join 5,000+ logic solvers receiving weekly printable challenges, masterclass strategy breakdowns, and early-bird Amazon discounts.
+            </p>
+
+            <div id="lead-capture-form-area">
+              <form onsubmit="handleEmailSubmit(event, 'main')" class="flex flex-col sm:flex-row gap-3">
+                <input type="email" id="email-input" required placeholder="Enter your email for weekly puzzles..."
+                       class="flex-1 px-5 py-3.5 rounded-xl bg-slate-900/90 border border-slate-700 focus:border-cyan-400 focus:outline-none text-white text-sm placeholder-slate-500 transition-colors">
+                <button type="submit" 
+                        class="px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-slate-800 hover:bg-slate-700 border border-cyan-500/40 hover:border-cyan-400 transition-all whitespace-nowrap">
+                  Join VIP Club
+                </button>
+              </form>
+              <p class="text-[11px] text-slate-400 mt-2.5">
+                🔒 Strictly no spam. Unsubscribe anytime with 1 click.
+              </p>
+            </div>
+          </div>
+
+          <!-- Included Grid Badges -->
+          <div class="mt-8 pt-8 border-t border-slate-800/80 flex flex-wrap justify-center gap-4 text-xs text-slate-300 font-medium">
+            <span class="flex items-center gap-1.5"><span class="text-cyan-400">✓</span> 5 Starter 4x4 Grids</span>
+            <span class="flex items-center gap-1.5"><span class="text-cyan-400">✓</span> 5 Intermediate 5x5 Grids</span>
+            <span class="flex items-center gap-1.5"><span class="text-cyan-400">✓</span> 5 Expert 6x6 Grids</span>
+            <span class="flex items-center gap-1.5"><span class="text-cyan-400">✓</span> Full Answer Coordinates</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================================
+       FOOTER & AMAZON SEARCH BANNER
+       ======================================================================== -->
+  <footer class="bg-[#050917] border-t border-slate-800 text-slate-400 text-sm">
+    
+    <!-- Amazon Search Instruction Banner -->
+    <div class="bg-gradient-to-r from-[#0C1738] via-[#14265A] to-[#0C1738] border-b border-cyan-500/30 py-8 px-4">
+      <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+        <div>
+          <div class="flex items-center justify-center md:justify-start gap-2 text-orange-400 font-bold text-sm uppercase tracking-wider mb-1">
+            <span>🛒 Instant Ordering Available Worldwide</span>
+          </div>
+          <h3 class="font-heading font-bold text-xl sm:text-2xl text-white">
+            Search <span class="text-[#00E5FF] underline decoration-cyan-400 underline-offset-4">"Brain Focus"</span> on Amazon to find your next volume
+          </h3>
+          <p class="text-xs text-slate-300 mt-1">
+            Available in Paperback with Prime 1-day delivery and Kindle formats.
+          </p>
+        </div>
+
+        <a href="https://www.amazon.com/s?k=Brain+Focus+Calcudoku" target="_blank" rel="noopener"
+           class="px-7 py-3.5 rounded-xl font-bold text-sm text-white glow-coral-btn flex items-center gap-2 whitespace-nowrap shadow-xl">
+          <span>Search Amazon Catalog</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Footer Links & Copyright -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        
+        <div class="md:col-span-2">
+          <div class="mb-3">
+            <img src="logo.png" alt="BRAIN FOCUS™" class="h-8 w-auto object-contain">
+          </div>
+          <p class="text-xs text-slate-400 max-w-md leading-relaxed mb-4">
+            Brain Focus Books™ is dedicated to crafting premium, mathematically verified puzzle literature that elevates mental fitness, promotes healthy focus, and delivers satisfying logical breakthroughs.
+          </p>
+          <div class="text-xs font-mono text-cyan-400">
+            Domain: BrainFocusBooks.com
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-white text-xs uppercase tracking-wider mb-3">Series Collections</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="#catalog" onclick="filterCatalog('easy')" class="hover:text-cyan-400 transition-colors">4x4 Pure Easy Series</a></li>
+            <li><a href="#catalog" onclick="filterCatalog('easy')" class="hover:text-cyan-400 transition-colors">5x5 & 6x6 Pure Easy</a></li>
+            <li><a href="#catalog" onclick="filterCatalog('progression')" class="hover:text-cyan-400 transition-colors">Structured Progression</a></li>
+            <li><a href="#catalog" onclick="filterCatalog('hard')" class="hover:text-cyan-400 transition-colors">Hard & Expert 9x9</a></li>
+            <li><a href="#catalog" onclick="filterCatalog('senior')" class="hover:text-cyan-400 transition-colors">Senior Comfort Large Print</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-white text-xs uppercase tracking-wider mb-3">Resources & Support</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="#demo" class="hover:text-cyan-400 transition-colors">Interactive 4x4 Mini Game</a></li>
+            <li><a href="#rules" class="hover:text-cyan-400 transition-colors">How Calcudoku Rules Work</a></li>
+            <li><a href="#sampler" class="hover:text-cyan-400 transition-colors">Free Printable Sampler PDF</a></li>
+            <li><a href="https://www.amazon.com/s?k=Brain+Focus+Calcudoku" target="_blank" rel="noopener" class="hover:text-cyan-400 transition-colors">Amazon Author Page</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Bottom Disclaimer -->
+      <div class="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div>
+          © 2026 Brain Focus Books™ (BrainFocusBooks.com). All rights reserved. Calcudoku / Mathdoku puzzles certified for single unique solutions.
+        </div>
+        <div class="flex items-center gap-6">
+          <a href="#" class="hover:text-slate-400 transition-colors">Privacy Policy</a>
+          <a href="#" class="hover:text-slate-400 transition-colors">Terms of Service</a>
+          <a href="#" class="hover:text-slate-400 transition-colors">Accessibility (WCAG AA)</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <!-- ========================================================================
+       MODAL 1: FREE SAMPLE GRIDS LEAD MAGNET MODAL
+       ======================================================================== -->
+  <div id="sample-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop">
+    <div class="bg-[#0F1833] border-2 border-cyan-400 rounded-3xl max-w-lg w-full p-6 sm:p-8 modal-enter shadow-2xl relative">
+      
+      <button onclick="closeSampleModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-2 text-lg font-bold" aria-label="Close modal">
+        ✕
+      </button>
+
+      <div class="text-center mb-6">
+        <span class="pill-badge pill-cyan mb-2">Instant Download</span>
+        <h3 class="font-heading font-black text-2xl text-white">
+          Download Your 10 Free Grids
+        </h3>
+        <p class="text-xs text-slate-300 mt-2">
+          Get a printable high-resolution PDF with 10 calibrated Calcudoku puzzles and complete answer keys.
+        </p>
+      </div>
+
+      <div id="modal-lead-form">
+        <form onsubmit="handleEmailSubmit(event, 'modal')" class="space-y-4">
+          <div>
+            <label for="modal-email-input" class="block text-xs font-semibold text-slate-300 mb-1.5">Your Email Address</label>
+            <input type="email" id="modal-email-input" required placeholder="name@example.com"
+                   class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-cyan-400 focus:outline-none">
+          </div>
+          <button type="submit" class="w-full py-3.5 px-4 rounded-xl font-bold text-sm text-white glow-coral-btn">
+            Send Me My Free PDF Pack
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ========================================================================
+       MODAL 2: BOOK DETAILS & SPECS MODAL
+       ======================================================================== -->
+  <div id="book-details-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop">
+    <div class="bg-[#0D152D] border-2 border-cyan-400/60 rounded-3xl max-w-2xl w-full p-6 sm:p-8 modal-enter shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      
+      <button onclick="closeBookModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-2 text-lg font-bold" aria-label="Close modal">
+        ✕
+      </button>
+
+      <div id="book-modal-content">
+        <!-- Rendered dynamically by script.js -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>
