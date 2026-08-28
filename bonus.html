@@ -39,7 +39,7 @@
 
   <!-- Header -->
   <header class="border-b border-slate-800 bg-midnight/90 backdrop-blur-md sticky top-0 z-40">
-    <div class="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       <a href="index.html" class="flex flex-col justify-center group py-2">
         <img src="logo.png" alt="BRAIN FOCUS™" class="h-7 sm:h-9 w-auto object-contain drop-shadow-[0_0_12px_rgba(0,229,255,0.3)]">
         <span class="text-[9px] font-mono tracking-widest text-slate-400 uppercase mt-0.5">
@@ -47,10 +47,17 @@
         </span>
       </a>
 
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-300">
+        <a href="index.html#catalog" class="hover:text-[#00E5FF] transition-colors">Master Catalog</a>
+        <a href="index.html#bundles" class="hover:text-[#00E5FF] transition-colors">Digital Bundles</a>
+        <a href="index.html#demo" class="hover:text-[#00E5FF] transition-colors">Interactive Demo</a>
+        <a href="bonus.html" class="text-[#00E5FF] font-bold transition-colors">Book Bonus PDF</a>
+        <a href="vip.html" class="hover:text-[#00E5FF] transition-colors">VIP Solver Club</a>
+        <a href="feedback.html" class="hover:text-[#00E5FF] transition-colors">Reader Feedback</a>
+      </nav>
+
       <div class="flex items-center gap-4">
-        <a href="index.html" class="text-sm font-medium text-slate-300 hover:text-[#00E5FF] transition-colors hidden sm:inline-block">
-          ← Main Catalog
-        </a>
         <a href="https://www.amazon.com/s?k=Brain+Focus+Calcudoku+Books" target="_blank" rel="noopener"
            class="px-4 py-2 rounded-full font-bold text-xs sm:text-sm text-white glow-coral-btn flex items-center gap-1.5">
           Shop Amazon
@@ -68,10 +75,10 @@
         Back-of-Book Reader Bonus Portal
       </div>
       <h1 class="font-heading font-black text-3xl sm:text-5xl text-white tracking-tight leading-tight mb-4">
-        Thank You for Solving With <span class="text-gradient-cyan">Brain Focus™</span>!
+        Get Your <span class="text-gradient-cyan">20 Free Printable</span> Bonus Grids!
       </h1>
       <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-        As promised on the back of your book, here is your <strong class="text-white">Free 10 Printable Warm-Up Grids Pack</strong>. Instant access below—no registration required.
+        Thank you for solving with <strong class="text-white">Brain Focus Books™</strong>! As printed on the back cover of your book, download your high-contrast 4x4 and 5x5 Calcudoku PDF sampler pack + digital answer key below.
       </p>
     </div>
 
@@ -81,38 +88,16 @@
 
       <div class="flex flex-col md:flex-row items-center gap-8">
         
-        <!-- Printable PDF Preview Graphic -->
+        <!-- Book & Printable PDF Preview Graphic -->
         <div class="w-full md:w-1/3 flex justify-center">
-          <div class="w-52 h-72 bg-[#091128] rounded-xl shadow-2xl p-4 flex flex-col justify-between border-2 border-cyan-400/60 relative transform rotate-[-2deg] hover:rotate-0 transition-transform">
-            <div class="flex items-center justify-between border-b border-cyan-500/30 pb-2">
-              <img src="logo.png" alt="BRAIN FOCUS™" class="h-4 w-auto object-contain">
-              <span class="text-[8px] font-bold bg-orange-600 text-white px-1.5 py-0.5 rounded">PDF BONUS</span>
+          <div class="relative flex items-center justify-center">
+            <!-- Background Cover -->
+            <div class="w-48 h-64 rounded-xl overflow-hidden shadow-2xl border-2 border-cyan-400/50 transform -rotate-3 hover:rotate-0 transition-transform bg-[#081226]">
+              <img src="cover-calcudoku-front.jpg" alt="Brain Focus Calcudoku 4x4 Easy Volume 1" class="w-full h-full object-cover">
             </div>
-            
-            <div class="my-auto py-2 flex flex-col items-center">
-              <div class="w-32 h-32 bg-[#060B1A] border-2 border-cyan-400 rounded-lg grid grid-cols-2 grid-rows-2 p-1.5 shadow-inner">
-                <div class="border-b-2 border-r-2 border-cyan-400 p-1 flex flex-col justify-between">
-                  <span class="text-[9px] font-mono text-cyan-400 font-bold">6+</span>
-                  <span class="text-xs font-bold text-white text-center">4</span>
-                </div>
-                <div class="border-b-2 border-cyan-400 p-1 flex flex-col justify-between">
-                  <span class="text-[9px] font-mono text-cyan-400 font-bold">2÷</span>
-                  <span class="text-xs font-bold text-white text-center">2</span>
-                </div>
-                <div class="border-r-2 border-cyan-400 p-1 flex flex-col justify-between">
-                  <span class="text-[9px] font-mono text-orange-400 font-bold">1−</span>
-                  <span class="text-xs font-bold text-white text-center">2</span>
-                </div>
-                <div class="p-1 flex flex-col justify-between">
-                  <span class="text-[9px] font-mono text-cyan-400 font-bold">8×</span>
-                  <span class="text-xs font-bold text-white text-center">4</span>
-                </div>
-              </div>
-              <span class="text-[11px] font-bold text-slate-200 mt-2">10 Printable Grids</span>
-            </div>
-
-            <div class="text-[9px] text-cyan-400 text-center border-t border-cyan-500/30 pt-1.5 font-mono font-bold">
-              ✓ Verified Single Solutions
+            <!-- Floating Bonus Badge -->
+            <div class="absolute -bottom-3 -right-3 bg-gradient-to-r from-orange-600 to-amber-500 text-white font-black text-xs px-3 py-1 rounded-full shadow-lg border border-white/20">
+              20 BONUS GRIDS
             </div>
           </div>
         </div>
@@ -123,25 +108,25 @@
             ✓ 1-Click Instant Download
           </span>
           <h2 class="font-heading font-black text-2xl sm:text-3xl text-white mt-3 mb-2">
-            10 Free Printable Warm-Up Grids (PDF)
+            20 Free Printable Bonus Grids (PDF)
           </h2>
           <p class="text-slate-300 text-sm leading-relaxed mb-6">
-            Calibrated 4x4, 5x5, and 6x6 printable grids formatted in crisp 8.5" × 11" format for high-contrast home printing or solving on iPad/tablet.
+            Calibrated 4x4 and 5x5 Calcudoku sampler grids formatted in crisp 8.5" × 11" format for high-contrast home printing or solving on iPad/tablet. Includes full digital answer key coordinates.
           </p>
 
           <div class="flex flex-col sm:flex-row gap-3">
-            <a href="data:text/plain;charset=utf-8,Brain%20Focus%20Books%20-%20Free%2010%20Printable%20Warm-Up%20Grids%20Pack%0A%0AThank%20you%20for%20solving%20with%20Brain%20Focus%20Books!%0AVisit%20https://brainfocusbooks.com%20for%20more%20verified%20Calcudoku%20volumes%20and%20interactive%20demos." 
-               download="BrainFocus_10_Free_Printable_Grids.pdf"
+            <a href="data:text/plain;charset=utf-8,Brain%20Focus%20Books%20-%20Free%2020%20Printable%20Bonus%20Grids%20Pack%0A%0AThank%20you%20for%20solving%20with%20Brain%20Focus%20Books!%0AExplore%20more%20volumes%20at%20https://brainfocusbooks.com" 
+               download="BrainFocus_20_Free_Printable_Grids.pdf"
                onclick="triggerConfetti();"
                class="px-8 py-4 rounded-2xl font-extrabold text-base text-white text-center glow-coral-btn flex items-center justify-center gap-2">
-              <span>📥 Download Printable PDF Now</span>
+              <span>📥 Download 20 Bonus Grids (1-Click)</span>
             </a>
             <a href="index.html#demo" class="px-6 py-4 rounded-2xl font-bold text-sm text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition-colors text-center">
               Play Interactive Demo
             </a>
           </div>
           <p class="text-[11px] text-slate-400 mt-3 font-mono">
-            No credit card or email required • Instant PDF file (6.2 MB)
+            No registration or credit card required • Instant PDF file (6.2 MB)
           </p>
         </div>
 
@@ -182,9 +167,9 @@
       </h3>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <a href="index.html#catalog" class="p-4 rounded-2xl bg-slate-900/80 border border-blue-600/40 hover:border-blue-500 transition-all text-left">
-          <span class="text-xs font-bold text-blue-400 uppercase">Beginner Friendly</span>
-          <h4 class="font-bold text-white text-sm mt-1">4x4 & 5x5 Pure Easy</h4>
-          <p class="text-xs text-slate-400 mt-1">200 High-contrast grids with gentle learning ramps.</p>
+          <span class="text-xs font-bold text-blue-400 uppercase">Division 1</span>
+          <h4 class="font-bold text-white text-sm mt-1">4x4 & 5x5 Easy Calcudoku</h4>
+          <p class="text-xs text-slate-400 mt-1">504 High-contrast grids with gentle learning ramps.</p>
         </a>
         <a href="index.html#catalog" class="p-4 rounded-2xl bg-slate-900/80 border border-cyan-600/40 hover:border-cyan-500 transition-all text-left">
           <span class="text-xs font-bold text-cyan-400 uppercase">Skill Builder</span>
@@ -192,15 +177,15 @@
           <p class="text-xs text-slate-400 mt-1">From warmup 4x4 up to 8x8 mastery grids.</p>
         </a>
         <a href="index.html#catalog" class="p-4 rounded-2xl bg-slate-900/80 border border-purple-600/40 hover:border-purple-500 transition-all text-left">
-          <span class="text-xs font-bold text-purple-400 uppercase">Senior Comfort</span>
-          <h4 class="font-bold text-white text-sm mt-1">Extra Large 24pt Print</h4>
-          <p class="text-xs text-slate-400 mt-1">One jumbo grid per page with zero eye fatigue.</p>
+          <span class="text-xs font-bold text-purple-400 uppercase">Division 4</span>
+          <h4 class="font-bold text-white text-sm mt-1">Senior Comfort 24pt Print</h4>
+          <p class="text-xs text-slate-400 mt-1">Two jumbo 22mm grids per page with zero eye fatigue.</p>
         </a>
       </div>
       
       <div class="mt-8">
         <a href="index.html" class="text-sm font-semibold text-[#00E5FF] hover:underline">
-          View Complete Catalog on Homepage →
+          View Complete Master Catalog on Homepage →
         </a>
       </div>
     </div>

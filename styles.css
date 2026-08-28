@@ -144,6 +144,26 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   padding: 14px;
 }
 
+.book-cover-img-wrapper {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px 8px 8px 3px;
+  overflow: hidden;
+  box-shadow: 
+    -12px 14px 28px rgba(0, 0, 0, 0.7),
+    -3px 0 6px rgba(0, 0, 0, 0.4),
+    inset 4px 0 8px rgba(255, 255, 255, 0.15),
+    inset -3px 0 5px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+}
+
+.book-cover-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .book-spine-shine {
   position: absolute;
   top: 0;

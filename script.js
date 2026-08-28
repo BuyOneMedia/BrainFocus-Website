@@ -400,247 +400,528 @@ window.addEventListener('keydown', (e) => {
 
 
 // ============================================================================
-// 2. Book Catalog Database & Sub-Series Specs
+// 2. Master Catalog Database across 4 Publishing Divisions
 // ============================================================================
 
 const BOOK_CATALOG = [
-  // 4x4 Pure Easy Series (Royal Blue #1E40AF)
+  // ==========================================================================
+  // DIVISION 1: MATH & CAGE LOGIC
+  // ==========================================================================
   {
     id: 'bf-4x4-v1',
-    title: '4x4 Calcudoku: Pure Easy',
-    subtitle: 'The Perfect Cognitive Starter Pack',
-    volume: 'Vol. 1',
-    category: 'easy',
-    subSeries: '4x4 Pure Easy',
-    accentColor: '#1E40AF',
-    accentGlow: 'rgba(30, 64, 175, 0.4)',
-    accentTagBg: 'bg-blue-900/60 text-blue-300 border-blue-600/40',
-    gridsCount: '200 Grids',
-    gridSize: '4x4 Grids',
+    division: 'division-1',
+    divisionLabel: 'Math & Cage Logic',
+    title: 'Calcudoku Puzzles: 4x4 Easy',
+    subtitle: 'The Standard in Logic Puzzles • 500+ Puzzles',
+    volume: 'Volume 1',
+    subSeries: '4x4 Easy Series',
+    coverImage: 'cover-calcudoku-front.jpg',
+    backCoverImage: 'cover-calcudoku-back.jpg',
+    fullCoverImage: 'cover-calcudoku-full.jpg',
+    accentColor: '#00E5FF',
+    accentTagBg: 'bg-cyan-950 text-cyan-300 border-cyan-500/50',
+    gridsCount: '504 Grids (500+)',
+    gridSize: '4x4 Easy',
     difficultyScore: 1,
     difficultyLabel: 'Starter Easy',
-    printType: 'Standard 8.5 x 11',
-    features: ['Gentle Math Ramps', 'Full Step-by-Step Solutions', 'Large Clear Numbers'],
-    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Calcudoku+4x4+Pure+Easy+Vol+1',
-    badge: 'Popular Starter'
+    printType: 'Large 8.5" × 11" (110 Pages)',
+    price: '$9.99',
+    digitalPrice: '$4.99',
+    cellDimension: '15.7 mm',
+    clueType: '17 pt',
+    repeats: '0 Repeats Ever',
+    features: [
+      'Clue numbers at 17pt — never guess + from ÷ again',
+      'Room in the margins to work out your factors',
+      'One grid size throughout, graded by technique',
+      'Answer key printed full size, not crammed',
+      'Exactly one solution, every time. Machine-verified.'
+    ],
+    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Calcudoku+4x4+Easy+Volume+1',
+    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08',
+    badge: '★ Official 1st Edition'
   },
   {
     id: 'bf-4x4-v2',
-    title: '4x4 Calcudoku: Pure Easy',
-    subtitle: 'Fast Mental Math Flow State',
-    volume: 'Vol. 2',
-    category: 'easy',
-    subSeries: '4x4 Pure Easy',
+    division: 'division-1',
+    divisionLabel: 'Math & Cage Logic',
+    title: 'Calcudoku Puzzles: 4x4 Easy',
+    subtitle: 'Fast Mental Math Flow State • 500+ Puzzles',
+    volume: 'Volume 2',
+    subSeries: '4x4 Easy Series',
     accentColor: '#1E40AF',
-    accentGlow: 'rgba(30, 64, 175, 0.4)',
     accentTagBg: 'bg-blue-900/60 text-blue-300 border-blue-600/40',
-    gridsCount: '200 Grids',
-    gridSize: '4x4 Grids',
+    gridsCount: '504 Grids',
+    gridSize: '4x4 Easy',
     difficultyScore: 1,
     difficultyLabel: 'Starter Easy',
-    printType: 'Standard 8.5 x 11',
-    features: ['Quick 3-Min Solves', 'Cage Math Logic Guide', 'High Contrast Inks'],
-    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Calcudoku+4x4+Pure+Easy+Vol+2'
+    printType: 'Large 8.5" × 11"',
+    price: '$9.99',
+    digitalPrice: '$4.99',
+    cellDimension: '15.7 mm',
+    clueType: '17 pt',
+    repeats: '0',
+    features: ['17pt High-Contrast Clues', 'Margin Factor Workspaces', 'Full-Size Answer Keys'],
+    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Calcudoku+4x4+Pure+Easy+Vol+2',
+    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
   },
-
-  // 5x5 Pure Easy Series (Emerald Green #047857)
   {
     id: 'bf-5x5-v1',
-    title: '5x5 Calcudoku: Pure Easy',
-    subtitle: 'Expand Your Logic Capacity',
-    volume: 'Vol. 1',
-    category: 'easy',
-    subSeries: '5x5 Pure Easy',
+    division: 'division-1',
+    divisionLabel: 'Math & Cage Logic',
+    title: 'Calcudoku Puzzles: 5x5 Easy',
+    subtitle: 'Expand Your Logic Capacity • 500+ Puzzles',
+    volume: 'Volume 1',
+    subSeries: '5x5 Easy Series',
     accentColor: '#047857',
-    accentGlow: 'rgba(4, 120, 87, 0.4)',
     accentTagBg: 'bg-emerald-900/60 text-emerald-300 border-emerald-600/40',
-    gridsCount: '200 Grids',
+    gridsCount: '504 Grids',
     gridSize: '5x5 Grids',
     difficultyScore: 2,
     difficultyLabel: 'Gentle Step Up',
-    printType: 'Standard 8.5 x 11',
+    printType: 'Large 8.5" × 11"',
+    price: '$9.99',
+    digitalPrice: '$4.99',
+    cellDimension: '15.7 mm',
+    clueType: '17 pt',
+    repeats: '0',
     features: ['Prime Factorization Cages', 'Wide Margins for Notes', 'Zero Guessing Logic'],
     amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Calcudoku+5x5+Pure+Easy+Vol+1',
-    badge: 'Reader Favorite'
+    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08',
+    badge: 'Popular Step Up'
   },
-  {
-    id: 'bf-5x5-v2',
-    title: '5x5 Calcudoku: Pure Easy',
-    subtitle: 'Smooth Cognitive Agility',
-    volume: 'Vol. 2',
-    category: 'easy',
-    subSeries: '5x5 Pure Easy',
-    accentColor: '#047857',
-    accentGlow: 'rgba(4, 120, 87, 0.4)',
-    accentTagBg: 'bg-emerald-900/60 text-emerald-300 border-emerald-600/40',
-    gridsCount: '200 Grids',
-    gridSize: '5x5 Grids',
-    difficultyScore: 2,
-    difficultyLabel: 'Gentle Step Up',
-    printType: 'Standard 8.5 x 11',
-    features: ['Calibrated Clues', 'Anti-Eye-Strain Layout', 'Progress Tracker Checkbox'],
-    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Calcudoku+5x5+Pure+Easy+Vol+2'
-  },
-
-  // 6x6 Pure Easy Series (Bright Teal #0E7490)
   {
     id: 'bf-6x6-v1',
-    title: '6x6 Calcudoku: Pure Easy',
-    subtitle: 'The Classic 6x6 Standard',
-    volume: 'Vol. 1',
-    category: 'easy',
-    subSeries: '6x6 Pure Easy',
+    division: 'division-1',
+    divisionLabel: 'Math & Cage Logic',
+    title: 'Calcudoku Puzzles: 6x6 Medium',
+    subtitle: 'The Classic 6x6 Standard • 504 Grids',
+    volume: 'Volume 1',
+    subSeries: '6x6 Medium Series',
     accentColor: '#0E7490',
-    accentGlow: 'rgba(14, 116, 144, 0.4)',
     accentTagBg: 'bg-cyan-900/60 text-cyan-300 border-cyan-600/40',
-    gridsCount: '220 Grids',
+    gridsCount: '504 Grids',
     gridSize: '6x6 Grids',
-    difficultyScore: 2,
-    difficultyLabel: 'Engaging Easy',
-    printType: 'Standard 8.5 x 11',
-    features: ['Multi-Operator Cages', 'Complete Answer Key', 'Durable Binding Ready'],
-    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Calcudoku+6x6+Pure+Easy+Vol+1'
+    difficultyScore: 3,
+    difficultyLabel: 'Solid Medium',
+    printType: 'Large 8.5" × 11"',
+    price: '$9.99',
+    digitalPrice: '$4.99',
+    cellDimension: '15.7 mm',
+    clueType: '17 pt',
+    repeats: '0',
+    features: ['Multi-Operator Cages', 'Complete Step Solutions', 'Technique Graded Order'],
+    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Calcudoku+6x6+Pure+Easy+Vol+1',
+    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
   },
-
-  // Progression Series (Multi-Tiered Progression)
   {
     id: 'bf-prog-v1',
+    division: 'division-1',
+    divisionLabel: 'Math & Cage Logic',
     title: 'Calcudoku Structured Progression',
-    subtitle: 'From Novice to Grandmaster',
-    volume: 'Vol. 1',
-    category: 'progression',
+    subtitle: 'From Novice to Grandmaster • 504 Grids',
+    volume: 'Volume 1',
     subSeries: 'Progression Tier',
     accentColor: '#00E5FF',
-    accentGlow: 'rgba(0, 229, 255, 0.4)',
     accentTagBg: 'bg-cyan-950 text-cyan-300 border-cyan-500/50',
-    gridsCount: '250 Grids',
+    gridsCount: '504 Grids',
     gridSize: '4x4 to 8x8 Grids',
     difficultyScore: 3,
     difficultyLabel: 'Multi-Level Ramp',
-    printType: 'Standard 8.5 x 11',
-    features: ['5 Distinct Difficulty Tiers', 'Warmup to Beast Mode', 'Cognitive Benchmark Index'],
+    printType: 'Large 8.5" × 11"',
+    price: '$10.99',
+    digitalPrice: '$5.99',
+    cellDimension: '15.7 mm',
+    clueType: '17 pt',
+    repeats: '0',
+    features: ['5 Calibrated Difficulty Tiers', 'Warmup to Beast Mode', 'Cognitive Benchmark Matrix'],
     amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Calcudoku+Structured+Progression+Vol+1',
-    badge: 'Best Overall Value'
+    stripeUrl: 'https://buy.stripe.com/aFabJ3gFn5Twgzg3ABgYU09',
+    badge: 'Best Progression'
   },
-  {
-    id: 'bf-prog-v2',
-    title: 'Calcudoku Structured Progression',
-    subtitle: 'Master Complex Cage Deductions',
-    volume: 'Vol. 2',
-    category: 'progression',
-    subSeries: 'Progression Tier',
-    accentColor: '#00E5FF',
-    accentGlow: 'rgba(0, 229, 255, 0.4)',
-    accentTagBg: 'bg-cyan-950 text-cyan-300 border-cyan-500/50',
-    gridsCount: '250 Grids',
-    gridSize: '5x5 to 9x9 Grids',
-    difficultyScore: 4,
-    difficultyLabel: 'Intermediate to Hard',
-    printType: 'Standard 8.5 x 11',
-    features: ['Advanced Parity Logic', 'Speed Solving Times', 'Laser Verified Math'],
-    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Calcudoku+Structured+Progression+Vol+2'
-  },
-
-  // Pure Medium Series (Deep Amber #D97706)
-  {
-    id: 'bf-med-v1',
-    title: 'Pure Medium Calcudoku',
-    subtitle: 'Deep Cognitive Focus Workouts',
-    volume: 'Vol. 1',
-    category: 'progression',
-    subSeries: 'Pure Medium Series',
-    accentColor: '#D97706',
-    accentGlow: 'rgba(217, 119, 6, 0.4)',
-    accentTagBg: 'bg-amber-950 text-amber-300 border-amber-500/50',
-    gridsCount: '200 Grids',
-    gridSize: '6x6 & 7x7 Grids',
-    difficultyScore: 3,
-    difficultyLabel: 'Solid Medium',
-    printType: 'Standard 8.5 x 11',
-    features: ['Subtle Cage Interactions', 'No Trial-and-Error Required', 'Laser-Crisp Math Lines'],
-    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Calcudoku+Pure+Medium+Vol+1'
-  },
-
-  // Hard & Expert Series (Crimson Red #B91C1C)
   {
     id: 'bf-hard-v1',
-    title: 'Expert Calcudoku: Hard Tier',
-    subtitle: 'Intense Logic & Advanced Multipliers',
-    volume: 'Vol. 1',
-    category: 'hard',
-    subSeries: 'Hard & Expert Series',
+    division: 'division-1',
+    divisionLabel: 'Math & Cage Logic',
+    title: 'Challenger & Expert Calcudoku 9x9',
+    subtitle: 'Peak Mental Endurance • 504 Grids',
+    volume: 'Volume 1',
+    subSeries: 'Expert 9x9 Series',
     accentColor: '#B91C1C',
-    accentGlow: 'rgba(185, 28, 28, 0.4)',
     accentTagBg: 'bg-red-950 text-red-300 border-red-500/50',
-    gridsCount: '200 Grids',
-    gridSize: '7x7 & 8x8 Grids',
+    gridsCount: '504 Grids',
+    gridSize: '8x8 & 9x9 Grids',
     difficultyScore: 5,
     difficultyLabel: 'Expert Challenge',
-    printType: 'Standard 8.5 x 11',
-    features: ['Large Number Factors', 'Extreme Logic Chains', 'Master Tier Certificate'],
+    printType: 'Large 8.5" × 11"',
+    price: '$10.99',
+    digitalPrice: '$5.99',
+    cellDimension: '15.7 mm',
+    clueType: '17 pt',
+    repeats: '0',
+    features: ['Extreme Multipliers', 'Deep Factor Combinations', 'Full Solver Matrices'],
     amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Calcudoku+Expert+Hard+Vol+1',
+    stripeUrl: 'https://buy.stripe.com/aFabJ3gFn5Twgzg3ABgYU09',
     badge: 'Hardcore Challenge'
   },
   {
-    id: 'bf-hard-v2',
-    title: 'Grandmaster Calcudoku 9x9',
-    subtitle: 'The Ultimate Math Puzzle Trial',
-    volume: 'Vol. 2',
-    category: 'hard',
-    subSeries: 'Hard & Expert Series',
-    accentColor: '#B91C1C',
-    accentGlow: 'rgba(185, 28, 28, 0.4)',
-    accentTagBg: 'bg-red-950 text-red-300 border-red-500/50',
-    gridsCount: '180 Grids',
-    gridSize: '8x8 & 9x9 Grids',
-    difficultyScore: 5,
-    difficultyLabel: 'Grandmaster 9x9',
-    printType: 'Standard 8.5 x 11',
-    features: ['Complex Arithmetic Cages', 'Peak Mental Endurance', 'Full Verification Matrix'],
-    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Calcudoku+Grandmaster+9x9+Vol+2'
+    id: 'bf-kakuro-v1',
+    division: 'division-1',
+    divisionLabel: 'Math & Cage Logic',
+    title: 'Kakuro Cross Sums Mastery',
+    subtitle: 'The Ultimate Math Crossword Workout',
+    volume: 'Volume 1',
+    subSeries: 'Kakuro Series',
+    accentColor: '#F59E0B',
+    accentTagBg: 'bg-amber-950 text-amber-300 border-amber-500/50',
+    gridsCount: '300 Grids',
+    gridSize: 'Multi-Size Grids',
+    difficultyScore: 3,
+    difficultyLabel: 'Medium to Hard',
+    printType: 'Large 8.5" × 11"',
+    price: '$9.99',
+    digitalPrice: '$4.99',
+    cellDimension: '16.0 mm',
+    clueType: '16 pt',
+    repeats: '0',
+    features: ['Unique Partition Tables Included', 'Laser High-Contrast Clues', 'Zero Trial & Error'],
+    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Kakuro+Cross+Sums',
+    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
+  },
+  {
+    id: 'bf-mathrax-v1',
+    division: 'division-1',
+    divisionLabel: 'Math & Cage Logic',
+    title: 'Mathrax Arithmetic Grid Workout',
+    subtitle: 'Diagonal Intersections & Circle Clues',
+    volume: 'Volume 1',
+    subSeries: 'Mathrax Series',
+    accentColor: '#8B5CF6',
+    accentTagBg: 'bg-purple-950 text-purple-300 border-purple-500/50',
+    gridsCount: '250 Grids',
+    gridSize: '6x6 & 8x8 Grids',
+    difficultyScore: 3,
+    difficultyLabel: 'Engaging Logic',
+    printType: 'Large 8.5" × 11"',
+    price: '$9.99',
+    digitalPrice: '$4.99',
+    cellDimension: '16.5 mm',
+    clueType: '17 pt',
+    repeats: '0',
+    features: ['Even/Odd Parity Intersections', 'Geometric Calculation Paths', 'Single Solution Verified'],
+    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Mathrax+Books',
+    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
   },
 
-  // Senior Comfort Line (Violet Purple #6D28D9)
+  // ==========================================================================
+  // DIVISION 2: CLASSIC GRID & WORD PUZZLES
+  // ==========================================================================
+  {
+    id: 'bf-sudoku-easy',
+    division: 'division-2',
+    divisionLabel: 'Classic Grid & Word',
+    title: 'Classic Sudoku: Pure Deductions',
+    subtitle: 'Gentle Warmup & Daily Focus Grids',
+    volume: 'Volume 1',
+    subSeries: 'Classic Sudoku Series',
+    accentColor: '#3B82F6',
+    accentTagBg: 'bg-blue-950 text-blue-300 border-blue-500/50',
+    gridsCount: '400 Grids',
+    gridSize: '9x9 Grids',
+    difficultyScore: 2,
+    difficultyLabel: 'Easy & Smooth',
+    printType: 'Large 8.5" × 11"',
+    price: '$9.99',
+    digitalPrice: '$4.99',
+    cellDimension: '18.0 mm',
+    clueType: '18 pt',
+    repeats: '0',
+    features: ['Symmetrical Seed Placement', 'Extra Wide Margins for Notes', 'Large Crisp Numbers'],
+    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Classic+Sudoku',
+    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
+  },
+  {
+    id: 'bf-wordsearch-v1',
+    division: 'division-2',
+    divisionLabel: 'Classic Grid & Word',
+    title: 'High-Density Word Search & Lexicon',
+    subtitle: 'Cognitive Vocabulary & Focus Hunts',
+    volume: 'Volume 1',
+    subSeries: 'Word Search Series',
+    accentColor: '#EC4899',
+    accentTagBg: 'bg-pink-950 text-pink-300 border-pink-500/50',
+    gridsCount: '150 Jumbo Searches',
+    gridSize: '20x20 Letter Grids',
+    difficultyScore: 2,
+    difficultyLabel: 'Relaxing Focus',
+    printType: 'Large 8.5" × 11"',
+    price: '$9.99',
+    digitalPrice: '$4.99',
+    cellDimension: '20 pt Font',
+    clueType: '20 pt',
+    repeats: '0',
+    features: ['Curated Themed Word Lists', 'Zero Tiny Eye-Strain Text', 'Full Solution Back Index'],
+    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Word+Search',
+    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
+  },
+  {
+    id: 'bf-binary-v1',
+    division: 'division-2',
+    divisionLabel: 'Classic Grid & Word',
+    title: 'Binary & Binairo 0/1 Puzzle Grids',
+    subtitle: 'Pure Binary Logic & Row/Col Parity',
+    volume: 'Volume 1',
+    subSeries: 'Binary Grid Series',
+    accentColor: '#10B981',
+    accentTagBg: 'bg-emerald-950 text-emerald-300 border-emerald-500/50',
+    gridsCount: '300 Grids',
+    gridSize: '10x10 & 12x12 Grids',
+    difficultyScore: 3,
+    difficultyLabel: 'Logical Binary',
+    printType: 'Large 8.5" × 11"',
+    price: '$9.99',
+    digitalPrice: '$4.99',
+    cellDimension: '16.0 mm',
+    clueType: '18 pt',
+    repeats: '0',
+    features: ['No More Than 2 In A Row Rule', 'Equal 0s and 1s Verification', 'Unique Deductive Path'],
+    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Binary+Puzzles',
+    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
+  },
+  {
+    id: 'bf-suguru-v1',
+    division: 'division-2',
+    divisionLabel: 'Classic Grid & Word',
+    title: 'Suguru & Tectonics Polyomino Blocks',
+    subtitle: 'Intricate Number Block Deductions',
+    volume: 'Volume 1',
+    subSeries: 'Suguru Series',
+    accentColor: '#6366F1',
+    accentTagBg: 'bg-indigo-950 text-indigo-300 border-indigo-500/50',
+    gridsCount: '250 Grids',
+    gridSize: 'Multi-Polyomino',
+    difficultyScore: 3,
+    difficultyLabel: 'Spatial Logic',
+    printType: 'Large 8.5" × 11"',
+    price: '$9.99',
+    digitalPrice: '$4.99',
+    cellDimension: '16.0 mm',
+    clueType: '17 pt',
+    repeats: '0',
+    features: ['Consecutive Number Polyomino Cages', 'Diagonal Neighbor Rules', 'Step-by-Step Keys'],
+    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Suguru+Tectonics',
+    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
+  },
+  {
+    id: 'bf-futoshiki-v1',
+    division: 'division-2',
+    divisionLabel: 'Classic Grid & Word',
+    title: 'Futoshiki & Slitherlink Loops',
+    subtitle: 'Inequality Grids & Continuous Loops',
+    volume: 'Volume 1',
+    subSeries: 'Futoshiki Series',
+    accentColor: '#14B8A6',
+    accentTagBg: 'bg-teal-950 text-teal-300 border-teal-500/50',
+    gridsCount: '240 Grids',
+    gridSize: '5x5 to 7x7 Grids',
+    difficultyScore: 3,
+    difficultyLabel: 'Engaging Inequalities',
+    printType: 'Large 8.5" × 11"',
+    price: '$9.99',
+    digitalPrice: '$4.99',
+    cellDimension: '16.5 mm',
+    clueType: '17 pt',
+    repeats: '0',
+    features: ['Bold Inequality Sign Vectors', 'Single Loop Verification', 'No Guessing Deductions'],
+    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Futoshiki+Slitherlink',
+    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
+  },
+
+  // ==========================================================================
+  // DIVISION 3: BRAIN FOCUS JUNIOR™ (Kids & Homeschooling)
+  // ==========================================================================
+  {
+    id: 'bf-jr-k2',
+    division: 'division-3',
+    divisionLabel: 'Brain Focus Junior™',
+    title: 'Junior Early Math Logic (Grades K–2)',
+    subtitle: 'Visual Addition Pyramids & Mini 3x3 Cages',
+    volume: 'Level 1',
+    subSeries: 'Junior STEM Line',
+    accentColor: '#F97316',
+    accentTagBg: 'bg-orange-950 text-orange-300 border-orange-500/50',
+    gridsCount: '120 Activity Pages',
+    gridSize: '3x3 & 4x4 Mini Grids',
+    difficultyScore: 1,
+    difficultyLabel: 'Ages 5–8',
+    printType: 'Extra Large 8.5" × 11"',
+    price: '$8.99',
+    digitalPrice: '$3.99',
+    cellDimension: '24.0 mm',
+    clueType: '24 pt',
+    repeats: '0',
+    features: ['Playful Visual Cage Clues', 'Builds Early Arithmetic Confidence', 'Illustrated Reward Badges'],
+    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Junior+Math+Logic+K2',
+    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08',
+    badge: 'Junior STEM'
+  },
+  {
+    id: 'bf-jr-35',
+    division: 'division-3',
+    divisionLabel: 'Brain Focus Junior™',
+    title: 'Elementary Logic & Calcudoku (Grades 3–5)',
+    subtitle: 'Multiplication Times-Table & Logic Quests',
+    volume: 'Level 2',
+    subSeries: 'Junior STEM Line',
+    accentColor: '#06B6D4',
+    accentTagBg: 'bg-cyan-950 text-cyan-300 border-cyan-500/50',
+    gridsCount: '150 Activity Pages',
+    gridSize: '4x4 & 5x5 Grids',
+    difficultyScore: 2,
+    difficultyLabel: 'Ages 8–11',
+    printType: 'Large 8.5" × 11"',
+    price: '$8.99',
+    digitalPrice: '$3.99',
+    cellDimension: '20.0 mm',
+    clueType: '20 pt',
+    repeats: '0',
+    features: ['Reinforces Multiplication & Division', 'Critical Thinking Development', 'Homeschool Curriculum Companion'],
+    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Junior+Calcudoku+Grades+3-5',
+    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
+  },
+  {
+    id: 'bf-jr-homeschool',
+    division: 'division-3',
+    divisionLabel: 'Brain Focus Junior™',
+    title: 'Homeschool STEM Logic & Reasoning Pack',
+    subtitle: 'Cross-Discipline Math, Pattern & Logic Mastery',
+    volume: 'Master Pack',
+    subSeries: 'Junior STEM Line',
+    accentColor: '#84CC16',
+    accentTagBg: 'bg-lime-950 text-lime-300 border-lime-500/50',
+    gridsCount: '180 STEM Challenges',
+    gridSize: 'Multi-Format Logic',
+    difficultyScore: 2,
+    difficultyLabel: 'Ages 7–12',
+    printType: 'Large 8.5" × 11"',
+    price: '$9.99',
+    digitalPrice: '$4.99',
+    cellDimension: '18.0 mm',
+    clueType: '18 pt',
+    repeats: '0',
+    features: ['Algorithmic Thinking Foundations', 'Math Mazes & Logic Matrices', 'Printable Teacher & Parent Keys'],
+    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Homeschool+STEM+Logic',
+    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
+  },
+
+  // ==========================================================================
+  // DIVISION 4: SENIOR COMFORT LINE
+  // ==========================================================================
   {
     id: 'bf-senior-v1',
+    division: 'division-4',
+    divisionLabel: 'Senior Comfort Line',
     title: 'Senior Comfort: Large Print Calcudoku',
     subtitle: 'Zero Eye Strain & High-Visibility Grids',
-    volume: 'Vol. 1',
-    category: 'senior',
+    volume: 'Volume 1',
     subSeries: 'Senior Comfort Line',
     accentColor: '#6D28D9',
-    accentGlow: 'rgba(109, 40, 217, 0.4)',
     accentTagBg: 'bg-purple-950 text-purple-300 border-purple-500/50',
     gridsCount: '150 Jumbo Grids',
     gridSize: '4x4 & 5x5 Jumbo Grids',
     difficultyScore: 2,
     difficultyLabel: 'Comfortable Easy',
-    printType: 'Extra Large 24pt Font',
-    features: ['Extra Large 24pt Numbers', 'One Giant Grid Per Page', 'Easy-Turn Wide Margins'],
+    printType: 'Extra Large 24pt Font (2 Grids / Page)',
+    price: '$11.99',
+    digitalPrice: '$5.99',
+    cellDimension: '22.0 mm',
+    clueType: '24 pt',
+    repeats: '0',
+    features: [
+      '22mm Spacious Large-Print Cells',
+      'Extra Large 24pt High-Contrast Numbers',
+      'Only 2 Grids Per Page with Wide Margins',
+      'Gentle Mental Agility & Memory Stimulation'
+    ],
     amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Senior+Comfort+Large+Print+Calcudoku+Vol+1',
+    stripeUrl: 'https://buy.stripe.com/5kQ6oJ0GpdlYcj02wxgYU0a',
     badge: 'Senior Recommended'
   },
   {
     id: 'bf-senior-v2',
+    division: 'division-4',
+    divisionLabel: 'Senior Comfort Line',
     title: 'Senior Comfort: Large Print Calcudoku',
     subtitle: 'Daily Memory & Sharp Mind Routine',
-    volume: 'Vol. 2',
-    category: 'senior',
+    volume: 'Volume 2',
     subSeries: 'Senior Comfort Line',
     accentColor: '#6D28D9',
-    accentGlow: 'rgba(109, 40, 217, 0.4)',
     accentTagBg: 'bg-purple-950 text-purple-300 border-purple-500/50',
     gridsCount: '150 Jumbo Grids',
     gridSize: '5x5 Jumbo Grids',
     difficultyScore: 2,
     difficultyLabel: 'Comfortable Easy',
-    printType: 'Extra Large 24pt Font',
+    printType: 'Extra Large 24pt Font (2 Grids / Page)',
+    price: '$11.99',
+    digitalPrice: '$5.99',
+    cellDimension: '22.0 mm',
+    clueType: '24 pt',
+    repeats: '0',
     features: ['High Contrast Pure Black Inks', 'Senior-Friendly Instructions', 'Gentle Mental Stimulation'],
-    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Senior+Comfort+Large+Print+Calcudoku+Vol+2'
+    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Senior+Comfort+Large+Print+Calcudoku+Vol+2',
+    stripeUrl: 'https://buy.stripe.com/5kQ6oJ0GpdlYcj02wxgYU0a'
+  },
+  {
+    id: 'bf-senior-sudoku',
+    division: 'division-4',
+    divisionLabel: 'Senior Comfort Line',
+    title: 'Senior Comfort: Jumbo Print Sudoku',
+    subtitle: 'Giant 24pt Numbers & Pure Deductions',
+    volume: 'Volume 1',
+    subSeries: 'Senior Comfort Line',
+    accentColor: '#7C3AED',
+    accentTagBg: 'bg-purple-950 text-purple-300 border-purple-500/50',
+    gridsCount: '160 Jumbo Grids',
+    gridSize: '9x9 Jumbo Grids',
+    difficultyScore: 2,
+    difficultyLabel: 'Comfortable Medium',
+    printType: 'Extra Large 24pt Font (2 Grids / Page)',
+    price: '$11.99',
+    digitalPrice: '$5.99',
+    cellDimension: '22.0 mm',
+    clueType: '24 pt',
+    repeats: '0',
+    features: ['Zero Eye-Fatigue Layout', 'Extra Room for Pencil Notation', 'Full-Page Solutions'],
+    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Senior+Comfort+Sudoku',
+    stripeUrl: 'https://buy.stripe.com/5kQ6oJ0GpdlYcj02wxgYU0a'
+  },
+  {
+    id: 'bf-senior-wordsearch',
+    division: 'division-4',
+    divisionLabel: 'Senior Comfort Line',
+    title: 'Senior Comfort: Giant Print Word Search',
+    subtitle: 'Relaxing High-Contrast Word Hunts',
+    volume: 'Volume 1',
+    subSeries: 'Senior Comfort Line',
+    accentColor: '#9333EA',
+    accentTagBg: 'bg-purple-950 text-purple-300 border-purple-500/50',
+    gridsCount: '120 Giant Searches',
+    gridSize: 'Giant 28pt Type',
+    difficultyScore: 1,
+    difficultyLabel: 'Gentle Relaxation',
+    printType: 'Giant 28pt Font (1 Puzzle / Page)',
+    price: '$11.99',
+    digitalPrice: '$5.99',
+    cellDimension: '28 pt Type',
+    clueType: '28 pt',
+    repeats: '0',
+    features: ['Giant 28pt Letters — Easiest to Read', 'Uplifting Nostalgic & Nature Themes', 'Full Page Answer Keys'],
+    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Senior+Comfort+Word+Search',
+    stripeUrl: 'https://buy.stripe.com/5kQ6oJ0GpdlYcj02wxgYU0a'
   }
 ];
 
-let activeCategoryFilter = 'all';
+let activeDivisionFilter = 'all';
 
 function renderBookCatalog(filter = 'all') {
   const container = document.getElementById('book-catalog-grid');
@@ -648,7 +929,7 @@ function renderBookCatalog(filter = 'all') {
 
   const filteredBooks = filter === 'all' 
     ? BOOK_CATALOG 
-    : BOOK_CATALOG.filter(b => b.category === filter);
+    : BOOK_CATALOG.filter(b => b.division === filter || b.category === filter);
 
   container.innerHTML = '';
 
@@ -668,11 +949,52 @@ function renderBookCatalog(filter = 'all') {
       }
     }
 
+    // Cover rendering: Real cover image if available, else stylized procedural 3D card
+    const coverMarkup = book.coverImage 
+      ? `
+        <div class="book-cover-img-wrapper">
+          <img src="${book.coverImage}" alt="${book.title}" class="w-full h-full object-cover">
+        </div>
+      `
+      : `
+        <div class="book-cover" style="border-left: 4px solid ${book.accentColor};">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <img src="logo.png" alt="BRAIN FOCUS™" class="h-3.5 w-auto object-contain">
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded text-white" style="background-color: ${book.accentColor};">${book.volume}</span>
+            </div>
+            <h4 class="text-sm font-extrabold leading-tight text-white line-clamp-2">${book.title}</h4>
+          </div>
+
+          <div class="my-auto py-2 flex flex-col items-center">
+            <div class="w-24 h-24 rounded-lg bg-[#070B1A] border-2 flex flex-col justify-between p-1.5 shadow-inner" style="border-color: ${book.accentColor};">
+              <div class="flex justify-between text-[8px] font-mono text-[#00E5FF]">
+                <span>15.7mm</span>
+                <span>17pt</span>
+              </div>
+              <div class="text-center font-mono font-bold text-xs tracking-wider text-white/90">
+                ${book.gridSize.split(' ')[0]}
+              </div>
+              <div class="flex justify-between text-[8px] font-mono text-orange-400">
+                <span>504</span>
+                <span>VERIFIED</span>
+              </div>
+            </div>
+            <span class="text-[10px] text-slate-300 font-medium mt-1.5">${book.gridsCount}</span>
+          </div>
+
+          <div class="pt-1 border-t border-white/10 flex items-center justify-between">
+            <span class="text-[8px] font-semibold text-slate-400">${book.price}</span>
+            <span class="text-[8px] font-bold text-orange-400">0 REPEATS</span>
+          </div>
+        </div>
+      `;
+
     card.innerHTML = `
       <!-- Top Badges & Sub-Series Tag -->
       <div class="flex items-center justify-between gap-2 mb-4">
         <span class="px-2.5 py-1 rounded-full text-xs font-bold border uppercase tracking-wider ${book.accentTagBg}">
-          ${book.subSeries}
+          ${book.divisionLabel}
         </span>
         <span class="text-xs font-mono font-bold text-white bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700">
           ${book.volume}
@@ -684,74 +1006,52 @@ function renderBookCatalog(filter = 'all') {
         <div class="book-card-3d cursor-pointer" onclick="openBookModal('${book.id}')">
           <div class="book-spine-shine"></div>
           <div class="book-pages-side"></div>
-          
-          <div class="book-cover" style="border-left: 4px solid ${book.accentColor};">
-            <!-- Book Cover Header -->
-            <div>
-              <div class="flex items-center justify-between mb-1">
-                <img src="logo.png" alt="BRAIN FOCUS™" class="h-3.5 w-auto object-contain">
-                <span class="text-[9px] font-bold px-1.5 py-0.5 rounded text-white" style="background-color: ${book.accentColor};">${book.volume}</span>
-              </div>
-              <h4 class="text-sm font-extrabold leading-tight text-white line-clamp-2">${book.title}</h4>
-            </div>
-
-            <!-- Book Cover Center Geometric Art -->
-            <div class="my-auto py-2 flex flex-col items-center">
-              <div class="w-24 h-24 rounded-lg bg-[#070B1A] border-2 flex flex-col justify-between p-1.5 shadow-inner" style="border-color: ${book.accentColor};">
-                <div class="flex justify-between text-[8px] font-mono text-[#00E5FF]">
-                  <span>6+</span>
-                  <span>12*</span>
-                </div>
-                <div class="text-center font-mono font-bold text-sm tracking-widest text-white/90">
-                  ${book.gridSize.split(' ')[0]}
-                </div>
-                <div class="flex justify-between text-[8px] font-mono text-orange-400">
-                  <span>2/</span>
-                  <span>1-</span>
-                </div>
-              </div>
-              <span class="text-[10px] text-slate-300 font-medium mt-1.5">${book.gridsCount}</span>
-            </div>
-
-            <!-- Book Cover Footer -->
-            <div class="pt-1 border-t border-white/10 flex items-center justify-between">
-              <span class="text-[8px] font-semibold text-slate-400">${book.printType}</span>
-              <span class="text-[8px] font-bold text-orange-400">VERIFIED MATH</span>
-            </div>
-          </div>
+          ${coverMarkup}
         </div>
       </div>
 
       <!-- Book Info & Specs -->
       <div class="mt-4 flex-1">
-        <h3 class="text-lg font-bold text-white group-hover:text-[#00E5FF] transition-colors leading-snug">
-          ${book.title}
-        </h3>
-        <p class="text-xs text-slate-400 mt-1 mb-3">
+        <div class="flex items-center justify-between mb-1">
+          <h3 class="text-lg font-bold text-white group-hover:text-[#00E5FF] transition-colors leading-snug">
+            ${book.title}
+          </h3>
+          <span class="text-sm font-black text-white ml-2 shrink-0">${book.price}</span>
+        </div>
+        <p class="text-xs text-slate-400 mb-3">
           ${book.subtitle}
         </p>
 
-        <div class="flex items-center gap-2 mb-3">
-          <div class="flex items-center gap-0.5">${starsHtml}</div>
-          <span class="text-xs text-slate-400 font-medium">(${book.difficultyLabel})</span>
+        <!-- Spec Pills Grid -->
+        <div class="grid grid-cols-2 gap-1.5 mb-3 text-[11px] font-mono text-slate-300 bg-slate-900/60 p-2 rounded-xl border border-slate-800">
+          <div><span class="text-slate-500">Cells:</span> <strong class="text-cyan-300">${book.cellDimension || '15.7mm'}</strong></div>
+          <div><span class="text-slate-500">Type:</span> <strong class="text-cyan-300">${book.clueType || '17pt'}</strong></div>
+          <div><span class="text-slate-500">Grids:</span> <strong class="text-white">${book.gridsCount.split(' ')[0]}</strong></div>
+          <div><span class="text-slate-500">Repeats:</span> <strong class="text-orange-400">0 Ever</strong></div>
         </div>
 
         <ul class="space-y-1 text-xs text-slate-300 mb-5">
-          ${book.features.map(f => `<li class="flex items-center gap-1.5"><span class="text-[#00E5FF]">✓</span> ${f}</li>`).join('')}
+          ${book.features.slice(0, 2).map(f => `<li class="flex items-start gap-1.5"><span class="text-[#00E5FF]">✓</span> <span>${f}</span></li>`).join('')}
         </ul>
       </div>
 
-      <!-- Action Buttons -->
+      <!-- Dual Action Buttons: Retail Amazon + Direct Digital -->
       <div class="pt-4 border-t border-slate-800/80 flex flex-col gap-2">
         <a href="${book.amazonUrl}" target="_blank" rel="noopener" 
            class="w-full py-2.5 px-4 rounded-xl font-bold text-sm text-white text-center flex items-center justify-center gap-2 glow-coral-btn">
           <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M15.93 17.09c-2.83 2.08-6.95 3.2-10.57 3.2-4.97 0-9.45-1.92-12.86-5.11-.27-.25-.03-.6.29-.41 3.69 2.14 8.21 3.42 12.86 3.42 3.21 0 6.74-.75 9.87-2.31.47-.23.82.26.41.61zm2.34-1.28c-.36-.46-2.38-.22-3.3-.11-.28.03-.32-.2-.07-.38 1.63-1.15 4.3-.82 4.61-.43.32.41-.08 3.09-1.63 4.35-.25.2-.44.09-.3-.18.47-.88.94-2.79.69-3.25zM21.1 19.34c-1.57 2.03-3.66 3.65-6.09 4.66-2.43 1-5.06 1.51-7.71 1.5-3.08 0-6.07-.67-8.81-1.96-.34-.16-.27-.64.1-.56 2.62.56 5.35.85 8.1.85 2.5 0 4.97-.48 7.26-1.42 2.29-.93 4.25-2.45 5.73-4.35.34-.43.83.18.42.56zM13.68 5.7c-.15.86-.68 1.94-1.39 2.64-.71.7-1.78 1.34-2.67 1.25-.13-.01-.19-.16-.09-.25 1.05-.98 2.06-2.28 2.13-3.79.06-1.24-.62-2.18-1.55-2.18-.75 0-1.41.59-1.8 1.48-.42.97-.48 2.37-.48 3.51 0 .28-.24.47-.51.41-1.48-.31-2.91-.98-4.04-1.99-.25-.23-.07-.63.26-.52 1.03.35 2.14.53 3.26.53.07 0 .14 0 .21-.01-.03-.7-.01-1.47.09-2.22.25-1.91 1.41-3.35 3.12-3.35 1.13 0 2.04.66 2.45 1.69.4.99.3 2.08-.09 3.01z"/></svg>
-          Buy on Amazon
+          Buy Paperback (${book.price})
         </a>
-        <button onclick="openBookModal('${book.id}')" 
-                class="w-full py-2 px-3 rounded-xl font-semibold text-xs text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-700/60 border border-slate-700 transition-colors">
-          Quick Specs & Preview
-        </button>
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="openBookModal('${book.id}')" 
+                  class="py-2 px-2.5 rounded-xl font-semibold text-xs text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition-colors text-center truncate">
+            🔍 Specs & Cover
+          </button>
+          <a href="${book.stripeUrl}" target="_blank" rel="noopener"
+             class="py-2 px-2.5 rounded-xl font-semibold text-xs text-cyan-300 hover:text-white bg-cyan-950/60 hover:bg-cyan-900/80 border border-cyan-500/40 transition-colors text-center truncate">
+            📥 PDF (${book.digitalPrice})
+          </a>
+        </div>
       </div>
     `;
 
@@ -759,8 +1059,8 @@ function renderBookCatalog(filter = 'all') {
   });
 }
 
-function filterCatalog(category, buttonEl) {
-  activeCategoryFilter = category;
+function filterCatalog(divisionKey, buttonEl) {
+  activeDivisionFilter = divisionKey;
   
   // Update button active state
   const buttons = document.querySelectorAll('.catalog-filter-btn');
@@ -774,7 +1074,7 @@ function filterCatalog(category, buttonEl) {
     buttonEl.classList.add('bg-[#00E5FF]', 'text-black', 'shadow-lg');
   }
 
-  renderBookCatalog(category);
+  renderBookCatalog(divisionKey);
 }
 
 
@@ -806,79 +1106,135 @@ function openBookModal(bookId) {
   const content = document.getElementById('book-modal-content');
   if (!modal || !content) return;
 
+  const hasRealCover = !!book.fullCoverImage || !!book.coverImage;
+
   content.innerHTML = `
-    <div class="flex flex-col md:flex-row gap-6">
-      <div class="w-full md:w-1/2 flex flex-col items-center justify-center p-6 bg-[#070C1B] rounded-2xl border" style="border-color: ${book.accentColor};">
-        <div class="book-card-3d scale-110 mb-4">
-          <div class="book-spine-shine"></div>
-          <div class="book-pages-side"></div>
-          <div class="book-cover" style="border-left: 4px solid ${book.accentColor};">
-            <div class="flex items-center justify-between mb-1">
-              <img src="logo.png" alt="BRAIN FOCUS™" class="h-4 w-auto object-contain">
-              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded text-white" style="background-color: ${book.accentColor};">${book.volume}</span>
-            </div>
-            <h4 class="text-sm font-extrabold text-white my-2">${book.title}</h4>
-            <div class="my-auto py-2 text-center">
-              <span class="text-xs font-bold text-white bg-slate-800 px-2 py-1 rounded">${book.gridSize}</span>
-              <p class="text-[10px] text-slate-300 mt-2">${book.gridsCount}</p>
-            </div>
-            <div class="text-[9px] text-orange-400 font-bold text-right">${book.volume}</div>
-          </div>
+    <div class="flex flex-col gap-6">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div>
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${book.accentTagBg}">${book.subSeries}</span>
+          <h3 class="text-2xl font-black text-white mt-1">${book.title}</h3>
+          <p class="text-xs text-slate-400">${book.subtitle}</p>
         </div>
-        <span class="text-xs text-cyan-400 font-mono mt-2">✓ Verified Math Guarantee</span>
+        <span class="text-xs font-mono font-bold text-cyan-400 bg-cyan-950 px-3 py-1.5 rounded-lg border border-cyan-500/40">
+          ${book.volume}
+        </span>
       </div>
 
-      <div class="w-full md:w-1/2 flex flex-col justify-between">
-        <div>
-          <div class="flex items-center gap-2 mb-2">
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${book.accentTagBg}">${book.subSeries}</span>
-            <span class="text-xs font-mono text-slate-400 font-bold">${book.volume}</span>
-          </div>
-          <h3 class="text-2xl font-extrabold text-white mb-1">${book.title}</h3>
-          <p class="text-sm text-slate-400 mb-4">${book.subtitle}</p>
+      <!-- Tab Buttons for Cover Preview -->
+      ${hasRealCover ? `
+        <div class="flex items-center gap-2 border-b border-slate-800 pb-2 text-xs">
+          <button id="modal-tab-front" onclick="switchModalCoverTab('front', '${book.id}')" class="px-3 py-1.5 rounded-lg font-bold bg-[#00E5FF] text-black">Front Cover</button>
+          <button id="modal-tab-back" onclick="switchModalCoverTab('back', '${book.id}')" class="px-3 py-1.5 rounded-lg font-bold bg-slate-800 text-slate-300 hover:text-white">Back Cover</button>
+          <button id="modal-tab-full" onclick="switchModalCoverTab('full', '${book.id}')" class="px-3 py-1.5 rounded-lg font-bold bg-slate-800 text-slate-300 hover:text-white">Full Wrap Spread</button>
+        </div>
+      ` : ''}
 
-          <div class="grid grid-cols-2 gap-3 mb-4 bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-            <div>
-              <span class="text-[10px] uppercase text-slate-500 font-bold">Total Content</span>
-              <p class="text-sm font-bold text-white">${book.gridsCount}</p>
-            </div>
-            <div>
-              <span class="text-[10px] uppercase text-slate-500 font-bold">Grid Dimensions</span>
-              <p class="text-sm font-bold text-cyan-400">${book.gridSize}</p>
-            </div>
-            <div>
-              <span class="text-[10px] uppercase text-slate-500 font-bold">Difficulty</span>
-              <p class="text-sm font-bold text-amber-400">${book.difficultyLabel}</p>
-            </div>
-            <div>
-              <span class="text-[10px] uppercase text-slate-500 font-bold">Print Format</span>
-              <p class="text-sm font-bold text-white">${book.printType}</p>
-            </div>
+      <!-- Main Modal Body Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+        
+        <!-- Left: Cover Viewer Area -->
+        <div class="md:col-span-6 flex flex-col items-center justify-center p-4 bg-[#070C1B] rounded-2xl border border-cyan-500/30">
+          <div id="modal-cover-display" class="w-full flex items-center justify-center min-h-[300px]">
+            ${book.coverImage ? `
+              <img src="${book.coverImage}" alt="${book.title}" class="max-h-[340px] w-auto rounded-lg shadow-2xl border border-cyan-400/40 object-contain">
+            ` : `
+              <div class="book-card-3d scale-100">
+                <div class="book-spine-shine"></div>
+                <div class="book-pages-side"></div>
+                <div class="book-cover" style="border-left: 4px solid ${book.accentColor};">
+                  <div class="flex items-center justify-between mb-1">
+                    <img src="logo.png" alt="BRAIN FOCUS™" class="h-4 w-auto object-contain">
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded text-white" style="background-color: ${book.accentColor};">${book.volume}</span>
+                  </div>
+                  <h4 class="text-sm font-extrabold text-white my-2">${book.title}</h4>
+                  <div class="my-auto py-2 text-center">
+                    <span class="text-xs font-bold text-white bg-slate-800 px-2 py-1 rounded">${book.gridSize}</span>
+                    <p class="text-[10px] text-slate-300 mt-2">${book.gridsCount}</p>
+                  </div>
+                  <div class="text-[9px] text-orange-400 font-bold text-right">${book.volume}</div>
+                </div>
+              </div>
+            `}
           </div>
-
-          <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Key Book Highlights:</h5>
-          <ul class="space-y-1.5 text-xs text-slate-300 mb-6">
-            ${book.features.map(f => `<li class="flex items-center gap-2"><span class="text-[#00E5FF]">✓</span> ${f}</li>`).join('')}
-            <li class="flex items-center gap-2"><span class="text-[#00E5FF]">✓</span> High-opacity 60lb white paper prevents ink bleed-through</li>
-            <li class="flex items-center gap-2"><span class="text-[#00E5FF]">✓</span> Complete solutions with answer grid coordinate keys</li>
-          </ul>
+          <span class="text-[11px] text-cyan-400 font-mono mt-3">✓ 100% Machine-Verified Logic Standard</span>
         </div>
 
-        <div class="flex gap-3">
-          <a href="${book.amazonUrl}" target="_blank" rel="noopener" 
-             class="flex-1 py-3 px-4 rounded-xl font-bold text-sm text-white text-center flex items-center justify-center gap-2 glow-coral-btn">
-            Order Volume on Amazon
-          </a>
-          <button onclick="closeBookModal()" class="py-3 px-4 rounded-xl font-semibold text-xs text-slate-400 hover:text-white bg-slate-800 border border-slate-700">
-            Close
-          </button>
+        <!-- Right: Specifications & Features List -->
+        <div class="md:col-span-6 flex flex-col justify-between h-full">
+          <div>
+            <!-- Blueprint Stats 4-Box Grid -->
+            <div class="grid grid-cols-2 gap-2.5 mb-4 bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800">
+              <div>
+                <span class="text-[10px] uppercase text-slate-400 font-bold">Grid Cells</span>
+                <p class="text-sm font-black text-[#00E5FF]">${book.cellDimension || '15.7 mm'}</p>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase text-slate-400 font-bold">Clue Type</span>
+                <p class="text-sm font-black text-[#00E5FF]">${book.clueType || '17 pt'}</p>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase text-slate-400 font-bold">Total Grids</span>
+                <p class="text-sm font-black text-white">${book.gridsCount}</p>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase text-slate-400 font-bold">Repeats Ever</span>
+                <p class="text-sm font-black text-[#FF5722]">${book.repeats || '0'}</p>
+              </div>
+            </div>
+
+            <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Publishing Blueprint Highlights:</h5>
+            <ul class="space-y-2 text-xs text-slate-300 mb-6">
+              ${book.features.map(f => `<li class="flex items-start gap-2"><span class="text-[#00E5FF] font-bold mt-0.5">✓</span> <span>${f}</span></li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-slate-800">
+            <a href="${book.amazonUrl}" target="_blank" rel="noopener" 
+               class="flex-1 py-3 px-4 rounded-xl font-bold text-sm text-white text-center flex items-center justify-center gap-2 glow-coral-btn">
+              Order Volume on Amazon
+            </a>
+            <button onclick="closeBookModal()" class="py-3 px-4 rounded-xl font-semibold text-xs text-slate-400 hover:text-white bg-slate-800 border border-slate-700">
+              Close
+            </button>
+          </div>
         </div>
+
       </div>
     </div>
   `;
 
   modal.classList.remove('hidden');
   modal.classList.add('flex');
+}
+
+function switchModalCoverTab(tabType, bookId) {
+  const book = BOOK_CATALOG.find(b => b.id === bookId);
+  if (!book) return;
+
+  const displayEl = document.getElementById('modal-cover-display');
+  if (!displayEl) return;
+
+  // Reset tab buttons
+  const tabs = ['front', 'back', 'full'];
+  tabs.forEach(t => {
+    const btn = document.getElementById(`modal-tab-${t}`);
+    if (btn) {
+      btn.className = (t === tabType) 
+        ? 'px-3 py-1.5 rounded-lg font-bold bg-[#00E5FF] text-black' 
+        : 'px-3 py-1.5 rounded-lg font-bold bg-slate-800 text-slate-300 hover:text-white';
+    }
+  });
+
+  if (tabType === 'front' && book.coverImage) {
+    displayEl.innerHTML = `<img src="${book.coverImage}" alt="Front Cover" class="max-h-[340px] w-auto rounded-lg shadow-2xl border border-cyan-400/40 object-contain animate-fade-in">`;
+  } else if (tabType === 'back' && book.backCoverImage) {
+    displayEl.innerHTML = `<img src="${book.backCoverImage}" alt="Back Cover" class="max-h-[340px] w-auto rounded-lg shadow-2xl border border-cyan-400/40 object-contain animate-fade-in">`;
+  } else if (tabType === 'full' && book.fullCoverImage) {
+    displayEl.innerHTML = `<img src="${book.fullCoverImage}" alt="Full Cover Wrap" class="max-h-[260px] w-full rounded-lg shadow-2xl border border-cyan-400/40 object-contain animate-fade-in">`;
+  }
 }
 
 function closeBookModal() {
@@ -1008,7 +1364,123 @@ function openBundleCheckout(bundleType) {
 }
 
 // ============================================================================
-// 4. Initialization & Event Bindings
+// 4. Form Handlers: VIP Solver Club & Reader Feedback
+// ============================================================================
+
+function handleVipFormSubmit(event) {
+  event.preventDefault();
+  const nameEl = document.getElementById('vip-name');
+  const emailEl = document.getElementById('vip-email');
+  if (!nameEl || !emailEl) return;
+
+  const name = nameEl.value.trim();
+  const email = emailEl.value.trim();
+  if (!email.includes('@')) {
+    alert('Please enter a valid email address.');
+    return;
+  }
+
+  const wrapper = document.getElementById('vip-form-wrapper');
+  if (wrapper) {
+    wrapper.innerHTML = `
+      <div class="bg-emerald-950/80 border-2 border-emerald-500/60 rounded-3xl p-8 text-center animate-fade-in shadow-2xl">
+        <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-4 text-3xl font-black border border-emerald-400/50">
+          ✓
+        </div>
+        <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-900 text-emerald-300 uppercase tracking-wider">
+          Membership Confirmed
+        </span>
+        <h3 class="font-heading font-black text-2xl sm:text-3xl text-white mt-3 mb-2">
+          Welcome to the Club, ${name}!
+        </h3>
+        <p class="text-slate-300 text-sm max-w-lg mx-auto mb-6">
+          We've registered <strong class="text-cyan-300">${email}</strong> for weekly weekend logic drops. Your first 10-Grid Warmup PDF pack is ready below:
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
+          <a href="data:text/plain;charset=utf-8,Brain%20Focus%20Books%20-%20VIP%20Welcome%20Pack%0A%0AWelcome%20to%20the%20VIP%20Solver%20Club!%0AEnjoy%20your%20weekly%20printable%20puzzle%20packs%20and%20early%20releases."
+             download="BrainFocus_VIP_Welcome_Pack.pdf"
+             onclick="triggerConfetti();"
+             class="w-full sm:w-auto px-7 py-3.5 rounded-xl font-extrabold text-sm text-white glow-coral-btn flex items-center justify-center gap-2">
+            <span>📥 Download VIP Welcome Pack (PDF)</span>
+          </a>
+        </div>
+      </div>
+    `;
+  }
+  triggerConfetti();
+}
+
+function handleFeedbackFormSubmit(event) {
+  event.preventDefault();
+  const nameEl = document.getElementById('feedback-name');
+  const emailEl = document.getElementById('feedback-email');
+  const bookEl = document.getElementById('feedback-book');
+  const topicEl = document.getElementById('feedback-topic');
+  const msgEl = document.getElementById('feedback-message');
+  const starEl = document.getElementById('selected-star-rating');
+
+  const name = nameEl ? nameEl.value.trim() : 'Solver';
+  const email = emailEl ? emailEl.value.trim() : '';
+  const book = bookEl ? bookEl.options[bookEl.selectedIndex].text : '';
+  const stars = starEl ? starEl.value : '5';
+
+  const wrapper = document.getElementById('feedback-form-wrapper');
+  if (wrapper) {
+    wrapper.innerHTML = `
+      <div class="bg-cyan-950/80 border-2 border-cyan-400/60 rounded-3xl p-8 text-center animate-fade-in shadow-2xl">
+        <div class="w-16 h-16 rounded-full bg-cyan-500/20 text-[#00E5FF] flex items-center justify-center mx-auto mb-4 text-3xl font-black border border-cyan-400/50">
+          ✉️
+        </div>
+        <span class="px-3 py-1 rounded-full text-xs font-bold bg-cyan-900 text-cyan-300 uppercase tracking-wider">
+          Message Received
+        </span>
+        <h3 class="font-heading font-black text-2xl sm:text-3xl text-white mt-3 mb-2">
+          Thank You, ${name}!
+        </h3>
+        <p class="text-slate-300 text-sm max-w-lg mx-auto mb-4">
+          Your feedback regarding <strong class="text-white">${book}</strong> (${stars} ★ rating) has been forwarded directly to our lead puzzle development team.
+        </p>
+        <p class="text-xs text-slate-400 mb-6">
+          We build every volume around reader recommendations. If a response is required, we'll reply to <span class="text-cyan-300">${email}</span> within 24–48 hours.
+        </p>
+        <a href="index.html#catalog" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm text-white glow-coral-btn">
+          Explore More Volumes in Master Catalog →
+        </a>
+      </div>
+    `;
+  }
+  triggerConfetti();
+}
+
+function setStarRating(rating) {
+  const ratingInput = document.getElementById('selected-star-rating');
+  if (ratingInput) ratingInput.value = rating;
+
+  const stars = document.querySelectorAll('#star-rating-group .star-btn');
+  stars.forEach((s, idx) => {
+    if (idx < rating) {
+      s.className = 'star-btn text-amber-400';
+    } else {
+      s.className = 'star-btn text-slate-600';
+    }
+  });
+
+  const labelEl = document.getElementById('star-rating-label');
+  if (labelEl) {
+    const labels = {
+      1: '1.0 / 5.0 (Needs Improvement)',
+      2: '2.0 / 5.0 (Fair Experience)',
+      3: '3.0 / 5.0 (Good Experience)',
+      4: '4.0 / 5.0 (Great Focus)',
+      5: '5.0 / 5.0 (Exceptional Clarity)'
+    };
+    labelEl.textContent = labels[rating] || `${rating}.0 / 5.0`;
+  }
+}
+
+// ============================================================================
+// 5. Initialization & Event Bindings
 // ============================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
