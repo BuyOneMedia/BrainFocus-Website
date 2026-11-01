@@ -70,7 +70,7 @@ const CALCUDOKU_PUZZLES = {
       { id: 'c1', label: '6×', op: '*', target: 6, cells: [[0, 0], [0, 1]] },
       { id: 'c2', label: '4', op: '=', target: 4, cells: [[0, 2]] },
       { id: 'c3', label: '4+', op: '+', target: 4, cells: [[0, 3], [1, 3]] },
-      { id: 'c4', label: '5+', op: '+', target: 4, cells: [[1, 0], [2, 0]] },
+      { id: 'c4', label: '5+', op: '+', target: 5, cells: [[1, 0], [2, 0]] },
       { id: 'c5', label: '8×', op: '*', target: 8, cells: [[1, 1], [1, 2]] },
       { id: 'c6', label: '2−', op: '-', target: 2, cells: [[2, 1], [2, 2]] },
       { id: 'c7', label: '2', op: '=', target: 2, cells: [[2, 3]] },
@@ -160,7 +160,8 @@ function applyCageBorders(cellEl, cage, r, c) {
 
 function setupGridEvents() {
   const gridContainer = document.getElementById('calcudoku-grid');
-  if (!gridContainer) return;
+  if (!gridContainer || gridContainer.dataset.eventsBound === 'true') return;
+  gridContainer.dataset.eventsBound = 'true';
 
   gridContainer.addEventListener('click', (e) => {
     const cell = e.target.closest('.calcudoku-cell');
@@ -1898,3 +1899,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
