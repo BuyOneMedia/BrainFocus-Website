@@ -1,0 +1,28 @@
+services:
+  web:
+    image: nginx:alpine
+    container_name: brainfocusbooks-web
+    restart: unless-stopped
+    volumes:
+      - ./:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - coolify
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.brainfocusbooks-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.brainfocusbooks-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.brainfocusbooks-http.entryPoints=http"
+      - "traefik.http.routers.brainfocusbooks-http.middlewares=brainfocusbooks-redirect"
+      - "traefik.http.routers.brainfocusbooks-http.rule=Host(`brainfocusbooks.com`) || Host(`www.brainfocusbooks.com`)"
+      - "traefik.http.routers.brainfocusbooks-http.service=brainfocusbooks"
+      - "traefik.http.routers.brainfocusbooks.entryPoints=https"
+      - "traefik.http.routers.brainfocusbooks.rule=Host(`brainfocusbooks.com`) || Host(`www.brainfocusbooks.com`)"
+      - "traefik.http.routers.brainfocusbooks.service=brainfocusbooks"
+      - "traefik.http.routers.brainfocusbooks.tls=true"
+      - "traefik.http.routers.brainfocusbooks.tls.certresolver=letsencrypt"
+      - "traefik.http.services.brainfocusbooks.loadbalancer.server.port=80"
+
+networks:
+  coolify:
+    external: true
