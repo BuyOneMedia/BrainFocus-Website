@@ -1,23 +1,228 @@
 /**
- * Brain Focus Books™ - Interactive Frontend Engine
- * Includes: 4x4 Calcudoku Playable Engine, Book Catalog & Filter System,
- * Modal System, Lead Magnet Capture & 3D Interactive Controls.
+ * Brain Focus Books - Website Script
+ * Powers the Etsy product grid, featured items, category filters, search,
+ * mobile navigation, feedback mailto helper, and playable puzzle page.
  */
 
+const FEATURED_LISTING_IDS = [
+  4608574821, // Logic Puzzles for Kids (best seller)
+  4612741320, // Christmas Logic Puzzles for Kids (new)
+  4605994741, // Christmas Word Search, 100 Large Print
+  4608583764, // Large Print Christmas Crosswords
+  4606669270, // Giant Christmas Word Search, a party poster
+  4608237017, // Cozy Christmas Coloring Book for Adults
+  4608383521, // Christmas Activities for Seniors
+  4606014110  // Large Print Puzzle Bundle, 500 puzzles
+];
+
+let allProducts = [];
+let activeSection = 'all';
+let searchQuery = '';
+
+function formatPrice(price) {
+  return '$' + Number(price).toFixed(2);
+}
+
+function escapeHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function createProductCardHtml(product, badgeText = '') {
+  const shortTitle = escapeHtml(product.short_title);
+  const fullTitle = escapeHtml(product.title);
+  const section = escapeHtml(product.section);
+  const priceStr = formatPrice(product.price);
+  const url = escapeHtml(product.url);
+  const image = escapeHtml(product.image);
+
+  const badgeMarkup = badgeText
+    ? `<span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-orange-100 text-orange-800 border border-orange-200 mb-2">${escapeHtml(badgeText)}</span>`
+    : `<span class="inline-block text-xs font-semibold text-brandTeal mb-1.5">${section}</span>`;
+
+  return `
+    <article class="product-card p-4 flex flex-col justify-between h-full">
+      <div>
+        <a href="${url}" target="_blank" rel="noopener" class="block aspect-square rounded-xl overflow-hidden bg-stone-100 border border-stone-200 mb-3.5 group">
+          <img src="${image}"
+               alt="${shortTitle} - ${section} printable PDF"
+               loading="lazy"
+               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+        </a>
+        ${badgeMarkup}
+        <h3 class="font-heading font-bold text-base sm:text-lg text-slate-900 leading-snug mb-2" title="${fullTitle}">
+          <a href="${url}" target="_blank" rel="noopener" class="hover:text-brandTeal transition-colors">
+            ${shortTitle}
+          </a>
+        </h3>
+      </div>
+
+      <div class="pt-3 mt-2 border-t border-stone-100 flex items-center justify-between gap-3">
+        <span class="font-heading font-extrabold text-lg sm:text-xl text-slate-900">${priceStr}</span>
+        <a href="${url}" target="_blank" rel="noopener"
+           class="px-4 py-2.5 rounded-xl font-bold text-sm btn-coral inline-flex items-center justify-center gap-1.5 shrink-0">
+          <span>View on Etsy</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </article>
+  `;
+}
+
+function renderFeaturedProducts() {
+  const container = document.getElementById('featured-products-grid');
+  if (!container || !allProducts.length) return;
+
+  const byId = new Map(allProducts.map(p => [Number(p.listing_id), p]));
+  const featured = FEATURED_LISTING_IDS.map(id => byId.get(id)).filter(Boolean);
+
+  container.innerHTML = featured.map((product, index) => {
+    let badge = '';
+    if (index === 0) badge = 'Best Seller';
+    else if (index === 1) badge = 'New for Christmas';
+    else badge = 'Holiday Pick';
+    return createProductCardHtml(product, badge);
+  }).join('');
+}
+
+function renderAllProducts() {
+  const grid = document.getElementById('all-products-grid');
+  const countLabel = document.getElementById('products-count-label');
+  const resetBtn = document.getElementById('reset-filters-btn');
+  if (!grid) return;
+
+  const q = searchQuery.trim().toLowerCase();
+
+  const filtered = allProducts.filter(product => {
+    const matchesSection = activeSection === 'all' || product.section === activeSection;
+    if (!matchesSection) return false;
+    if (!q) return true;
+    const haystack = `${product.short_title} ${product.title} ${product.section}`.toLowerCase();
+    return haystack.includes(q);
+  });
+
+  if (countLabel) {
+    const sectionNote = activeSection === 'all' ? 'all categories' : activeSection;
+    if (q) {
+      countLabel.textContent = `Showing ${filtered.length} of ${allProducts.length} printables in ${sectionNote} matching "${searchQuery.trim()}"`;
+    } else if (activeSection === 'all') {
+      countLabel.textContent = `Showing all ${allProducts.length} products`;
+    } else {
+      countLabel.textContent = `Showing ${filtered.length} printables in ${activeSection}`;
+    }
+  }
+
+  if (resetBtn) {
+    if (activeSection !== 'all' || q.length > 0) {
+      resetBtn.classList.remove('hidden');
+    } else {
+      resetBtn.classList.add('hidden');
+    }
+  }
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="col-span-full bg-white rounded-2xl p-10 text-center border border-stone-200">
+        <p class="text-lg font-bold text-slate-800 mb-2">No matching printables found</p>
+        <p class="text-base text-slate-600 mb-5">Try a different search word or view all categories.</p>
+        <button type="button" onclick="resetProductFilters()" class="px-5 py-2.5 rounded-xl font-bold text-sm btn-teal">
+          Show all 104 products
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(product => createProductCardHtml(product)).join('');
+}
+
+function selectCategoryFilter(sectionName) {
+  activeSection = sectionName || 'all';
+
+  const buttons = document.querySelectorAll('#section-filter-bar .filter-pill');
+  buttons.forEach(btn => {
+    if (btn.dataset.section === activeSection) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  renderAllProducts();
+}
+
+function resetProductFilters() {
+  activeSection = 'all';
+  searchQuery = '';
+  const searchInput = document.getElementById('product-search');
+  if (searchInput) searchInput.value = '';
+  selectCategoryFilter('all');
+}
+
+async function loadEtsyProducts() {
+  const hasProductGrids = document.getElementById('all-products-grid') || document.getElementById('featured-products-grid');
+  if (!hasProductGrids) return;
+
+  try {
+    const response = await fetch('etsy-products.json');
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    const data = await response.json();
+    if (data && Array.isArray(data.products)) {
+      allProducts = data.products;
+      renderFeaturedProducts();
+      renderAllProducts();
+    }
+  } catch (err) {
+    console.error('Could not load etsy-products.json:', err);
+  }
+}
+
+function closeMobileMenu() {
+  const mobileMenu = document.getElementById('mobile-nav-drawer');
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  if (mobileMenu) mobileMenu.classList.add('hidden');
+  if (mobileBtn) mobileBtn.setAttribute('aria-expanded', 'false');
+}
+
 // ============================================================================
-// 1. Calcudoku Mini-Puzzle Engine
+// Honest Feedback Mailto Helper (feedback.html)
+// Opens the visitor's email client with pre-filled subject and body instead
+// of pretending to submit to a backend.
+// ============================================================================
+
+function handleFeedbackMailto(event) {
+  event.preventDefault();
+  const nameEl = document.getElementById('feedback-name');
+  const topicEl = document.getElementById('feedback-topic');
+  const msgEl = document.getElementById('feedback-message');
+
+  const name = nameEl ? nameEl.value.trim() : '';
+  const topic = topicEl ? topicEl.options[topicEl.selectedIndex].text : 'Website Feedback';
+  const message = msgEl ? msgEl.value.trim() : '';
+
+  const subject = encodeURIComponent(`Brain Focus Books Feedback: ${topic}`);
+  const bodyLines = [
+    name ? `From: ${name}` : '',
+    `Topic: ${topic}`,
+    '',
+    message
+  ].filter(Boolean).join('\n');
+
+  window.location.href = `mailto:publisher@brainfocusbooks.com?subject=${subject}&body=${encodeURIComponent(bodyLines)}`;
+}
+
+// ============================================================================
+// Playable 4x4 Calcudoku Mini-Puzzle (puzzles.html)
 // ============================================================================
 
 const CALCUDOKU_PUZZLES = {
   beginner: {
-    name: "Beginner 4x4",
-    difficulty: "Easy",
+    name: 'Warm-Up 4x4',
     gridSize: 4,
-    // Solution:
-    // [4, 1, 2, 3]
-    // [3, 2, 4, 1]
-    // [1, 4, 3, 2]
-    // [2, 3, 1, 4]
     solution: [
       [4, 1, 2, 3],
       [3, 2, 4, 1],
@@ -36,8 +241,7 @@ const CALCUDOKU_PUZZLES = {
     ]
   },
   intermediate: {
-    name: "Cognitive 4x4",
-    difficulty: "Medium",
+    name: 'Medium 4x4',
     gridSize: 4,
     solution: [
       [2, 4, 1, 3],
@@ -57,8 +261,7 @@ const CALCUDOKU_PUZZLES = {
     ]
   },
   master: {
-    name: "Master 4x4",
-    difficulty: "Hard",
+    name: 'Tricky 4x4',
     gridSize: 4,
     solution: [
       [3, 2, 4, 1],
@@ -70,7 +273,7 @@ const CALCUDOKU_PUZZLES = {
       { id: 'c1', label: '6×', op: '*', target: 6, cells: [[0, 0], [0, 1]] },
       { id: 'c2', label: '4', op: '=', target: 4, cells: [[0, 2]] },
       { id: 'c3', label: '4+', op: '+', target: 4, cells: [[0, 3], [1, 3]] },
-      { id: 'c4', label: '5+', op: '+', target: 4, cells: [[1, 0], [2, 0]] },
+      { id: 'c4', label: '5+', op: '+', target: 5, cells: [[1, 0], [2, 0]] },
       { id: 'c5', label: '8×', op: '*', target: 8, cells: [[1, 1], [1, 2]] },
       { id: 'c6', label: '2−', op: '-', target: 2, cells: [[2, 1], [2, 2]] },
       { id: 'c7', label: '2', op: '=', target: 2, cells: [[2, 3]] },
@@ -90,11 +293,14 @@ let userGrid = [
 ];
 
 function initCalcudoku() {
+  const gridContainer = document.getElementById('calcudoku-grid');
+  if (!gridContainer) return;
+
   const currentPuzzle = CALCUDOKU_PUZZLES[currentPuzzleKey];
   userGrid = Array(4).fill(null).map(() => Array(4).fill(null));
   renderGrid(currentPuzzle);
   setupGridEvents();
-  updateGameStatus("Click a cell and enter numbers (1-4) using keyboard or buttons.");
+  updateGameStatus('Click a box and enter a number from 1 to 4.');
 }
 
 function renderGrid(puzzle) {
@@ -109,10 +315,8 @@ function renderGrid(puzzle) {
       cellEl.dataset.row = r;
       cellEl.dataset.col = c;
 
-      // Determine cage info
       const cage = puzzle.cages.find(cg => cg.cells.some(([cr, cc]) => cr === r && cc === c));
       if (cage) {
-        // Check if this is the top-left cell of the cage to show clue
         const isFirstCell = cage.cells[0][0] === r && cage.cells[0][1] === c;
         if (isFirstCell) {
           const labelEl = document.createElement('span');
@@ -120,8 +324,6 @@ function renderGrid(puzzle) {
           labelEl.textContent = cage.label;
           cellEl.appendChild(labelEl);
         }
-
-        // Apply borders based on cage boundary
         applyCageBorders(cellEl, cage, r, c);
       }
 
@@ -145,30 +347,21 @@ function applyCageBorders(cellEl, cage, r, c) {
   const hasLeft = cage.cells.some(([cr, cc]) => cr === r && cc === c - 1);
   const hasRight = cage.cells.some(([cr, cc]) => cr === r && cc === c + 1);
 
-  if (!hasTop) cellEl.classList.add('border-top-thick');
-  else cellEl.classList.add('border-top-thin');
-
-  if (!hasBottom) cellEl.classList.add('border-bottom-thick');
-  else cellEl.classList.add('border-bottom-thin');
-
-  if (!hasLeft) cellEl.classList.add('border-left-thick');
-  else cellEl.classList.add('border-left-thin');
-
-  if (!hasRight) cellEl.classList.add('border-right-thick');
-  else cellEl.classList.add('border-right-thin');
+  cellEl.classList.add(hasTop ? 'border-top-thin' : 'border-top-thick');
+  cellEl.classList.add(hasBottom ? 'border-bottom-thin' : 'border-bottom-thick');
+  cellEl.classList.add(hasLeft ? 'border-left-thin' : 'border-left-thick');
+  cellEl.classList.add(hasRight ? 'border-right-thin' : 'border-right-thick');
 }
 
 function setupGridEvents() {
   const gridContainer = document.getElementById('calcudoku-grid');
-  if (!gridContainer) return;
+  if (!gridContainer || gridContainer.dataset.bound === 'true') return;
+  gridContainer.dataset.bound = 'true';
 
   gridContainer.addEventListener('click', (e) => {
     const cell = e.target.closest('.calcudoku-cell');
     if (!cell) return;
-
-    const r = parseInt(cell.dataset.row);
-    const c = parseInt(cell.dataset.col);
-    selectCell(r, c);
+    selectCell(parseInt(cell.dataset.row, 10), parseInt(cell.dataset.col, 10));
   });
 }
 
@@ -178,10 +371,9 @@ function selectCell(r, c) {
   const targetVal = userGrid[r][c];
 
   cells.forEach(cell => {
-    const cr = parseInt(cell.dataset.row);
-    const cc = parseInt(cell.dataset.col);
+    const cr = parseInt(cell.dataset.row, 10);
+    const cc = parseInt(cell.dataset.col, 10);
     cell.classList.remove('selected', 'same-num');
-    
     if (cr === r && cc === c) {
       cell.classList.add('selected');
     } else if (targetVal && userGrid[cr][cc] === targetVal) {
@@ -191,28 +383,40 @@ function selectCell(r, c) {
 }
 
 function enterNumber(num) {
-  if (selectedCell.r === null || selectedCell.c === null) return;
+  if (!document.getElementById('calcudoku-grid')) return;
   const { r, c } = selectedCell;
-
   userGrid[r][c] = num;
-  const currentPuzzle = CALCUDOKU_PUZZLES[currentPuzzleKey];
-  renderGrid(currentPuzzle);
+  renderGrid(CALCUDOKU_PUZZLES[currentPuzzleKey]);
   selectCell(r, c);
 
-  // Auto check if full
   const isFull = userGrid.every(row => row.every(val => val !== null));
-  if (isFull) {
-    checkCalcudokuSolution(false);
-  }
+  if (isFull) checkCalcudokuSolution(false);
 }
 
 function clearCurrentCell() {
-  if (selectedCell.r === null || selectedCell.c === null) return;
+  if (!document.getElementById('calcudoku-grid')) return;
   const { r, c } = selectedCell;
   userGrid[r][c] = null;
-  const currentPuzzle = CALCUDOKU_PUZZLES[currentPuzzleKey];
-  renderGrid(currentPuzzle);
+  renderGrid(CALCUDOKU_PUZZLES[currentPuzzleKey]);
   selectCell(r, c);
+}
+
+function validateCageMath(cage, values) {
+  const { op, target } = cage;
+  if (op === '=') return values[0] === target;
+  if (op === '+') return values.reduce((a, b) => a + b, 0) === target;
+  if (op === '*') return values.reduce((a, b) => a * b, 1) === target;
+  if (op === '-') return values.length === 2 && Math.abs(values[0] - values[1]) === target;
+  if (op === '/') {
+    if (values.length !== 2) return false;
+    return Math.max(values[0], values[1]) / Math.min(values[0], values[1]) === target;
+  }
+  return true;
+}
+
+function highlightCellError(r, c) {
+  const cell = document.querySelector(`.calcudoku-cell[data-row="${r}"][data-col="${c}"]`);
+  if (cell) cell.classList.add('error');
 }
 
 function checkCalcudokuSolution(explicitCheck = true) {
@@ -220,11 +424,8 @@ function checkCalcudokuSolution(explicitCheck = true) {
   let hasErrors = false;
   let unfilled = 0;
   const cells = document.querySelectorAll('.calcudoku-cell');
-
-  // Reset classes
   cells.forEach(c => c.classList.remove('error', 'correct'));
 
-  // 1. Check Row & Column Uniqueness
   for (let r = 0; r < 4; r++) {
     for (let c = 0; c < 4; c++) {
       const val = userGrid[r][c];
@@ -232,8 +433,6 @@ function checkCalcudokuSolution(explicitCheck = true) {
         unfilled++;
         continue;
       }
-
-      // Check row dupes
       for (let c2 = 0; c2 < 4; c2++) {
         if (c !== c2 && userGrid[r][c2] === val) {
           highlightCellError(r, c);
@@ -241,8 +440,6 @@ function checkCalcudokuSolution(explicitCheck = true) {
           hasErrors = true;
         }
       }
-
-      // Check col dupes
       for (let r2 = 0; r2 < 4; r2++) {
         if (r !== r2 && userGrid[r2][c] === val) {
           highlightCellError(r, c);
@@ -253,1648 +450,112 @@ function checkCalcudokuSolution(explicitCheck = true) {
     }
   }
 
-  // 2. Check Cage Math
   puzzle.cages.forEach(cage => {
     const cageValues = cage.cells.map(([r, c]) => userGrid[r][c]);
-    const allFilled = cageValues.every(v => v !== null);
-
-    if (allFilled) {
-      const isMathValid = validateCageMath(cage, cageValues);
-      if (!isMathValid) {
-        cage.cells.forEach(([r, c]) => highlightCellError(r, c));
-        hasErrors = true;
-      }
+    if (cageValues.every(v => v !== null) && !validateCageMath(cage, cageValues)) {
+      cage.cells.forEach(([r, c]) => highlightCellError(r, c));
+      hasErrors = true;
     }
   });
 
   if (hasErrors) {
-    updateGameStatus("⚠️ Look closely! You have duplicates in a row/column or an incorrect cage math result.", "text-red-400");
+    updateGameStatus('Check highlighted boxes: a row, column, or cage clue does not match yet.', 'text-red-700 font-semibold');
   } else if (unfilled > 0) {
     if (explicitCheck) {
-      updateGameStatus(`👍 Good progress! ${16 - unfilled}/16 cells correct so far. Keep going!`, "text-cyan-400");
+      updateGameStatus(`Looking good so far! ${16 - unfilled} of 16 boxes filled.`, 'text-brandTeal font-semibold');
     }
   } else {
-    // Puzzle completely and correctly solved!
     cells.forEach(c => c.classList.add('correct'));
-    updateGameStatus("🎉 Brilliant Focus! Puzzle solved 100% correctly!", "text-green-400 font-bold");
-    triggerConfetti();
+    updateGameStatus('🎉 Well done! You solved the puzzle!', 'text-emerald-700 font-bold');
   }
-}
-
-function validateCageMath(cage, values) {
-  const { op, target } = cage;
-  if (op === '=') {
-    return values[0] === target;
-  }
-  if (op === '+') {
-    const sum = values.reduce((a, b) => a + b, 0);
-    return sum === target;
-  }
-  if (op === '*') {
-    const prod = values.reduce((a, b) => a * b, 1);
-    return prod === target;
-  }
-  if (op === '-') {
-    if (values.length !== 2) return false;
-    return Math.abs(values[0] - values[1]) === target;
-  }
-  if (op === '/') {
-    if (values.length !== 2) return false;
-    const max = Math.max(values[0], values[1]);
-    const min = Math.min(values[0], values[1]);
-    return max / min === target;
-  }
-  return true;
-}
-
-function highlightCellError(r, c) {
-  const cell = document.querySelector(`.calcudoku-cell[data-row="${r}"][data-col="${c}"]`);
-  if (cell) cell.classList.add('error');
 }
 
 function giveHint() {
   const puzzle = CALCUDOKU_PUZZLES[currentPuzzleKey];
-  const { solution } = puzzle;
-
-  // Find first empty or wrong cell
   for (let r = 0; r < 4; r++) {
     for (let c = 0; c < 4; c++) {
-      if (userGrid[r][c] !== solution[r][c]) {
-        userGrid[r][c] = solution[r][c];
+      if (userGrid[r][c] !== puzzle.solution[r][c]) {
+        userGrid[r][c] = puzzle.solution[r][c];
         renderGrid(puzzle);
         selectCell(r, c);
-        updateGameStatus(`💡 Hint applied at Row ${r+1}, Col ${c+1}: Placed ${solution[r][c]}!`, "text-yellow-300");
+        updateGameStatus(`Hint: placed ${puzzle.solution[r][c]} in row ${r + 1}, column ${c + 1}.`, 'text-brandTeal font-semibold');
         return;
       }
     }
   }
-  updateGameStatus("🌟 You already solved everything correctly!", "text-green-400");
+  updateGameStatus('All boxes are already filled in!', 'text-emerald-700 font-semibold');
 }
 
 function resetPuzzle() {
   userGrid = Array(4).fill(null).map(() => Array(4).fill(null));
-  const puzzle = CALCUDOKU_PUZZLES[currentPuzzleKey];
-  renderGrid(puzzle);
+  renderGrid(CALCUDOKU_PUZZLES[currentPuzzleKey]);
   selectCell(0, 0);
-  updateGameStatus("Grid reset. Ready for your next cognitive solve!", "text-slate-300");
-}
-
-function updateGameStatus(msg, textClass = "text-slate-300") {
-  const statusEl = document.getElementById('calcudoku-status');
-  if (statusEl) {
-    statusEl.className = `text-sm font-medium transition-all duration-200 ${textClass}`;
-    statusEl.innerHTML = msg;
-  }
-}
-
-function triggerConfetti() {
-  const container = document.getElementById('confetti-container');
-  if (!container) return;
-
-  const colors = ['#00E5FF', '#FF5722', '#10B981', '#F59E0B', '#FFFFFF', '#8B5CF6'];
-  for (let i = 0; i < 40; i++) {
-    const p = document.createElement('div');
-    p.className = 'confetti-particle';
-    p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-    p.style.left = '50%';
-    p.style.top = '50%';
-    
-    const angle = Math.random() * Math.PI * 2;
-    const distance = 80 + Math.random() * 160;
-    const dx = `${Math.cos(angle) * distance}px`;
-    const dy = `${Math.sin(angle) * distance - 50}px`;
-    const rot = `${Math.random() * 720 - 360}deg`;
-
-    p.style.setProperty('--dx', dx);
-    p.style.setProperty('--dy', dy);
-    p.style.setProperty('--rot', rot);
-
-    container.appendChild(p);
-    setTimeout(() => p.remove(), 2500);
-  }
-}
-
-// Global Keyboard Handler for Calcudoku
-window.addEventListener('keydown', (e) => {
-  // Only trigger if not focused in an input/textarea
-  if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
-
-  if (['1', '2', '3', '4'].includes(e.key)) {
-    enterNumber(parseInt(e.key));
-  } else if (e.key === 'Backspace' || e.key === 'Delete' || e.key === '0') {
-    clearCurrentCell();
-  } else if (e.key === 'ArrowUp') {
-    e.preventDefault();
-    selectCell(Math.max(0, selectedCell.r - 1), selectedCell.c);
-  } else if (e.key === 'ArrowDown') {
-    e.preventDefault();
-    selectCell(Math.min(3, selectedCell.r + 1), selectedCell.c);
-  } else if (e.key === 'ArrowLeft') {
-    e.preventDefault();
-    selectCell(selectedCell.r, Math.max(0, selectedCell.c - 1));
-  } else if (e.key === 'ArrowRight') {
-    e.preventDefault();
-    selectCell(selectedCell.r, Math.min(3, selectedCell.c + 1));
-  }
-});
-
-
-// ============================================================================
-// 2. Master Catalog Database across 4 Publishing Divisions
-// ============================================================================
-
-const BOOK_CATALOG = [
-  // ==========================================================================
-  // DIVISION 1: MATH & CAGE LOGIC (CALCUDOKU SERIES - 24 LIVE VOLUMES)
-  // ==========================================================================
-
-  // --- 4x4 Easy Series ---
-  {
-    id: 'bf-4x4-easy-v1',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 4x4 Easy (Vol. 1)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 1',
-    subSeries: '4x4 Easy Grid Edition',
-    coverImage: 'cover-calcudoku-4x4-easy-v1.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-4x4-easy-v1.jpg',
-    accentColor: '#335CAA',
-    accentTagBg: 'bg-blue-950 text-blue-300 border-blue-500/50',
-    gridsCount: '504 Grids',
-    gridSize: '4x4 Easy',
-    difficultyScore: 1,
-    difficultyLabel: 'Starter Easy',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '15.7 mm',
-    clueType: '17 pt',
-    repeats: '0 Repeats Ever',
-    features: [
-      'Clue numbers at 17pt — never guess + from ÷ again',
-      'Room in the margins to work out your factors',
-      'One grid size throughout, graded by technique',
-      'Answer key printed full size, not crammed',
-      'Exactly one solution, every time. Machine-verified.'
-    ],
-    amazonUrl: 'https://www.amazon.com/dp/B0HH2GX4M5?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08',
-    badge: '★ Official 1st Edition'
-  },
-  {
-    id: 'bf-4x4-easy-v2',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 4x4 Easy (Vol. 2)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 2',
-    subSeries: '4x4 Easy Grid Edition',
-    coverImage: 'cover-calcudoku-4x4-easy-v2.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-4x4-easy-v2.jpg',
-    accentColor: '#335CAA',
-    accentTagBg: 'bg-blue-900/60 text-blue-300 border-blue-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '4x4 Easy',
-    difficultyScore: 1,
-    difficultyLabel: 'Starter Easy',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '15.7 mm',
-    clueType: '17 pt',
-    repeats: '0',
-    features: ['17pt High-Contrast Clues', 'Margin Factor Workspaces', 'Full-Size Answer Keys', 'Zero Guessing Logic'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HH23MZBV?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-  {
-    id: 'bf-4x4-easy-v3',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 4x4 Easy (Vol. 3)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 3',
-    subSeries: '4x4 Easy Grid Edition',
-    coverImage: 'cover-calcudoku-4x4-easy-v3.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-4x4-easy-v3.jpg',
-    accentColor: '#335CAA',
-    accentTagBg: 'bg-blue-900/60 text-blue-300 border-blue-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '4x4 Easy',
-    difficultyScore: 1,
-    difficultyLabel: 'Starter Easy',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '15.7 mm',
-    clueType: '17 pt',
-    repeats: '0',
-    features: ['17pt High-Contrast Clues', 'Spacious Scratchpad Margins', 'Complete Full-Size Proofs'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HH9JLG88?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-
-  // --- 4x4 Medium Series ---
-  {
-    id: 'bf-4x4-med-v1',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 4x4 Medium (Vol. 1)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 1',
-    subSeries: '4x4 Medium Grid Edition',
-    coverImage: 'cover-calcudoku-4x4-medium-v1.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-4x4-medium-v1.jpg',
-    accentColor: '#0E7490',
-    accentTagBg: 'bg-cyan-950 text-cyan-300 border-cyan-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '4x4 Medium',
-    difficultyScore: 2,
-    difficultyLabel: 'Medium Logic',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '15.7 mm',
-    clueType: '17 pt',
-    repeats: '0',
-    features: ['Multi-Operator Cages', 'Factor Chains & Parity Logic', '17pt Bold Clues'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HHC9G1HQ?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-  {
-    id: 'bf-4x4-med-v2',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 4x4 Medium (Vol. 2)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 2',
-    subSeries: '4x4 Medium Grid Edition',
-    coverImage: 'cover-calcudoku-4x4-medium-v2.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-4x4-medium-v2.jpg',
-    accentColor: '#0E7490',
-    accentTagBg: 'bg-cyan-950 text-cyan-300 border-cyan-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '4x4 Medium',
-    difficultyScore: 2,
-    difficultyLabel: 'Medium Logic',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '15.7 mm',
-    clueType: '17 pt',
-    repeats: '0',
-    features: ['Complex Cage Combinations', 'Margin Working Room', 'Laser Clear Verification'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HHBV72W6?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-  {
-    id: 'bf-4x4-med-v3',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 4x4 Medium (Vol. 3)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 3',
-    subSeries: '4x4 Medium Grid Edition',
-    coverImage: 'cover-calcudoku-4x4-medium-v3.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-4x4-medium-v3.jpg',
-    accentColor: '#0E7490',
-    accentTagBg: 'bg-cyan-950 text-cyan-300 border-cyan-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '4x4 Medium',
-    difficultyScore: 2,
-    difficultyLabel: 'Medium Logic',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '15.7 mm',
-    clueType: '17 pt',
-    repeats: '0',
-    features: ['Advanced Interlocking Cages', 'Scratchpad Margins', 'Zero Guessing'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HHBR3RPX?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-
-  // --- 4x4 Hard Series ---
-  {
-    id: 'bf-4x4-hard-v1',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 4x4 Hard (Vol. 1)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 1',
-    subSeries: '4x4 Hard Grid Edition',
-    coverImage: 'cover-calcudoku-4x4-hard-v1.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-4x4-hard-v1.jpg',
-    accentColor: '#7C2D12',
-    accentTagBg: 'bg-orange-950 text-orange-300 border-orange-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '4x4 Hard',
-    difficultyScore: 3,
-    difficultyLabel: 'Sharp Challenge',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '15.7 mm',
-    clueType: '17 pt',
-    repeats: '0',
-    features: ['Tight Mathematical Constraints', 'Multi-Step Deductions', 'Spacious Scratchpad Margins'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HHBF6X5D?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-  {
-    id: 'bf-4x4-hard-v2',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 4x4 Hard (Vol. 2)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 2',
-    subSeries: '4x4 Hard Grid Edition',
-    coverImage: 'cover-calcudoku-4x4-hard-v2.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-4x4-hard-v2.jpg',
-    accentColor: '#7C2D12',
-    accentTagBg: 'bg-orange-950 text-orange-300 border-orange-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '4x4 Hard',
-    difficultyScore: 3,
-    difficultyLabel: 'Sharp Challenge',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '15.7 mm',
-    clueType: '17 pt',
-    repeats: '0',
-    features: ['Deep Arithmetic Reasoning', 'Full Answer Keys', '100% Unique Solutions'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HHBW89R2?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-  {
-    id: 'bf-4x4-hard-v3',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 4x4 Hard (Vol. 3)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 3',
-    subSeries: '4x4 Hard Grid Edition',
-    coverImage: 'cover-calcudoku-4x4-hard-v3.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-4x4-hard-v3.jpg',
-    accentColor: '#7C2D12',
-    accentTagBg: 'bg-orange-950 text-orange-300 border-orange-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '4x4 Hard',
-    difficultyScore: 3,
-    difficultyLabel: 'Sharp Challenge',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '15.7 mm',
-    clueType: '17 pt',
-    repeats: '0',
-    features: ['Master-Level 4x4 Layouts', 'Uncompromising Logic', 'Zero Trial & Error'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HHBDTZDF?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-
-  // --- 5x5 Easy Series ---
-  {
-    id: 'bf-5x5-easy-v1',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 5x5 Easy (Vol. 1)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 1',
-    subSeries: '5x5 Easy Grid Edition',
-    coverImage: 'cover-calcudoku-5x5-easy-v1.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-5x5-easy-v1.jpg',
-    accentColor: '#A023A0',
-    accentTagBg: 'bg-fuchsia-950 text-fuchsia-300 border-fuchsia-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '5x5 Easy',
-    difficultyScore: 2,
-    difficultyLabel: 'Gentle Step Up',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '12.6 mm',
-    clueType: '14 pt',
-    repeats: '0',
-    features: ['12.6mm Large Cells', '14pt High-Contrast Clues', 'Expanded 5x5 Grid Scale'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HHC5YFMD?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-  {
-    id: 'bf-5x5-easy-v2',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 5x5 Easy (Vol. 2)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 2',
-    subSeries: '5x5 Easy Grid Edition',
-    coverImage: 'cover-calcudoku-5x5-easy-v2.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-5x5-easy-v2.jpg',
-    accentColor: '#A023A0',
-    accentTagBg: 'bg-fuchsia-950 text-fuchsia-300 border-fuchsia-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '5x5 Easy',
-    difficultyScore: 2,
-    difficultyLabel: 'Gentle Step Up',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '12.6 mm',
-    clueType: '14 pt',
-    repeats: '0',
-    features: ['Balanced 5x5 Difficulty', 'Factor Verification', 'Full Solutions in Back'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HHGC9JDH?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-  {
-    id: 'bf-5x5-easy-v3',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 5x5 Easy (Vol. 3)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 3',
-    subSeries: '5x5 Easy Grid Edition',
-    coverImage: 'cover-calcudoku-5x5-easy-v3.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-5x5-easy-v3.jpg',
-    accentColor: '#A023A0',
-    accentTagBg: 'bg-fuchsia-950 text-fuchsia-300 border-fuchsia-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '5x5 Easy',
-    difficultyScore: 2,
-    difficultyLabel: 'Gentle Step Up',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '12.6 mm',
-    clueType: '14 pt',
-    repeats: '0',
-    features: ['Smooth Solving Rhythm', 'Single-Solution Verified', 'Scratchpad Margins'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HHG7QHVW?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-
-  // --- 5x5 Medium Series ---
-  {
-    id: 'bf-5x5-med-v1',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 5x5 Medium (Vol. 1)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 1',
-    subSeries: '5x5 Medium Grid Edition',
-    coverImage: 'cover-calcudoku-5x5-medium-v1.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-5x5-medium-v1.jpg',
-    accentColor: '#0E7490',
-    accentTagBg: 'bg-cyan-950 text-cyan-300 border-cyan-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '5x5 Medium',
-    difficultyScore: 3,
-    difficultyLabel: 'Solid Medium',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '12.6 mm',
-    clueType: '14 pt',
-    repeats: '0',
-    features: ['5-Digit Combinations', 'Interlocking Cage Logic', 'Factor Scratchpad Margins'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HJNDGGFY?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-  {
-    id: 'bf-5x5-med-v2',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 5x5 Medium (Vol. 2)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 2',
-    subSeries: '5x5 Medium Grid Edition',
-    coverImage: 'cover-calcudoku-5x5-medium-v2.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-5x5-medium-v2.jpg',
-    accentColor: '#0E7490',
-    accentTagBg: 'bg-cyan-950 text-cyan-300 border-cyan-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '5x5 Medium',
-    difficultyScore: 3,
-    difficultyLabel: 'Solid Medium',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '12.6 mm',
-    clueType: '14 pt',
-    repeats: '0',
-    features: ['Challenging Cage Multipliers', 'Systematic Elimination Paths', 'Complete Proofs'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HJN9MGRZ?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-  {
-    id: 'bf-5x5-med-v3',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 5x5 Medium (Vol. 3)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 3',
-    subSeries: '5x5 Medium Grid Edition',
-    coverImage: 'cover-calcudoku-5x5-medium-v3.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-5x5-medium-v3.jpg',
-    accentColor: '#0E7490',
-    accentTagBg: 'bg-cyan-950 text-cyan-300 border-cyan-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '5x5 Medium',
-    difficultyScore: 3,
-    difficultyLabel: 'Solid Medium',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '12.6 mm',
-    clueType: '14 pt',
-    repeats: '0',
-    features: ['Cognitive Flow Grids', 'High-Contrast 14pt Clues', 'Zero Ambiguity'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HJN573MS?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-
-  // --- 5x5 Hard Series ---
-  {
-    id: 'bf-5x5-hard-v1',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 5x5 Hard (Vol. 1)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 1',
-    subSeries: '5x5 Hard Grid Edition',
-    coverImage: 'cover-calcudoku-5x5-hard-v1.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-5x5-hard-v1.jpg',
-    accentColor: '#7C2D12',
-    accentTagBg: 'bg-orange-950 text-orange-300 border-orange-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '5x5 Hard',
-    difficultyScore: 4,
-    difficultyLabel: 'High Endurance',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '12.6 mm',
-    clueType: '14 pt',
-    repeats: '0',
-    features: ['Complex Cage Topologies', 'Deep Deductive Chains', 'Scratchpad Margins'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HJN6BD7J?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-  {
-    id: 'bf-5x5-hard-v2',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 5x5 Hard (Vol. 2)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 2',
-    subSeries: '5x5 Hard Grid Edition',
-    coverImage: 'cover-calcudoku-5x5-hard-v2.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-5x5-hard-v2.jpg',
-    accentColor: '#7C2D12',
-    accentTagBg: 'bg-orange-950 text-orange-300 border-orange-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '5x5 Hard',
-    difficultyScore: 4,
-    difficultyLabel: 'High Endurance',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '12.6 mm',
-    clueType: '14 pt',
-    repeats: '0',
-    features: ['Tight Multiplier Logic', 'Full Answer Keys', 'Zero Guessing'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HJN4YH6N?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-  {
-    id: 'bf-5x5-hard-v3',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 5x5 Hard (Vol. 3)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 3',
-    subSeries: '5x5 Hard Grid Edition',
-    coverImage: 'cover-calcudoku-5x5-hard-v3.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-5x5-hard-v3.jpg',
-    accentColor: '#7C2D12',
-    accentTagBg: 'bg-orange-950 text-orange-300 border-orange-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '5x5 Hard',
-    difficultyScore: 4,
-    difficultyLabel: 'High Endurance',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '12.6 mm',
-    clueType: '14 pt',
-    repeats: '0',
-    features: ['Ultimate 5x5 Cognitive Workout', 'Computer-Verified Single Solutions', 'Laser Printing'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HJN9GFYP?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-
-  // --- 6x6 Easy Series ---
-  {
-    id: 'bf-6x6-easy-v1',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 6x6 Easy (Vol. 1)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 1',
-    subSeries: '6x6 Easy Grid Edition',
-    coverImage: 'cover-calcudoku-6x6-easy-v1.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-6x6-easy-v1.jpg',
-    accentColor: '#059669',
-    accentTagBg: 'bg-emerald-950 text-emerald-300 border-emerald-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '6x6 Easy',
-    difficultyScore: 2,
-    difficultyLabel: 'Gentle 6x6 Scale',
-    printType: 'Large 8.5" × 11" (166 Pages)',
-    price: '$11.99',
-    digitalPrice: '$5.99',
-    cellDimension: '13.0 mm',
-    clueType: '14.7 pt',
-    repeats: '0',
-    features: ['166 Extended Pages', '13.0mm Capped Wide-Margin Cells', '4-Up Spacious Grid Layout'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HJN9WY15?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-  {
-    id: 'bf-6x6-easy-v2',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 6x6 Easy (Vol. 2)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 2',
-    subSeries: '6x6 Easy Grid Edition',
-    coverImage: 'cover-calcudoku-6x6-easy-v2.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-6x6-easy-v2.jpg',
-    accentColor: '#059669',
-    accentTagBg: 'bg-emerald-950 text-emerald-300 border-emerald-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '6x6 Easy',
-    difficultyScore: 2,
-    difficultyLabel: 'Gentle 6x6 Scale',
-    printType: 'Large 8.5" × 11" (166 Pages)',
-    price: '$11.99',
-    digitalPrice: '$5.99',
-    cellDimension: '13.0 mm',
-    clueType: '14.7 pt',
-    repeats: '0',
-    features: ['166 Pages Total', '14.7pt Clue Type', 'Full-Size Solutions in Back'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HJN9Q8SL?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-  {
-    id: 'bf-6x6-easy-v3',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 6x6 Easy (Vol. 3)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 3',
-    subSeries: '6x6 Easy Grid Edition',
-    coverImage: 'cover-calcudoku-6x6-easy-v3.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-6x6-easy-v3.jpg',
-    accentColor: '#059669',
-    accentTagBg: 'bg-emerald-950 text-emerald-300 border-emerald-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '6x6 Easy',
-    difficultyScore: 2,
-    difficultyLabel: 'Gentle 6x6 Scale',
-    printType: 'Large 8.5" × 11" (166 Pages)',
-    price: '$11.99',
-    digitalPrice: '$5.99',
-    cellDimension: '13.0 mm',
-    clueType: '14.7 pt',
-    repeats: '0',
-    features: ['166 Pages Total', 'Generous Margins for Notes', 'Zero Guessing'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HJN88DZB?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-
-  // --- 6x6 Medium Series ---
-  {
-    id: 'bf-6x6-med-v1',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 6x6 Medium (Vol. 1)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 1',
-    subSeries: '6x6 Medium Grid Edition',
-    coverImage: 'cover-calcudoku-6x6-medium-v1.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-6x6-medium-v1.jpg',
-    accentColor: '#044731',
-    accentTagBg: 'bg-emerald-950 text-emerald-300 border-emerald-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '6x6 Medium',
-    difficultyScore: 3,
-    difficultyLabel: 'Solid Medium',
-    printType: 'Large 8.5" × 11" (166 Pages)',
-    price: '$11.99',
-    digitalPrice: '$5.99',
-    cellDimension: '13.0 mm',
-    clueType: '14.7 pt',
-    repeats: '0',
-    features: ['13.0mm Capped Wide-Margin Cells', '14.7pt Clue Type', '4-Up Spacious Grid Layout', '166 Pages Total'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HJNCFRF1?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-  {
-    id: 'bf-6x6-med-v2',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 6x6 Medium (Vol. 2)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 2',
-    subSeries: '6x6 Medium Grid Edition',
-    coverImage: 'cover-calcudoku-6x6-medium-v2.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-6x6-medium-v2.jpg',
-    accentColor: '#044731',
-    accentTagBg: 'bg-emerald-950 text-emerald-300 border-emerald-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '6x6 Medium',
-    difficultyScore: 3,
-    difficultyLabel: 'Solid Medium',
-    printType: 'Large 8.5" × 11" (166 Pages)',
-    price: '$11.99',
-    digitalPrice: '$5.99',
-    cellDimension: '13.0 mm',
-    clueType: '14.7 pt',
-    repeats: '0',
-    features: ['166 Pages Total', '6x6 Multi-Factor Cages', 'Full Answer Keys'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HJN96L27?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-  {
-    id: 'bf-6x6-med-v3',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Calcudoku Puzzles: 6x6 Medium (Vol. 3)',
-    subtitle: '504 Machine-Verified Mathdoku Puzzles with 17pt Bold Clues & Scratchpad Margins',
-    volume: 'Vol. 3',
-    subSeries: '6x6 Medium Grid Edition',
-    coverImage: 'cover-calcudoku-6x6-medium-v3.jpg',
-    backCoverImage: 'cover-calcudoku-back.jpg',
-    fullCoverImage: 'wrap-calcudoku-6x6-medium-v3.jpg',
-    accentColor: '#044731',
-    accentTagBg: 'bg-emerald-950 text-emerald-300 border-emerald-600/40',
-    gridsCount: '504 Grids',
-    gridSize: '6x6 Medium',
-    difficultyScore: 3,
-    difficultyLabel: 'Solid Medium',
-    printType: 'Large 8.5" × 11" (166 Pages)',
-    price: '$11.99',
-    digitalPrice: '$5.99',
-    cellDimension: '13.0 mm',
-    clueType: '14.7 pt',
-    repeats: '0',
-    features: ['166 Pages Total', 'Prime & Composite Cages', 'Zero Guessing Logic'],
-    amazonUrl: 'https://www.amazon.com/dp/B0HJNBJBNY?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08'
-  },
-
-  // ==========================================================================
-  // DIVISION 2 & 4: WORD SEARCH & SENIOR COMFORT EXTRA LARGE PRINT
-  // ==========================================================================
-  {
-    id: 'bf-ws-kitchen',
-    division: 'division-4',
-    divisions: ['division-2', 'division-4'],
-    divisionLabel: 'Senior Comfort & Word',
-    title: 'Kitchen & Baking Word Search',
-    subtitle: 'Extra Large Print Word Puzzles for Warm Memories and Quiet Afternoons — A Thoughtful Gift for Mom, Dad & Grandparents',
-    volume: 'Vol. 1',
-    subSeries: 'Extra Large Print Gifts for Seniors',
-    coverImage: 'cover-wordsearch-kitchen-baking.jpg',
-    fullCoverImage: 'wrap-wordsearch-kitchen-baking.jpg',
-    accentColor: '#D97706',
-    accentTagBg: 'bg-amber-950 text-amber-300 border-amber-500/50',
-    gridsCount: 'Full Word Puzzles',
-    gridSize: 'Extra Large 24pt',
-    difficultyScore: 1,
-    difficultyLabel: 'Relaxing Comfort',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '24pt Type',
-    clueType: 'Kitchen Themes',
-    repeats: 'Easy Reading',
-    features: [
-      'Extra Large 24pt print — easy on tired eyes',
-      'Warm vintage kitchen, recipe & baking themes',
-      'Full-page answers in the back',
-      'Heavy high-contrast paper, zero bleed'
-    ],
-    amazonUrl: 'https://www.amazon.com/dp/B0HKPZQC8B?tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08',
-    badge: '★ Senior Favorite'
-  },
-  {
-    id: 'bf-ws-halloween',
-    division: 'division-4',
-    divisions: ['division-2', 'division-4'],
-    divisionLabel: 'Senior Comfort & Word',
-    title: 'Horror & Halloween Word Search',
-    subtitle: 'Extra Large Print Word Puzzles for Long October Evenings and an Active Mind — A Thoughtful Gift for Anyone Who Still Loves a Good Scare',
-    volume: 'Autumn Edition',
-    subSeries: 'Extra Large Print Gifts for Seniors',
-    coverImage: 'cover-wordsearch-horror-halloween.jpg',
-    fullCoverImage: 'wrap-wordsearch-horror-halloween.jpg',
-    accentColor: '#EA580C',
-    accentTagBg: 'bg-orange-950 text-orange-300 border-orange-500/50',
-    gridsCount: 'Full Word Puzzles',
-    gridSize: 'Extra Large 24pt',
-    difficultyScore: 2,
-    difficultyLabel: 'Autumn Chill',
-    printType: 'Large 8.5" × 11" (110 Pages)',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '24pt Type',
-    clueType: 'Horror Themes',
-    repeats: 'Easy Reading',
-    features: [
-      'Extra Large 24pt text — comfortable evening reading',
-      'Classic horror, spooky legends & October traditions',
-      'One puzzle per page with complete solutions',
-      'Generous margins and clear grid lines'
-    ],
-    amazonUrl: 'https://www.amazon.com/s?k=Horror+%26+Halloween+Word+Search+Brain+Focus+Books&tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08',
-    badge: '🎃 Seasonal Special'
-  },
-
-  // ==========================================================================
-  // DIVISION 3: INTERACTIVE MYSTERY & INVESTIGATION (THE ONLY CONCLUSION)
-  // ==========================================================================
-  {
-    id: 'bf-toc-all-hands',
-    division: 'division-3',
-    divisions: ['division-3'],
-    divisionLabel: 'Interactive Mystery',
-    title: 'ALL HANDS: Lake Huron, 1913',
-    subtitle: 'An Interactive Mystery Novel • Real History, Invented Paperwork, One Answer',
-    volume: 'Case One',
-    subSeries: 'The Only Conclusion',
-    coverImage: 'cover-all-hands.jpg',
-    accentColor: '#C49A45',
-    accentTagBg: 'bg-amber-950 text-amber-200 border-amber-600/50',
-    gridsCount: '64-Line Master Sheet',
-    gridSize: '7" × 10" Paperback',
-    difficultyScore: 3,
-    difficultyLabel: 'Auditor Mystery',
-    printType: 'Trade Paperback 7" × 10" (110 Pages)',
-    price: '$12.99',
-    digitalPrice: '$7.99',
-    cellDimension: 'Lakes, 1913',
-    clueType: '7" × 10" Novel',
-    repeats: 'One Conclusion',
-    features: [
-      'Two full-size master sheets & 1913 storm map',
-      'Strike sessions & manifests chapter by chapter',
-      'Case Zero bonus case included',
-      'Official companion site: theonlyconclusion.com'
-    ],
-    amazonUrl: 'https://www.amazon.com/dp/B0HL783M57?tag=buyonemedia-20',
-    companionUrl: 'https://theonlyconclusion.com',
-    stripeUrl: 'https://theonlyconclusion.com',
-    badge: '★ Mystery Series'
-  },
-
-  // ==========================================================================
-  // UPCOMING PREVIEWS & EXPANSIONS
-  // ==========================================================================
-  {
-    id: 'bf-jr-k2',
-    division: 'division-3',
-    divisionLabel: 'Junior STEM™',
-    title: 'Junior Math & Logic: Grades K-2',
-    subtitle: 'Early Mathdoku & Visual Logic Workout for Curious Kids',
-    volume: 'Level 1',
-    subSeries: 'Junior STEM™',
-    coverImage: 'cover-junior-k2.jpg',
-    accentColor: '#059669',
-    accentTagBg: 'bg-emerald-950 text-emerald-300 border-emerald-500/50',
-    gridsCount: '150 Grids',
-    gridSize: '3x3 & 4x4 Mini',
-    difficultyScore: 1,
-    difficultyLabel: 'Early Learner',
-    printType: 'Large 8.5" × 11"',
-    price: '$8.99',
-    digitalPrice: '$3.99',
-    cellDimension: '22.0 mm',
-    clueType: '20 pt',
-    repeats: '0',
-    features: ['Illustrated Kid-Friendly Math Cages', 'Addition & Subtraction Foundations', 'Visual Rewards & Badges'],
-    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Junior+STEM+Books&tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/5kQ00l4WFdlY94OeUvgYU06',
-    badge: 'Kids Logic'
-  },
-  {
-    id: 'bf-jr-35',
-    division: 'division-3',
-    divisionLabel: 'Junior STEM™',
-    title: 'STEM Logic Mastery: Grades 3-5',
-    subtitle: 'Advanced Arithmetic Cages, Multiplication & Division Logic',
-    volume: 'Level 2',
-    subSeries: 'Junior STEM™',
-    coverImage: 'cover-junior-35.jpg',
-    accentColor: '#2563EB',
-    accentTagBg: 'bg-blue-950 text-blue-300 border-blue-500/50',
-    gridsCount: '200 Grids',
-    gridSize: '4x4 & 5x5 Grids',
-    difficultyScore: 2,
-    difficultyLabel: 'Middle Grade',
-    printType: 'Large 8.5" × 11"',
-    price: '$8.99',
-    digitalPrice: '$3.99',
-    cellDimension: '18.0 mm',
-    clueType: '18 pt',
-    repeats: '0',
-    features: ['Multiplication & Division Operations', 'Pre-Algebra Mental Deductions', 'Progressive Step Ladders'],
-    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Junior+STEM+Books&tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/5kQ00l4WFdlY94OeUvgYU06'
-  },
-  {
-    id: 'bf-kakuro-v1',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Kakuro Cross Sums Mastery',
-    subtitle: 'The Ultimate Math Crossword Workout',
-    volume: 'Preview Edition',
-    subSeries: 'Kakuro Series',
-    coverImage: 'cover-kakuro-v1.jpg',
-    accentColor: '#F59E0B',
-    accentTagBg: 'bg-amber-950 text-amber-300 border-amber-500/50',
-    gridsCount: '300 Grids',
-    gridSize: 'Multi-Size Grids',
-    difficultyScore: 3,
-    difficultyLabel: 'Medium to Hard',
-    printType: 'Large 8.5" × 11"',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '16.0 mm',
-    clueType: '16 pt',
-    repeats: '0',
-    features: ['Unique Partition Tables Included', 'Laser High-Contrast Clues', 'Zero Trial & Error'],
-    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Kakuro+Cross+Sums&tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08',
-    badge: 'Coming Soon'
-  },
-  {
-    id: 'bf-mathrax-v1',
-    division: 'division-1',
-    divisionLabel: 'Math & Cage Logic',
-    title: 'Mathrax Intersect Logic',
-    subtitle: 'Diagonal Parity & Arithmetic Circles',
-    volume: 'Preview Edition',
-    subSeries: 'Mathrax Series',
-    coverImage: 'cover-mathrax-v1.jpg',
-    accentColor: '#10B981',
-    accentTagBg: 'bg-emerald-950 text-emerald-300 border-emerald-500/50',
-    gridsCount: '300 Grids',
-    gridSize: '6x6 & 8x8 Grids',
-    difficultyScore: 4,
-    difficultyLabel: 'Advanced Logic',
-    printType: 'Large 8.5" × 11"',
-    price: '$9.99',
-    digitalPrice: '$4.99',
-    cellDimension: '15.0 mm',
-    clueType: '15 pt',
-    repeats: '0',
-    features: ['Even/Odd Parity Intersections', 'Geometric Calculation Paths', 'Single Solution Verified'],
-    amazonUrl: 'https://www.amazon.com/s?k=Brain+Focus+Mathrax+Books&tag=buyonemedia-20',
-    stripeUrl: 'https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08',
-    badge: 'Coming Soon'
-  }
-];
-
-let activeDivisionFilter = 'all';
-
-function renderBookCatalog(filter = 'all') {
-  const container = document.getElementById('book-catalog-grid');
-  if (!container) return;
-
-  const filteredBooks = filter === 'all' 
-    ? BOOK_CATALOG 
-    : BOOK_CATALOG.filter(b => 
-        b.division === filter || 
-        (b.divisions && b.divisions.includes(filter)) || 
-        b.category === filter ||
-        (filter === 'easy' && b.difficultyLabel && b.difficultyLabel.toLowerCase().includes('easy')) ||
-        (filter === 'medium' && b.difficultyLabel && b.difficultyLabel.toLowerCase().includes('medium')) ||
-        (filter === 'hard' && b.difficultyLabel && (b.difficultyLabel.toLowerCase().includes('hard') || b.difficultyLabel.toLowerCase().includes('sharp') || b.difficultyLabel.toLowerCase().includes('endurance'))) ||
-        (filter === 'senior' && (b.division === 'division-4' || (b.divisions && b.divisions.includes('division-4'))))
-      );
-
-  container.innerHTML = '';
-
-  filteredBooks.forEach(book => {
-    const card = document.createElement('div');
-    card.className = 'group relative flex flex-col justify-between bg-[#11192E] rounded-2xl p-6 border transition-all duration-300 hover:-translate-y-2';
-    card.style.borderColor = `${book.accentColor}55`;
-    card.style.boxShadow = `0 10px 30px -10px ${book.accentColor}33`;
-
-    // Stars generator
-    let starsHtml = '';
-    for (let i = 1; i <= 5; i++) {
-      if (i <= book.difficultyScore) {
-        starsHtml += `<span class="text-amber-400 text-sm">★</span>`;
-      } else {
-        starsHtml += `<span class="text-slate-600 text-sm">★</span>`;
-      }
-    }
-
-    // Cover rendering: Real cover image if available, else stylized procedural 3D card
-    const coverMarkup = book.coverImage 
-      ? `
-        <div class="book-cover-img-wrapper">
-          <img src="${book.coverImage}" alt="${book.title}" class="w-full h-full object-fill block">
-        </div>
-      `
-      : `
-        <div class="book-cover" style="border-left: 4px solid ${book.accentColor};">
-          <div>
-            <div class="flex items-center justify-between mb-1">
-              <img src="logo.png" alt="BRAIN FOCUS™" class="h-3.5 w-auto object-contain">
-              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded text-white" style="background-color: ${book.accentColor};">${book.volume}</span>
-            </div>
-            <h4 class="text-sm font-extrabold leading-tight text-white line-clamp-2">${book.title}</h4>
-          </div>
-
-          <div class="my-auto py-2 flex flex-col items-center">
-            <div class="w-24 h-24 rounded-lg bg-[#070B1A] border-2 flex flex-col justify-between p-1.5 shadow-inner" style="border-color: ${book.accentColor};">
-              <div class="flex justify-between text-[8px] font-mono text-[#00E5FF]">
-                <span>15.7mm</span>
-                <span>17pt</span>
-              </div>
-              <div class="text-center font-mono font-bold text-xs tracking-wider text-white/90">
-                ${book.gridSize.split(' ')[0]}
-              </div>
-              <div class="flex justify-between text-[8px] font-mono text-orange-400">
-                <span>504</span>
-                <span>VERIFIED</span>
-              </div>
-            </div>
-            <span class="text-[10px] text-slate-300 font-medium mt-1.5">${book.gridsCount}</span>
-          </div>
-
-          <div class="pt-1 border-t border-white/10 flex items-center justify-between">
-            <span class="text-[8px] font-semibold text-slate-400">${book.price}</span>
-            <span class="text-[8px] font-bold text-orange-400">0 REPEATS</span>
-          </div>
-        </div>
-      `;
-
-    card.innerHTML = `
-      <!-- Top Badges & Sub-Series Tag -->
-      <div class="flex items-center justify-between gap-2 mb-4">
-        <span class="px-2.5 py-1 rounded-full text-xs font-bold border uppercase tracking-wider ${book.accentTagBg}">
-          ${book.divisionLabel}
-        </span>
-        <span class="text-xs font-mono font-bold text-white bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700">
-          ${book.volume}
-        </span>
-      </div>
-
-      <!-- 3D Book Presentation Area -->
-      <div class="book-wrapper py-6 flex justify-center items-center">
-        <div class="book-card-3d cursor-pointer" onclick="openBookModal('${book.id}')">
-          <div class="book-spine-shine"></div>
-          <div class="book-pages-side"></div>
-          ${coverMarkup}
-        </div>
-      </div>
-
-      <!-- Book Info & Specs -->
-      <div class="mt-4 flex-1">
-        <div class="flex items-center justify-between mb-1">
-          <h3 class="text-lg font-bold text-white group-hover:text-[#00E5FF] transition-colors leading-snug">
-            ${book.title}
-          </h3>
-          <span class="text-sm font-black text-white ml-2 shrink-0">${book.price}</span>
-        </div>
-        <p class="text-xs text-slate-400 mb-3">
-          ${book.subtitle}
-        </p>
-
-        <!-- Spec Pills Grid -->
-        <div class="grid grid-cols-2 gap-1.5 mb-3 text-[11px] font-mono text-slate-300 bg-slate-900/60 p-2 rounded-xl border border-slate-800">
-          <div><span class="text-slate-500">Cells:</span> <strong class="text-cyan-300">${book.cellDimension || '15.7mm'}</strong></div>
-          <div><span class="text-slate-500">Type:</span> <strong class="text-cyan-300">${book.clueType || '17pt'}</strong></div>
-          <div><span class="text-slate-500">Grids:</span> <strong class="text-white">${book.gridsCount.split(' ')[0]}</strong></div>
-          <div><span class="text-slate-500">Repeats:</span> <strong class="text-orange-400">0 Ever</strong></div>
-        </div>
-
-        <ul class="space-y-1 text-xs text-slate-300 mb-5">
-          ${book.features.slice(0, 2).map(f => `<li class="flex items-start gap-1.5"><span class="text-[#00E5FF]">✓</span> <span>${f}</span></li>`).join('')}
-        </ul>
-      </div>
-
-      <!-- Dual Action Buttons: Retail Amazon + Direct Digital -->
-      <div class="pt-4 border-t border-slate-800/80 flex flex-col gap-2">
-        <a href="${book.amazonUrl}" target="_blank" rel="noopener" 
-           class="w-full py-2.5 px-4 rounded-xl font-bold text-sm text-white text-center flex items-center justify-center gap-2 glow-coral-btn">
-          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M15.93 17.09c-2.83 2.08-6.95 3.2-10.57 3.2-4.97 0-9.45-1.92-12.86-5.11-.27-.25-.03-.6.29-.41 3.69 2.14 8.21 3.42 12.86 3.42 3.21 0 6.74-.75 9.87-2.31.47-.23.82.26.41.61zm2.34-1.28c-.36-.46-2.38-.22-3.3-.11-.28.03-.32-.2-.07-.38 1.63-1.15 4.3-.82 4.61-.43.32.41-.08 3.09-1.63 4.35-.25.2-.44.09-.3-.18.47-.88.94-2.79.69-3.25zM21.1 19.34c-1.57 2.03-3.66 3.65-6.09 4.66-2.43 1-5.06 1.51-7.71 1.5-3.08 0-6.07-.67-8.81-1.96-.34-.16-.27-.64.1-.56 2.62.56 5.35.85 8.1.85 2.5 0 4.97-.48 7.26-1.42 2.29-.93 4.25-2.45 5.73-4.35.34-.43.83.18.42.56zM13.68 5.7c-.15.86-.68 1.94-1.39 2.64-.71.7-1.78 1.34-2.67 1.25-.13-.01-.19-.16-.09-.25 1.05-.98 2.06-2.28 2.13-3.79.06-1.24-.62-2.18-1.55-2.18-.75 0-1.41.59-1.8 1.48-.42.97-.48 2.37-.48 3.51 0 .28-.24.47-.51.41-1.48-.31-2.91-.98-4.04-1.99-.25-.23-.07-.63.26-.52 1.03.35 2.14.53 3.26.53.07 0 .14 0 .21-.01-.03-.7-.01-1.47.09-2.22.25-1.91 1.41-3.35 3.12-3.35 1.13 0 2.04.66 2.45 1.69.4.99.3 2.08-.09 3.01z"/></svg>
-          Buy Paperback (${book.price})
-        </a>
-        <div class="grid grid-cols-2 gap-2">
-          <button onclick="openBookModal('${book.id}')" 
-                  class="py-2 px-2.5 rounded-xl font-semibold text-xs text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition-colors text-center truncate">
-            🔍 Specs & Cover
-          </button>
-          ${book.companionUrl ? `
-            <a href="${book.companionUrl}" target="_blank" rel="noopener"
-               class="py-2 px-2.5 rounded-xl font-semibold text-xs text-amber-300 hover:text-white bg-amber-950/60 hover:bg-amber-900/80 border border-amber-500/40 transition-colors text-center truncate">
-              🌐 Series Site
-            </a>
-          ` : `
-            <a href="${book.stripeUrl}" target="_blank" rel="noopener"
-               class="py-2 px-2.5 rounded-xl font-semibold text-xs text-cyan-300 hover:text-white bg-cyan-950/60 hover:bg-cyan-900/80 border border-cyan-500/40 transition-colors text-center truncate">
-              📥 PDF (${book.digitalPrice})
-            </a>
-          `}
-        </div>
-      </div>
-    `;
-
-    container.appendChild(card);
-  });
-}
-
-function filterCatalog(divisionKey, buttonEl) {
-  activeDivisionFilter = divisionKey;
-  
-  // Update button active state
-  const buttons = document.querySelectorAll('.catalog-filter-btn');
-  buttons.forEach(btn => {
-    btn.classList.remove('bg-[#00E5FF]', 'text-black', 'shadow-lg');
-    btn.classList.add('bg-slate-800/80', 'text-slate-300');
-  });
-
-  if (buttonEl) {
-    buttonEl.classList.remove('bg-slate-800/80', 'text-slate-300');
-    buttonEl.classList.add('bg-[#00E5FF]', 'text-black', 'shadow-lg');
-  }
-
-  renderBookCatalog(divisionKey);
-}
-
-
-// ============================================================================
-// 3. Modal Systems & Lead Capture Magnet
-// ============================================================================
-
-function openSampleModal() {
-  const modal = document.getElementById('sample-modal');
-  if (modal) {
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-  }
-}
-
-function closeSampleModal() {
-  const modal = document.getElementById('sample-modal');
-  if (modal) {
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-  }
-}
-
-function openBookModal(bookId) {
-  const book = BOOK_CATALOG.find(b => b.id === bookId);
-  if (!book) return;
-
-  const modal = document.getElementById('book-details-modal');
-  const content = document.getElementById('book-modal-content');
-  if (!modal || !content) return;
-
-  const hasRealCover = !!book.fullCoverImage || !!book.coverImage;
-
-  content.innerHTML = `
-    <div class="flex flex-col gap-6">
-      
-      <!-- Modal Header -->
-      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-        <div>
-          <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${book.accentTagBg}">${book.subSeries}</span>
-          <h3 class="text-2xl font-black text-white mt-1">${book.title}</h3>
-          <p class="text-xs text-slate-400">${book.subtitle}</p>
-        </div>
-        <span class="text-xs font-mono font-bold text-cyan-400 bg-cyan-950 px-3 py-1.5 rounded-lg border border-cyan-500/40">
-          ${book.volume}
-        </span>
-      </div>
-
-      <!-- Tab Buttons for Cover Preview -->
-      ${hasRealCover ? `
-        <div class="flex items-center gap-2 border-b border-slate-800 pb-2 text-xs">
-          ${book.coverImage ? `<button id="modal-tab-front" onclick="switchModalCoverTab('front', '${book.id}')" class="px-3 py-1.5 rounded-lg font-bold bg-[#00E5FF] text-black">Front Cover</button>` : ''}
-          ${book.backCoverImage ? `<button id="modal-tab-back" onclick="switchModalCoverTab('back', '${book.id}')" class="px-3 py-1.5 rounded-lg font-bold bg-slate-800 text-slate-300 hover:text-white">Back Cover</button>` : ''}
-          ${book.fullCoverImage ? `<button id="modal-tab-full" onclick="switchModalCoverTab('full', '${book.id}')" class="px-3 py-1.5 rounded-lg font-bold bg-slate-800 text-slate-300 hover:text-white">Full Wrap Spread</button>` : ''}
-        </div>
-      ` : ''}
-
-      <!-- Main Modal Body Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-        
-        <!-- Left: Cover Viewer Area -->
-        <div class="md:col-span-6 flex flex-col items-center justify-center p-4 bg-[#070C1B] rounded-2xl border border-cyan-500/30">
-          <div id="modal-cover-display" class="w-full flex items-center justify-center min-h-[300px]">
-            ${book.coverImage ? `
-              <img src="${book.coverImage}" alt="${book.title}" class="max-h-[340px] w-auto rounded-lg shadow-2xl border border-cyan-400/40 object-contain">
-            ` : `
-              <div class="book-card-3d scale-100">
-                <div class="book-spine-shine"></div>
-                <div class="book-pages-side"></div>
-                <div class="book-cover" style="border-left: 4px solid ${book.accentColor};">
-                  <div class="flex items-center justify-between mb-1">
-                    <img src="logo.png" alt="BRAIN FOCUS™" class="h-4 w-auto object-contain">
-                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded text-white" style="background-color: ${book.accentColor};">${book.volume}</span>
-                  </div>
-                  <h4 class="text-sm font-extrabold text-white my-2">${book.title}</h4>
-                  <div class="my-auto py-2 text-center">
-                    <span class="text-xs font-bold text-white bg-slate-800 px-2 py-1 rounded">${book.gridSize}</span>
-                    <p class="text-[10px] text-slate-300 mt-2">${book.gridsCount}</p>
-                  </div>
-                  <div class="text-[9px] text-orange-400 font-bold text-right">${book.volume}</div>
-                </div>
-              </div>
-            `}
-          </div>
-          <span class="text-[11px] text-cyan-400 font-mono mt-3">✓ 100% Machine-Verified Logic Standard</span>
-        </div>
-
-        <!-- Right: Specifications & Features List -->
-        <div class="md:col-span-6 flex flex-col justify-between h-full">
-          <div>
-            <!-- Blueprint Stats 4-Box Grid -->
-            <div class="grid grid-cols-2 gap-2.5 mb-4 bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800">
-              <div>
-                <span class="text-[10px] uppercase text-slate-400 font-bold">Grid Cells</span>
-                <p class="text-sm font-black text-[#00E5FF]">${book.cellDimension || '15.7 mm'}</p>
-              </div>
-              <div>
-                <span class="text-[10px] uppercase text-slate-400 font-bold">Clue Type</span>
-                <p class="text-sm font-black text-[#00E5FF]">${book.clueType || '17 pt'}</p>
-              </div>
-              <div>
-                <span class="text-[10px] uppercase text-slate-400 font-bold">Total Grids</span>
-                <p class="text-sm font-black text-white">${book.gridsCount}</p>
-              </div>
-              <div>
-                <span class="text-[10px] uppercase text-slate-400 font-bold">Repeats Ever</span>
-                <p class="text-sm font-black text-[#FF5722]">${book.repeats || '0'}</p>
-              </div>
-            </div>
-
-            <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Publishing Blueprint Highlights:</h5>
-            <ul class="space-y-2 text-xs text-slate-300 mb-6">
-              ${book.features.map(f => `<li class="flex items-start gap-2"><span class="text-[#00E5FF] font-bold mt-0.5">✓</span> <span>${f}</span></li>`).join('')}
-            </ul>
-          </div>
-
-          <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-slate-800">
-            <a href="${book.amazonUrl}" target="_blank" rel="noopener" 
-               class="flex-1 py-3 px-4 rounded-xl font-bold text-sm text-white text-center flex items-center justify-center gap-2 glow-coral-btn">
-              Order Volume on Amazon (${book.price})
-            </a>
-            ${book.companionUrl ? `
-              <a href="${book.companionUrl}" target="_blank" rel="noopener"
-                 class="py-3 px-4 rounded-xl font-bold text-xs text-amber-300 hover:text-white bg-amber-950/60 hover:bg-amber-900/80 border border-amber-500/40 text-center flex items-center justify-center">
-                Visit Series Site
-              </a>
-            ` : ''}
-            <button onclick="closeBookModal()" class="py-3 px-4 rounded-xl font-semibold text-xs text-slate-400 hover:text-white bg-slate-800 border border-slate-700">
-              Close
-            </button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  `;
-
-  modal.classList.remove('hidden');
-  modal.classList.add('flex');
-}
-
-function switchModalCoverTab(tabType, bookId) {
-  const book = BOOK_CATALOG.find(b => b.id === bookId);
-  if (!book) return;
-
-  const displayEl = document.getElementById('modal-cover-display');
-  if (!displayEl) return;
-
-  // Reset tab buttons
-  const tabs = ['front', 'back', 'full'];
-  tabs.forEach(t => {
-    const btn = document.getElementById(`modal-tab-${t}`);
-    if (btn) {
-      btn.className = (t === tabType) 
-        ? 'px-3 py-1.5 rounded-lg font-bold bg-[#00E5FF] text-black' 
-        : 'px-3 py-1.5 rounded-lg font-bold bg-slate-800 text-slate-300 hover:text-white';
-    }
-  });
-
-  if (tabType === 'front' && book.coverImage) {
-    displayEl.innerHTML = `<img src="${book.coverImage}" alt="Front Cover" class="max-h-[340px] w-auto rounded-lg shadow-2xl border border-cyan-400/40 object-contain animate-fade-in">`;
-  } else if (tabType === 'back' && book.backCoverImage) {
-    displayEl.innerHTML = `<img src="${book.backCoverImage}" alt="Back Cover" class="max-h-[340px] w-auto rounded-lg shadow-2xl border border-cyan-400/40 object-contain animate-fade-in">`;
-  } else if (tabType === 'full' && book.fullCoverImage) {
-    displayEl.innerHTML = `<img src="${book.fullCoverImage}" alt="Full Cover Wrap" class="max-h-[260px] w-full rounded-lg shadow-2xl border border-cyan-400/40 object-contain animate-fade-in">`;
-  }
-}
-
-function closeBookModal() {
-  const modal = document.getElementById('book-details-modal');
-  if (modal) {
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-  }
-}
-
-function handleEmailSubmit(event, source = 'main') {
-  event.preventDefault();
-  const inputEl = document.getElementById(source === 'modal' ? 'modal-email-input' : 'email-input');
-  if (!inputEl || !inputEl.value) return;
-
-  const email = inputEl.value.trim();
-  if (!email.includes('@') || !email.includes('.')) {
-    alert('Please enter a valid email address.');
-    return;
-  }
-
-  // Show success state
-  const formArea = document.getElementById(source === 'modal' ? 'modal-lead-form' : 'lead-capture-form-area');
-  if (formArea) {
-    formArea.innerHTML = `
-      <div class="bg-emerald-950/80 border border-emerald-500/60 rounded-2xl p-6 text-center animate-fade-in">
-        <div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-3 text-2xl font-bold">✓</div>
-        <h4 class="text-lg font-bold text-white mb-1">Your 20-Page Sampler Pack is Ready!</h4>
-        <p class="text-xs text-slate-300 mb-4">We've dispatched your printable PDF pack to <span class="text-[#00E5FF] font-semibold">${email}</span>.</p>
-        <a href="#demo" onclick="closeSampleModal(); triggerConfetti();" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs text-white glow-coral-btn">
-          📥 Download Printable PDF Directly (Instant Access)
-        </a>
-      </div>
-    `;
-  }
-  triggerConfetti();
+  updateGameStatus('Puzzle cleared. Click any box to start over.');
 }
 
 function selectPuzzleDifficulty(difficulty) {
   currentPuzzleKey = difficulty;
-  
-  const buttons = document.querySelectorAll('.puzzle-diff-btn');
-  buttons.forEach(btn => {
-    btn.classList.remove('bg-[#00E5FF]', 'text-black');
-    btn.classList.add('bg-slate-800', 'text-slate-300');
+  document.querySelectorAll('.puzzle-diff-btn').forEach(btn => {
+    btn.classList.remove('active');
   });
-
   const activeBtn = document.getElementById(`btn-diff-${difficulty}`);
-  if (activeBtn) {
-    activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
-    activeBtn.classList.add('bg-[#00E5FF]', 'text-black');
-  }
-
+  if (activeBtn) activeBtn.classList.add('active');
   initCalcudoku();
 }
 
-function openBundleCheckout(bundleType) {
-  const bundles = {
-    starter: {
-      name: "4x4 & 5x5 Easy Digital Trilogy",
-      price: "$9.99",
-      grids: "600 Printable Grids",
-      desc: "Instant download vector PDF formatted for GoodNotes, Notability, and home printing.",
-      stripeUrl: "https://buy.stripe.com/bJe7sN4WF6XAgzg1stgYU08"
-    },
-    grandmaster: {
-      name: "Grandmaster Progression Suite (6 Volumes)",
-      price: "$17.99",
-      grids: "1,200+ Printable Grids",
-      desc: "Complete 4x4 to 9x9 suite including cage strategy masterclass and verified solver matrices.",
-      stripeUrl: "https://buy.stripe.com/aFabJ3gFn5Twgzg3ABgYU09"
-    },
-    senior: {
-      name: "Senior Comfort Jumbo Pack (3 Volumes)",
-      price: "$12.99",
-      grids: "450 Giant 24pt Grids",
-      desc: "Extra large print 1 grid per page printable PDF with pure black high-contrast inks.",
-      stripeUrl: "https://buy.stripe.com/5kQ6oJ0GpdlYcj02wxgYU0a"
-    }
-  };
-
-  const b = bundles[bundleType] || bundles.grandmaster;
-  
-  const modal = document.getElementById('book-details-modal');
-  const content = document.getElementById('book-modal-content');
-  if (!modal || !content) return;
-
-  content.innerHTML = `
-    <div class="p-4 sm:p-6 text-center">
-      <div class="w-14 h-14 rounded-full bg-cyan-500/20 text-[#00E5FF] flex items-center justify-center mx-auto mb-4 text-2xl font-bold border border-cyan-400/40">
-        📥
-      </div>
-      <span class="px-3 py-1 rounded-full text-xs font-bold bg-cyan-950 text-cyan-300 border border-cyan-500/50 uppercase">Direct Digital Bundle</span>
-      <h3 class="text-2xl font-extrabold text-white mt-3 mb-1">${b.name}</h3>
-      <p class="text-xs text-slate-300 max-w-md mx-auto mb-6">${b.desc}</p>
-
-      <div class="bg-[#070B1A] border border-cyan-500/30 rounded-2xl p-4 max-w-sm mx-auto mb-6">
-        <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
-          <span>Digital Bundle Delivery:</span>
-          <span class="text-emerald-400 font-bold">Instant Vector PDF</span>
-        </div>
-        <div class="flex items-center justify-between text-xs text-slate-400 mb-3">
-          <span>Total Logic Grids:</span>
-          <span class="text-white font-bold">${b.grids}</span>
-        </div>
-        <div class="flex items-center justify-between text-sm font-bold border-t border-slate-800 pt-2">
-          <span class="text-white">Direct Bundle Price:</span>
-          <span class="text-2xl font-black text-[#00E5FF]">${b.price}</span>
-        </div>
-      </div>
-
-      <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-        <a href="${b.stripeUrl}" target="_blank" rel="noopener"
-           class="flex-1 py-3.5 px-6 rounded-xl font-extrabold text-sm text-white glow-coral-btn text-center shadow-lg flex items-center justify-center gap-2">
-          <span>🔒 Checkout with Stripe (${b.price})</span>
-        </a>
-        <button onclick="closeBookModal()" class="py-3.5 px-5 rounded-xl font-bold text-xs text-slate-400 hover:text-white bg-slate-800 border border-slate-700">
-          Cancel
-        </button>
-      </div>
-      <p class="text-[10px] text-slate-500 mt-4">🔒 Powered by Stripe • Instant download deliverable • 30-Day Money-Back Guarantee</p>
-    </div>
-  `;
-
-  modal.classList.remove('hidden');
-  modal.classList.add('flex');
-}
-
-// ============================================================================
-// 4. Form Handlers: VIP Solver Club & Reader Feedback
-// ============================================================================
-
-function handleVipFormSubmit(event) {
-  event.preventDefault();
-  const nameEl = document.getElementById('vip-name');
-  const emailEl = document.getElementById('vip-email');
-  if (!nameEl || !emailEl) return;
-
-  const name = nameEl.value.trim();
-  const email = emailEl.value.trim();
-  if (!email.includes('@')) {
-    alert('Please enter a valid email address.');
-    return;
-  }
-
-  const wrapper = document.getElementById('vip-form-wrapper');
-  if (wrapper) {
-    wrapper.innerHTML = `
-      <div class="bg-emerald-950/80 border-2 border-emerald-500/60 rounded-3xl p-8 text-center animate-fade-in shadow-2xl">
-        <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-4 text-3xl font-black border border-emerald-400/50">
-          ✓
-        </div>
-        <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-900 text-emerald-300 uppercase tracking-wider">
-          Membership Confirmed
-        </span>
-        <h3 class="font-heading font-black text-2xl sm:text-3xl text-white mt-3 mb-2">
-          Welcome to the Club, ${name}!
-        </h3>
-        <p class="text-slate-300 text-sm max-w-lg mx-auto mb-6">
-          We've registered <strong class="text-cyan-300">${email}</strong> for weekly weekend logic drops. Your first 10-Grid Warmup PDF pack is ready below:
-        </p>
-
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
-          <a href="data:text/plain;charset=utf-8,Brain%20Focus%20Books%20-%20VIP%20Welcome%20Pack%0A%0AWelcome%20to%20the%20VIP%20Solver%20Club!%0AEnjoy%20your%20weekly%20printable%20puzzle%20packs%20and%20early%20releases."
-             download="BrainFocus_VIP_Welcome_Pack.pdf"
-             onclick="triggerConfetti();"
-             class="w-full sm:w-auto px-7 py-3.5 rounded-xl font-extrabold text-sm text-white glow-coral-btn flex items-center justify-center gap-2">
-            <span>📥 Download VIP Welcome Pack (PDF)</span>
-          </a>
-        </div>
-      </div>
-    `;
-  }
-  triggerConfetti();
-}
-
-function handleFeedbackFormSubmit(event) {
-  event.preventDefault();
-  const nameEl = document.getElementById('feedback-name');
-  const emailEl = document.getElementById('feedback-email');
-  const bookEl = document.getElementById('feedback-book');
-  const topicEl = document.getElementById('feedback-topic');
-  const msgEl = document.getElementById('feedback-message');
-  const starEl = document.getElementById('selected-star-rating');
-
-  const name = nameEl ? nameEl.value.trim() : 'Solver';
-  const email = emailEl ? emailEl.value.trim() : '';
-  const book = bookEl ? bookEl.options[bookEl.selectedIndex].text : '';
-  const stars = starEl ? starEl.value : '5';
-
-  const wrapper = document.getElementById('feedback-form-wrapper');
-  if (wrapper) {
-    wrapper.innerHTML = `
-      <div class="bg-cyan-950/80 border-2 border-cyan-400/60 rounded-3xl p-8 text-center animate-fade-in shadow-2xl">
-        <div class="w-16 h-16 rounded-full bg-cyan-500/20 text-[#00E5FF] flex items-center justify-center mx-auto mb-4 text-3xl font-black border border-cyan-400/50">
-          ✉️
-        </div>
-        <span class="px-3 py-1 rounded-full text-xs font-bold bg-cyan-900 text-cyan-300 uppercase tracking-wider">
-          Message Received
-        </span>
-        <h3 class="font-heading font-black text-2xl sm:text-3xl text-white mt-3 mb-2">
-          Thank You, ${name}!
-        </h3>
-        <p class="text-slate-300 text-sm max-w-lg mx-auto mb-4">
-          Your feedback regarding <strong class="text-white">${book}</strong> (${stars} ★ rating) has been forwarded directly to our lead puzzle development team.
-        </p>
-        <p class="text-xs text-slate-400 mb-6">
-          We build every volume around reader recommendations. If a response is required, we'll reply to <span class="text-cyan-300">${email}</span> within 24–48 hours.
-        </p>
-        <a href="index.html#catalog" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm text-white glow-coral-btn">
-          Explore More Volumes in Master Catalog →
-        </a>
-      </div>
-    `;
-  }
-  triggerConfetti();
-}
-
-function setStarRating(rating) {
-  const ratingInput = document.getElementById('selected-star-rating');
-  if (ratingInput) ratingInput.value = rating;
-
-  const stars = document.querySelectorAll('#star-rating-group .star-btn');
-  stars.forEach((s, idx) => {
-    if (idx < rating) {
-      s.className = 'star-btn text-amber-400';
-    } else {
-      s.className = 'star-btn text-slate-600';
-    }
-  });
-
-  const labelEl = document.getElementById('star-rating-label');
-  if (labelEl) {
-    const labels = {
-      1: '1.0 / 5.0 (Needs Improvement)',
-      2: '2.0 / 5.0 (Fair Experience)',
-      3: '3.0 / 5.0 (Good Experience)',
-      4: '4.0 / 5.0 (Great Focus)',
-      5: '5.0 / 5.0 (Exceptional Clarity)'
-    };
-    labelEl.textContent = labels[rating] || `${rating}.0 / 5.0`;
+function updateGameStatus(msg, textClass = 'text-slate-700') {
+  const statusEl = document.getElementById('calcudoku-status');
+  if (statusEl) {
+    statusEl.className = `mt-4 p-3 rounded-xl bg-stone-100 border border-stone-200 text-center text-sm ${textClass}`;
+    statusEl.textContent = msg;
   }
 }
 
 // ============================================================================
-// 5. Initialization & Event Bindings
+// Initialization
 // ============================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
+  loadEtsyProducts();
   initCalcudoku();
-  renderBookCatalog('all');
 
-  // Mobile menu toggle
+  const searchInput = document.getElementById('product-search');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value || '';
+      renderAllProducts();
+    });
+  }
+
   const mobileBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-nav-drawer');
   if (mobileBtn && mobileMenu) {
     mobileBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
+      const isHidden = mobileMenu.classList.toggle('hidden');
+      mobileBtn.setAttribute('aria-expanded', String(!isHidden));
     });
   }
 
-  // Close modals on Escape key
   window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      closeSampleModal();
-      closeBookModal();
+    if (!document.getElementById('calcudoku-grid')) return;
+    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+
+    if (['1', '2', '3', '4'].includes(e.key)) {
+      enterNumber(parseInt(e.key, 10));
+    } else if (e.key === 'Backspace' || e.key === 'Delete' || e.key === '0') {
+      clearCurrentCell();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectCell(Math.max(0, selectedCell.r - 1), selectedCell.c);
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectCell(Math.min(3, selectedCell.r + 1), selectedCell.c);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      selectCell(selectedCell.r, Math.max(0, selectedCell.c - 1));
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      selectCell(selectedCell.r, Math.min(3, selectedCell.c + 1));
     }
   });
 });
