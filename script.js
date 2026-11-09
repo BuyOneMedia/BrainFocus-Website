@@ -32,6 +32,21 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
+function addBfbProductToCart(listingId) {
+  const prod = allProducts.find(p => Number(p.listing_id) === Number(listingId));
+  if (!prod || !window.BOMCart) return;
+  window.BOMCart.add({
+    sku: prod.sku || ('bfb-' + prod.listing_id),
+    short_title: prod.short_title,
+    title: prod.title,
+    price: Number(prod.price),
+    image: prod.image,
+    canva_count: prod.canva_count || 0,
+    file_count: prod.file_count || 1
+  });
+}
+window.addBfbProductToCart = addBfbProductToCart;
+
 function createProductCardHtml(product, badgeText = '') {
   const shortTitle = escapeHtml(product.short_title);
   const fullTitle = escapeHtml(product.title);
@@ -39,6 +54,7 @@ function createProductCardHtml(product, badgeText = '') {
   const priceStr = formatPrice(product.price);
   const url = escapeHtml(product.url);
   const image = escapeHtml(product.image);
+  const lid = Number(product.listing_id);
 
   const badgeMarkup = badgeText
     ? `<span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-orange-100 text-orange-800 border border-orange-200 mb-2">${escapeHtml(badgeText)}</span>`
@@ -47,27 +63,35 @@ function createProductCardHtml(product, badgeText = '') {
   return `
     <article class="product-card p-4 flex flex-col justify-between h-full">
       <div>
-        <a href="${url}" target="_blank" rel="noopener" class="block aspect-square rounded-xl overflow-hidden bg-stone-100 border border-stone-200 mb-3.5 group">
+        <button type="button" onclick="addBfbProductToCart(${lid})" class="w-full text-left block aspect-square rounded-xl overflow-hidden bg-stone-100 border border-stone-200 mb-3.5 group cursor-pointer">
           <img src="${image}"
                alt="${shortTitle} - ${section} printable PDF"
                loading="lazy"
                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-        </a>
+        </button>
         ${badgeMarkup}
         <h3 class="font-heading font-bold text-base sm:text-lg text-slate-900 leading-snug mb-2" title="${fullTitle}">
-          <a href="${url}" target="_blank" rel="noopener" class="hover:text-brandTeal transition-colors">
+          <button type="button" onclick="addBfbProductToCart(${lid})" class="text-left hover:text-brandTeal transition-colors cursor-pointer">
             ${shortTitle}
-          </a>
+          </button>
         </h3>
       </div>
 
-      <div class="pt-3 mt-2 border-t border-stone-100 flex items-center justify-between gap-3">
-        <span class="font-heading font-extrabold text-lg sm:text-xl text-slate-900">${priceStr}</span>
-        <a href="${url}" target="_blank" rel="noopener"
-           class="px-4 py-2.5 rounded-xl font-bold text-sm btn-coral inline-flex items-center justify-center gap-1.5 shrink-0">
-          <span>View on Etsy</span>
-          <span aria-hidden="true">→</span>
-        </a>
+      <div class="pt-3 mt-2 border-t border-stone-100 space-y-2">
+        <div class="flex items-center justify-between gap-2">
+          <span class="font-heading font-extrabold text-lg sm:text-xl text-slate-900">${priceStr}</span>
+          <button type="button" onclick="addBfbProductToCart(${lid})"
+             class="px-4 py-2.5 rounded-xl font-bold text-sm btn-coral inline-flex items-center justify-center gap-1.5 shrink-0 cursor-pointer">
+            <span>Add to Cart</span>
+            <span aria-hidden="true">+</span>
+          </button>
+        </div>
+        <div class="flex items-center justify-between text-xs text-slate-500">
+          <span class="text-emerald-700 font-semibold">Buy 3+ Save 15%</span>
+          <a href="${url}" target="_blank" rel="noopener" class="hover:text-brandTeal underline">
+            Also on Etsy &nearr;
+          </a>
+        </div>
       </div>
     </article>
   `;
