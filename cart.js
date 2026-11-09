@@ -162,7 +162,7 @@
               <p class="font-bold text-slate-900 text-sm truncate">${it.title}</p>
               <p class="text-xs text-slate-500">
                 $${Number(it.price).toFixed(2)}
-                ${it.canva_count ? ` &middot; <span class="text-teal-700 font-semibold">${it.canva_count} Canva Links</span>` : ""}
+                ${it.canva_count ? ` &middot; <span class="text-teal-700 font-semibold">${it.canva_count} Canva Link${it.canva_count === 1 ? "" : "s"}</span>` : ""}
               </p>
             </div>
             <button type="button" data-remove-sku="${it.sku}" aria-label="Remove item"
